@@ -10,7 +10,7 @@
 - Hilout, Yasmine 40214158
 - Loulidi, Asmae 40210936
 - Jean-Baptiste Naika 40227367
-- Coscia, Naika 40227367
+- Coscia, Megan 40214186
 - Oh, Denis 40208580
 
 ## Key Features
