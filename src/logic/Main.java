@@ -1,5 +1,4 @@
-package src;
-
+package logic;
 
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -15,7 +14,7 @@ public class Main {
         layout.setHouseLayout(layoutFile);
 
         for(int i=0;i<layout.getRooms().size();i++){
-            System.out.println("Room type:" + layout.getRooms().get(i).getType());
+            System.out.println("logic.Room type:" + layout.getRooms().get(i).getType());
             System.out.println("Number of lights:" + layout.getRooms().get(i).getNumLights());
             System.out.println("Number of windows:" + layout.getRooms().get(i).getNumWindows());
             System.out.println("Number of doors:" + layout.getRooms().get(i).getNumDoors());
@@ -27,7 +26,7 @@ public class Main {
         layout.setHouseLayout(layoutFile2);
 
         for(int i=0;i<layout.getRooms().size();i++){
-            System.out.println("Room type:" + layout.getRooms().get(i).getType());
+            System.out.println("logic.Room type:" + layout.getRooms().get(i).getType());
             System.out.println("Number of lights:" + layout.getRooms().get(i).getNumLights());
             System.out.println("Number of windows:" + layout.getRooms().get(i).getNumWindows());
             System.out.println("Number of doors:" + layout.getRooms().get(i).getNumDoors());
