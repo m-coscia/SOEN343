@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
-public class testing extends JFrame {
+public class firstFrame extends JFrame {
     private DashboardGUI dash = new DashboardGUI();
 
     private JPanel mainPanel;
@@ -14,7 +14,7 @@ public class testing extends JFrame {
     private JLabel layoutFileLabel;
     private JTextField layoutFileName;
 
-    public testing(){
+    public firstFrame(){
         setContentPane(mainPanel);
         setTitle("Testing Swing UI Builder");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -45,7 +45,7 @@ public class testing extends JFrame {
     }
 
     public static void main(String[] args) {
-        new testing();
+        new firstFrame();
     }
 
 
