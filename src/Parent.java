@@ -9,4 +9,13 @@ public class Parent extends Profile{
         userName = user;
         password = pw;
     }
+
+    public void setUserName(String ID){
+        userName = ID;
+    }
+
+    public void setPassword(String pw){
+        password = pw;
+    }
+
 }

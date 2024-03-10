@@ -8,4 +8,8 @@ public class Profile {
     public Profile(String n){
         name = n;
     }
+
+    public void setName(String n) {
+        name = n;
+    }
 }
