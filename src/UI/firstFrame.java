@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 
 public class firstFrame extends JFrame {
     private DashboardGUI dash = new DashboardGUI();
+    private selectAccountGUI accountSelection = new selectAccountGUI();
 
     private JPanel mainPanel;
     private JLabel titleLabel;
@@ -36,10 +37,16 @@ public class firstFrame extends JFrame {
                     throw new RuntimeException(ex);
                 }
                 setVisible(false);
-                setContentPane(dash.dashboard);
-                setSize(1400,900);
-                setResizable(true);
+
+                setContentPane(accountSelection.accountCreateForm);
+                setSize(600,400);
+                setResizable(false);
                 setVisible(true);
+
+//                setContentPane(dash.dashboard);
+//                setSize(1400,900);
+//                setResizable(true);
+//                setVisible(true);
             }
         });
     }
