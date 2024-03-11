@@ -65,5 +65,6 @@ public class HouseLayout {
 
     }
 
+    //public boolean p
 
 }

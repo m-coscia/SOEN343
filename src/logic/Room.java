@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.ArrayList;
+
 enum roomType{
     BEDROOM,
     LIVINGROOM,
@@ -14,6 +16,7 @@ public class Room {
     private int numLights;
     private int numDoors;
 
+    private ArrayList<Profile> virtualTenants;
     //default constructor
     public Room(){
 
@@ -59,9 +62,15 @@ public class Room {
         return numDoors;
     }
 
+    public ArrayList<Profile> getVirtualTenants() {
+        return virtualTenants;
+    }
 
-
-
-
-
+    public void addVirtualTenant(Profile p){
+        if (virtualTenants == null){
+            virtualTenants = new ArrayList<>();
+        }else{
+            virtualTenants.add(p);
+        }
+    }
 }

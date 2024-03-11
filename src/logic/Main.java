@@ -1,10 +1,14 @@
 package logic;
 
+import UI.firstFrame;
+
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String args[]) throws FileNotFoundException {
+
+        //new firstFrame();
         HouseLayout layout = HouseLayout.getHouseLayout();
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
 
