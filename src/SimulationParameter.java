@@ -23,6 +23,10 @@ public class SimulationParameter {
         weatherOutside = outside;
     }
 
+    public void login(Profile user){
+        login = new Login(user);
+    }
+
     public void createParentAccount(String name, String id, String pw){
         Profile p = new Parent(name,id,pw);
         db.addAccount(p);
