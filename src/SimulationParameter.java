@@ -39,6 +39,13 @@ public class SimulationParameter {
         login.setCurrentUser(p);
     }
 
+    public void createGuestAccount(String name, String id, String pw){
+        Profile p = new Guest(name,id,pw);
+        db.addAccount(p);
+        login.setCurrentUser(p);
+    }
+
+
     public void deleteAccount(Profile user){
         if(db.findProfile(user)){
             db.deleteAccount(user);
@@ -57,8 +64,14 @@ public class SimulationParameter {
             db.addAccount(user);
             login.setCurrentUser(user);
 
-        }else{
+        }else if(login.getCurrentUser() instanceof Child){
             Child user = (Child)login.getCurrentUser();
+            db.deleteAccount(login.getCurrentUser());
+            user.setUserName(userName);
+            db.addAccount(user);
+            login.setCurrentUser(user);
+        }else{
+            Guest user = (Guest)login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setUserName(userName);
             db.addAccount(user);
@@ -74,8 +87,14 @@ public class SimulationParameter {
             db.addAccount(user);
             login.setCurrentUser(user);
 
-        }else{
+        }else if(login.getCurrentUser() instanceof Child){
             Child user = (Child)login.getCurrentUser();
+            db.deleteAccount(login.getCurrentUser());
+            user.setPassword(password);
+            db.addAccount(user);
+            login.setCurrentUser(user);
+        }else{
+            Guest user = (Guest)login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setPassword(password);
             db.addAccount(user);
