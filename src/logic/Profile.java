@@ -1,4 +1,4 @@
-package src;
+package logic;
 
 import java.security.Permission;
 
