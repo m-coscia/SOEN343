@@ -1,7 +1,10 @@
 package src;
 
+//everytime we move a child or guest, call setPermissions bc they change depending on the room
 public class SmartCoreModule extends SmartHomeModule {
-    public SmartCoreModule() {
+    public SmartCoreModule(SimulationParameter param) {
+        parameter = param;      //set simulation parameter
+
     }
 
     @Override
@@ -14,10 +17,10 @@ public class SmartCoreModule extends SmartHomeModule {
 
     @Override
     public void setChildPermissions() {
-        getChildPermissions().setDoorsPermission(true);
-        getChildPermissions().setWindowsPermission(true);
-        getChildPermissions().setLightsPermission(true);
-        getChildPermissions().setGaragePermission(true);
+        getChildPermissions().setDoorsPermission(false);
+        getChildPermissions().setWindowsPermission(false);
+        getChildPermissions().setLightsPermission(false);
+        getChildPermissions().setGaragePermission(false);
 
     }
 
@@ -32,10 +35,10 @@ public class SmartCoreModule extends SmartHomeModule {
 
     @Override
     public void setStrangerPermissions() {
-        getStrangerPermissions().setDoorsPermission(true);
-        getStrangerPermissions().setWindowsPermission(true);
-        getStrangerPermissions().setLightsPermission(true);
-        getStrangerPermissions().setGaragePermission(true);
+        getStrangerPermissions().setDoorsPermission(false);
+        getStrangerPermissions().setWindowsPermission(false);
+        getStrangerPermissions().setLightsPermission(false);
+        getStrangerPermissions().setGaragePermission(false);
 
     }
 }

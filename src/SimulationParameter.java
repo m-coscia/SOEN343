@@ -1,9 +1,11 @@
 package src;
 
-import java.io.File;
+import src.components.Room;
+
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class SimulationParameter {
     private HouseLayout layout;
@@ -13,6 +15,7 @@ public class SimulationParameter {
     private Login login;
     private double weatherInside;
     private double weatherOutside;
+    private ArrayList<virtualTenant> tenants = new ArrayList<virtualTenant>();
 
     public SimulationParameter(String layoutFile, LocalDate d, LocalTime t, double inside, double outside) throws FileNotFoundException {
         HouseLayout layout = HouseLayout.getHouseLayout();
@@ -31,18 +34,21 @@ public class SimulationParameter {
         Profile p = new Parent(name,id,pw);
         db.addAccount(p);
         login.setCurrentUser(p);
+        setVirtualTenants(p,null);
     }
 
     public void createChildAccount(String name, String id, String pw){
         Profile p = new Child(name,id,pw);
         db.addAccount(p);
         login.setCurrentUser(p);
+        setVirtualTenants(p,null);
     }
 
     public void createGuestAccount(String name, String id, String pw){
         Profile p = new Guest(name,id,pw);
         db.addAccount(p);
         login.setCurrentUser(p);
+        setVirtualTenants(p,null);
     }
 
 
@@ -50,6 +56,13 @@ public class SimulationParameter {
         if(db.findProfile(user)){
             db.deleteAccount(user);
         }
+        //finds profile in tenants list and removes it
+        for(int i=0;i<tenants.size();i++){
+            if(tenants.get(i).getProfile() == user){
+                tenants.remove(tenants.get(i));
+            }
+        }
+
     }
 
     public void editName(String name){
@@ -109,6 +122,17 @@ public class SimulationParameter {
 
     public void changeTime(){
 
+    }
+
+    //returns the list of virtual tenants
+    public ArrayList<virtualTenant> getTenants() {
+        return tenants;
+    }
+
+    //creates virtual tenants with a profile and location and adds it to the list of virtual tenants
+    public void setVirtualTenants(Profile p, Room loc){
+        virtualTenant tenant = new virtualTenant(p, loc);
+        tenants.add(tenant);
     }
 
 

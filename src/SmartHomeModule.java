@@ -26,6 +26,10 @@ public abstract class SmartHomeModule {
         return parentPermissions;
     }
 
+    public SimulationParameter getParameter(){
+        return parameter;
+    }
+
 
     public abstract void setParentPermissions();
     public abstract void setChildPermissions();
