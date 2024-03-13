@@ -13,7 +13,7 @@ public class SmartCoreModule extends SmartHomeModule {
         getParentPermissions().setDoorsPermission(true);
         getParentPermissions().setWindowsPermission(true);
         getParentPermissions().setLightsPermission(true);
-        getParentPermissions().setGaragePermission(true);
+        getParentPermissions().setGarageDoorPermission(true);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class SmartCoreModule extends SmartHomeModule {
         getChildPermissions().setDoorsPermission(false);
         getChildPermissions().setWindowsPermission(false);
         getChildPermissions().setLightsPermission(false);
-        getChildPermissions().setGaragePermission(false);
+        getChildPermissions().setGarageDoorPermission(false);
 
     }
 
@@ -30,7 +30,7 @@ public class SmartCoreModule extends SmartHomeModule {
         getGuestPermissions().setDoorsPermission(true);
         getGuestPermissions().setWindowsPermission(true);
         getGuestPermissions().setLightsPermission(true);
-        getGuestPermissions().setGaragePermission(true);
+        getGuestPermissions().setGarageDoorPermission(true);
 
     }
 
@@ -39,7 +39,7 @@ public class SmartCoreModule extends SmartHomeModule {
         getStrangerPermissions().setDoorsPermission(false);
         getStrangerPermissions().setWindowsPermission(false);
         getStrangerPermissions().setLightsPermission(false);
-        getStrangerPermissions().setGaragePermission(false);
+        getStrangerPermissions().setGarageDoorPermission(false);
 
     }
 }

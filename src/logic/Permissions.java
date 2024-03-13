@@ -29,11 +29,11 @@ public class Permissions {
         return doors;
     }
 
-    public void setGaragePermission(boolean permission){
+    public void setGarageDoorPermission(boolean permission){
         garage = permission;
     }
 
-    public boolean getGaragePermission(){
+    public boolean getGarageDoorPermission(){
         return garage;
     }
 
