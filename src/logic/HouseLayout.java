@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import src.components.Room;
+import src.components.RoomType;
+
 public class HouseLayout {
     private  File layoutFile;
     private ArrayList<Room> rooms = new ArrayList<Room>();
@@ -29,7 +32,7 @@ public class HouseLayout {
         rooms.clear();
         layoutFile = new File(fileName);
         Scanner read = new Scanner(layoutFile);
-        roomType type = null;
+        RoomType type = null;
         int lights = 0, windows = 0, doors = 0;
         int count=0;
         while (read.hasNextLine()){
@@ -39,7 +42,7 @@ public class HouseLayout {
                     count++;
                     break;
                 case 1:
-                    type = roomType.valueOf(read.nextLine());
+                    type = RoomType.valueOf(read.nextLine());
                     count++;
                     break;
                 case 2:

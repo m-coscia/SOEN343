@@ -33,5 +33,9 @@ public class DataBase {
         }
     }
 
+    public ArrayList<Profile> getProfiles(){
+        return profiles;
+    }
+
 
 }

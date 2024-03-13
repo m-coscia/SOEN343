@@ -1,0 +1,44 @@
+package src;
+
+//everytime we move a child or guest, call setPermissions bc they change depending on the room
+public class SmartCoreModule extends SmartHomeModule {
+    public SmartCoreModule(SimulationParameter param) {
+        parameter = param;      //set simulation parameter
+
+    }
+
+    @Override
+    public void setParentPermissions() {
+        getParentPermissions().setDoorsPermission(true);
+        getParentPermissions().setWindowsPermission(true);
+        getParentPermissions().setLightsPermission(true);
+        getParentPermissions().setGaragePermission(true);
+    }
+
+    @Override
+    public void setChildPermissions() {
+        getChildPermissions().setDoorsPermission(false);
+        getChildPermissions().setWindowsPermission(false);
+        getChildPermissions().setLightsPermission(false);
+        getChildPermissions().setGaragePermission(false);
+
+    }
+
+    @Override
+    public void setGuestPermissions() {
+        getGuestPermissions().setDoorsPermission(true);
+        getGuestPermissions().setWindowsPermission(true);
+        getGuestPermissions().setLightsPermission(true);
+        getGuestPermissions().setGaragePermission(true);
+
+    }
+
+    @Override
+    public void setStrangerPermissions() {
+        getStrangerPermissions().setDoorsPermission(false);
+        getStrangerPermissions().setWindowsPermission(false);
+        getStrangerPermissions().setLightsPermission(false);
+        getStrangerPermissions().setGaragePermission(false);
+
+    }
+}
