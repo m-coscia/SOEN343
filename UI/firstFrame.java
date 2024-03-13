@@ -1,15 +1,18 @@
 package UI;
 
 import logic.HouseLayout;
+import src.UI.ProfilePanel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
 public class firstFrame extends JFrame {
-    private DashboardGUI dash = new DashboardGUI();
-    private selectAccountGUI accountSelection = new selectAccountGUI();
+    private UI.DashboardGUI dash = new UI.DashboardGUI();
+    private UI.selectAccountGUI accountSelection = new UI.selectAccountGUI();
 
+    private ProfilePanel profiles = new ProfilePanel();
     private JPanel mainPanel;
     private JLabel titleLabel;
     private JLabel layoutFileLabel;
@@ -36,17 +39,13 @@ public class firstFrame extends JFrame {
                 } catch (FileNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
-                setVisible(false);
 
+                setVisible(false);
                 setContentPane(accountSelection.accountCreateForm);
-                setSize(600,400);
-                setResizable(false);
+                setSize(400,400);
+                setResizable(true);
                 setVisible(true);
 
-//                setContentPane(dash.dashboard);
-//                setSize(1400,900);
-//                setResizable(true);
-//                setVisible(true);
             }
         });
     }

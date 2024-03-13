@@ -1,5 +1,7 @@
 package UI;
 
+import src.UI.ProfilePanel;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +32,12 @@ public class selectAccountGUI {
         newAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO switch content pane OR new frame?
+                accountCreateForm.setVisible(false);
+                accountCreateForm.removeAll();
+                JPanel createPanel = new ProfilePanel();
+                accountCreateForm.add(createPanel);
+                accountCreateForm.setVisible(true);
+                createPanel.setSize(900,400);
             }
         });
     }
