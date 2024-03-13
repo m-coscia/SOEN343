@@ -1,10 +1,11 @@
 package src;
 
+import src.logic.SimulationParameter;
+
 //everytime we move a child or guest, call setPermissions bc they change depending on the room
 public class SmartCoreModule extends SmartHomeModule {
     public SmartCoreModule(SimulationParameter param) {
         parameter = param;      //set simulation parameter
-
     }
 
     @Override

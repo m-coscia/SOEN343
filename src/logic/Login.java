@@ -1,8 +1,8 @@
-package logic;
+package src.logic;
 
 public class Login {
     private Profile currentUser;
-    private DataBase db;
+    private DataBase db = DataBase.getDataBase();
 
     public Login(Profile user){
         if(db.findProfile(user)){

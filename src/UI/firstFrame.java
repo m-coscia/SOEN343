@@ -1,6 +1,6 @@
-package UI;
+package src.UI;
 
-import logic.HouseLayout;
+import src.logic.HouseLayout;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

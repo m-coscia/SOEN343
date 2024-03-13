@@ -1,11 +1,13 @@
-package logic;
+package src.logic;
+
+import src.components.Room;
 
 public class Guest extends Profile{
     private String userName;
     private String password;
 
-    public Guest(String n, String user,String pw) {
-        super(n);
+    public Guest(String n, String user,String pw, Room loc) {
+        super(n,loc);
         userName = user;
         password = pw;
     }

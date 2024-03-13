@@ -12,4 +12,14 @@ public class Windows {
     public void openWindowsCommand() {
         this.open = true;
     }
+
+    public void setObstructed(boolean blocked){
+        obstructed = blocked;
+    }
+
+    public boolean getObstructed(){
+        return obstructed;
+    }
+
+
 }

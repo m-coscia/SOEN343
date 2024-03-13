@@ -1,4 +1,4 @@
-package UI;
+package src.UI;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -16,6 +16,14 @@ public class selectAccountGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO switch content pane OR new frame?
+                accountCreateForm.setVisible(false);
+                accountCreateForm.removeAll();
+                JPanel Login = new JPanel();
+                Login.add(new JLabel("Username") );
+                Login.add(new JTextField());
+
+                accountCreateForm.add(Login);
+                accountCreateForm.setVisible(true);
             }
         });
 

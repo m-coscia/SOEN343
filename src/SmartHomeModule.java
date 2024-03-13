@@ -1,5 +1,8 @@
 package src;
 
+import src.logic.Permissions;
+import src.logic.SimulationParameter;
+
 public abstract class SmartHomeModule {
     protected Permissions parentPermissions;
     protected Permissions childPermissions;
