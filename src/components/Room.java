@@ -14,6 +14,7 @@ public class Room extends Component {
     private int numLights;
     private int numDoors;
     private Profile user;
+    private boolean awayMode = false;
 
     //default constructor
     public Room(){
@@ -39,11 +40,15 @@ public class Room extends Component {
             this.lights = null;
 
         numLights = lights;
-        if(doors > 0)
-            this.doors = new Doors();
-        else    
+        if (doors > 0) {
+            if (t == RoomType.GARAGE) {
+                this.doors = new Doors(true);
+            } else {
+                this.doors = new Doors(false);
+            }
+        } else {
             this.doors = null;
-
+        }
         numDoors = doors;
         if(windows > 0)
             this.windows = new Windows();
@@ -116,12 +121,20 @@ public class Room extends Component {
         if (room.getLights() != null && room.getLights().getIsAutoMode()) {
             if (room.getUser() != null) {
                 // Assuming switchLightsOn is a command that takes a Lights object and turns it on
-                room.setCommand(new TurnOnLightsCommand(room.getLights()));
+                room.setCommand(new TurnOnLightsCommand(room.getLights(), room.getUser()));
             } else {
                 // Assuming switchLightsOff is a command that takes a Lights object and turns it off
-                room.setCommand(new TurnOffLightsCommand(room.getLights()));
+                room.setCommand(new TurnOffLightsCommand(room.getLights(), room.getUser()));
             }
             room.executeCommand();
         }
+    }
+
+    public boolean isAwayMode() {
+        return awayMode;
+    }
+
+    public void setAwayMode(boolean awayMode) {
+        this.awayMode = awayMode;
     }
 }

@@ -21,4 +21,8 @@ public class Lights {
     public boolean getIsAutoMode() {
         return isAutoMode;
     }
+
+    public void setIsAutoMode(boolean isAutoMode) {
+        this.isAutoMode = isAutoMode;
+    }
 }
