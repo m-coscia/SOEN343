@@ -16,7 +16,7 @@ public class SimulationParameter {
     private Login login;
     private double weatherInside;
     private double weatherOutside;
-    private Observer accountObserver;
+    private Observer observer;
 
     public SimulationParameter(String layoutFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
         layout.setHouseLayout(layoutFile);
@@ -28,7 +28,11 @@ public class SimulationParameter {
     }
 
     public void notifyObserver(Profile user){
-        accountObserver.update(user);
+        observer.update(user);
+    }
+
+    public void attachObserver(Observer o){
+        observer=o;
     }
 
     public HouseLayout getLayout(){
@@ -75,6 +79,7 @@ public class SimulationParameter {
             Profile p = new Parent(name, id, pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
+            notifyObserver(p);
         }
     }
 
@@ -86,6 +91,7 @@ public class SimulationParameter {
             Profile p = new Child(name, id, pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
+            notifyObserver(p);
         }
     }
 
@@ -97,6 +103,7 @@ public class SimulationParameter {
             Profile p = new Guest(name,id,pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
+            notifyObserver(p);
         }
     }
 

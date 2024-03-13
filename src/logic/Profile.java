@@ -36,5 +36,5 @@ public class Profile {
         location = loc;
     }
 
-    
+
 }

@@ -1,5 +1,7 @@
 package src.logic;
 
+import src.Observer.AccountObserver;
+
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -41,6 +43,8 @@ public class Main {
         DataBase db = DataBase.getDataBase();
         SimulationParameter param = new SimulationParameter(layoutFile, date, time, 21.0, 12.4, loggedIn);
 
+        AccountObserver observer = new AccountObserver();
+        param.attachObserver(observer);
         System.out.println("The date is: " + param.getDate());
         System.out.println("The time is: " + param.getTime());
         System.out.println("The inside temperature is: " + param.getWeatherInside());

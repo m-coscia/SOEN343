@@ -20,4 +20,13 @@ public class Child extends Profile{
         password = pw;
     }
 
+    public String getUserName(){
+        return userName;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+
 }
