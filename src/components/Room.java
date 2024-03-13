@@ -1,6 +1,7 @@
 package src.components;
 
 import src.commands.Command;
+import src.logic.Profile;
 
 public class Room extends Component {
     private RoomType type;
@@ -10,6 +11,7 @@ public class Room extends Component {
     private int numWindows;
     private int numLights;
     private int numDoors;
+    private Profile user;
 
     //default constructor
     public Room(){
@@ -20,11 +22,13 @@ public class Room extends Component {
         lights = null;
         windows = null;
         doors = null;
+        user = null;
     }
 
     //Parameterized Constructor
-    public Room(RoomType t, int windows, int lights, int doors){
+    public Room(RoomType t, int windows, int lights, int doors, Profile occupied){
         type = t;
+        user = occupied;
 
         numWindows = windows;
         if(lights > 0)
@@ -88,4 +92,22 @@ public class Room extends Component {
     public Doors getDoors() {
         return doors;
     }
+
+    public Profile getUser(){
+        return user;
+    }
+
+    public void setUser(Profile p){
+        user = p ;
+    }
+
+    public boolean isOccupied(){
+        if(user==null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
 }
