@@ -5,6 +5,10 @@ public class Doors {
     private String doorType;
     private boolean open = false;
 
+    public Doors() {
+        open = false;
+    }
+
     public void closeDoorsCommand(){
         this.open = false;
         System.out.println("Door is closed");
