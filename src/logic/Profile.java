@@ -36,5 +36,13 @@ public class Profile {
         location = loc;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Profile{" +
+               "name='" + name + '\'' +
+               ", permissions=" + permissions +
+               ", located in room=" + (location != null ? location.getId() : "none") +
+               '}';
+    }
+
 }
