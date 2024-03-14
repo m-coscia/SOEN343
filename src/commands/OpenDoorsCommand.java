@@ -9,10 +9,10 @@ public record OpenDoorsCommand(Doors doors, Profile[] users, Profile caller) imp
         // Verify if it is a garage door
         if(doors.getIsGarageDoor()){
             // Verify if the user has permission to Garage Doors
-            if (!user.getPermissions().getGarageDoorPermission()){
+            if (!caller.getPermissions().getGarageDoorPermission()){
                 System.out.println("Garage doors cannot be controlled by you!!");
                 return;
-            } else if (!user.getPermissions().getDoorsPermission()){  // Verify if the user has permission to Doors
+            } else if (!caller.getPermissions().getDoorsPermission()){  // Verify if the user has permission to Doors
                 System.out.println("Doors cannot be controlled by you!!");
                 return;
             }
@@ -22,7 +22,7 @@ public record OpenDoorsCommand(Doors doors, Profile[] users, Profile caller) imp
                 doors.openDoorsCommand();
                 return;
             }
-        } else if (!user.getPermissions().getDoorsPermission()){  // Verify if the user has permission to Doors
+        } else if (!caller.getPermissions().getDoorsPermission()){  // Verify if the user has permission to Doors
             System.out.println("Doors cannot be controlled by you!!");
             return;
         } else {

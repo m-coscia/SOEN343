@@ -26,11 +26,11 @@ public record OpenWindowsCommand(Windows windows, Profile[] users, Profile calle
                     return;
                 } else { // Parent can control windows from anywhere
                     System.out.println("Parent is closing windows from anywhere");
-                    windows.closeWindowsCommand();
+                    windows.openWindowsCommand();
                 }
             } else { // caller is in room
                 System.out.println("Closing Windows");
-                windows.closeWindowsCommand();
+                windows.openWindowsCommand();
             }
         }
     }
