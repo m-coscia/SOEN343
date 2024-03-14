@@ -67,7 +67,7 @@ public class ProfilePanel extends JPanel {
 
         JTextField usernameField = new JTextField();
         add(usernameField);
-        nameFields.add(nameField);
+        usernameFields.add(nameField);
 
         JPasswordField passwordField = new JPasswordField();
         add(passwordField);

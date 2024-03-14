@@ -41,6 +41,7 @@ public class Controller {
             if(p != null){
                 p.setPermissions(permission);
                 database.addAccount(p);
+                System.out.println("Profile with name "+ p.getName()+ "was added to the database.");
             }else {
                 System.out.println("Could not add profile with name " +nameFields.get(i).getText() );
             }
