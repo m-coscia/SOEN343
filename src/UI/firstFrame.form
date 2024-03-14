@@ -15,7 +15,7 @@
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
-          <font size="28" style="1"/>
+          <font name="Baghdad" size="48" style="1"/>
           <foreground color="-16777216"/>
           <text value="Smart Home Simulator "/>
         </properties>
