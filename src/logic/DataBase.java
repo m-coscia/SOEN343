@@ -1,10 +1,14 @@
 package src.logic;
 
+import src.components.Room;
+
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class DataBase {
     private ArrayList<Profile> profiles = new ArrayList<Profile>();
+    private ArrayList<Room> rooms = new ArrayList<Room>();
     private static DataBase db = null;
     private File accountLog;
 
@@ -58,6 +62,24 @@ public class DataBase {
         profiles.remove(p);
     }
 
+    public void addRoom(Room r){
+        rooms.add(r);
+    }
+
+    public void deleteRoom(Room r){
+        rooms.remove(r);
+    }
+
+    public void setRooms(ArrayList<Room> r){
+        rooms = r;
+    }
+
+    public ArrayList<Room> getRooms(){
+        return rooms;
+    }
+
+
+
     public boolean findProfile(Profile p){
         if(profiles.contains(p)){
             return true;
@@ -65,6 +87,15 @@ public class DataBase {
             return false;
         }
     }
+
+    public boolean findRoom(Room r){
+        if(rooms.contains(r)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
     public ArrayList<Profile> getProfiles(){
         return profiles;

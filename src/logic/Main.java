@@ -1,6 +1,6 @@
 package src.logic;
 
-import src.Observer.AccountObserver;
+import src.Observer.AddAccountObserver;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
@@ -36,7 +36,7 @@ public class Main {
         DataBase db = DataBase.getDataBase();
         SimulationParameter param = new SimulationParameter(layoutFile, date, time, 21.0, 12.4, loggedIn);
 
-        AccountObserver observer = new AccountObserver();
+        AddAccountObserver observer = new AddAccountObserver();
         param.attachObserver(observer);
         System.out.println("The date is: " + param.getDate());
         System.out.println("The time is: " + param.getTime());
@@ -60,6 +60,10 @@ public class Main {
                 "\n And the user is located in a: " + param.getLoggedIn().getLocation().getType());
         System.out.println("The ID of the room is: " + param.getLoggedIn().getLocation().getId());
 
+        System.out.println("The number of rooms is: " + db.getRooms().size());
+        for(int i =0;i<db.getRooms().size();i++){
+            System.out.println("Room ID: " + db.getRooms().get(i).getId());
+        }
 
 
     }

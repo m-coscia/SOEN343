@@ -14,10 +14,6 @@ public class Room extends Component {
     private static int idCounter = 0;
     private final int identifier;
 
-    static {
-        idCounter = 0;
-    }
-
     //default constructor
 //    public Room(){
 //        identifier = generateUniqueId();

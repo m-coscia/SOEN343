@@ -25,6 +25,7 @@ public class SimulationParameter {
         weatherInside = inside;
         weatherOutside = outside;
         login = loggedIn;
+        db.setRooms(layout.getRooms());
     }
 
     public void notifyObserver(Profile user){

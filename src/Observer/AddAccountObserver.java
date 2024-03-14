@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class AccountObserver implements Observer {
+public class AddAccountObserver implements Observer {
     private File accountLog = new File("accountLog.txt");
 
     @Override
@@ -19,23 +19,23 @@ public class AccountObserver implements Observer {
                 profileInfo += user.getName() + ",";
                 profileInfo += ((Parent) user).getUserName() +",";
                 profileInfo += ((Parent) user).getPassword() +",";
-                profileInfo += user.getLocation().getType().toString() +"\n";
+                profileInfo += user.getLocation().getId() +"\n";
             }else if(user instanceof Child){
                 profileInfo += "CHILD,";
                 profileInfo += user.getName() + ",";
                 profileInfo += ((Child) user).getUserName() +",";
                 profileInfo += ((Child) user).getPassword() +",";
-                profileInfo += user.getLocation().getType().toString() +"\n";
+                profileInfo += user.getLocation().getId() +"\n";
             }else if(user instanceof Guest){
                 profileInfo += "GUEST,";
                 profileInfo += user.getName() + ",";
                 profileInfo += ((Guest) user).getUserName() +",";
                 profileInfo += ((Guest) user).getPassword() +",";
-                profileInfo += user.getLocation().getType().toString() +"\n";
+                profileInfo += user.getLocation().getId() +"\n";
             }else{
                 profileInfo += "STRANGER,";
                 profileInfo += user.getName() + ",";
-                profileInfo += user.getLocation().getType().toString() +"\n";
+                profileInfo += user.getLocation().getId() +"\n";
             }
 
 
