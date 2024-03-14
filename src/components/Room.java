@@ -13,7 +13,7 @@ public class Room extends Component {
     private int numWindows;
     private int numLights;
     private int numDoors;
-    private Profile user;
+    private Profile[] users;
     private boolean awayMode = false;
 
     //default constructor
@@ -25,13 +25,13 @@ public class Room extends Component {
         lights = null;
         windows = null;
         doors = null;
-        user = null;
+        users = null;
     }
 
     //Parameterized Constructor
-    public Room(RoomType t, int windows, int lights, int doors, Profile occupied){
-        type = t;
-        user = occupied;
+    public Room(RoomType t, int windows, int lights, int doors, Profile[] occupied){
+        this.type = t;
+        this.users = occupied;
 
         numWindows = windows;
         if(lights > 0)
@@ -100,16 +100,19 @@ public class Room extends Component {
         return doors;
     }
 
-    public Profile getUser(){
-        return user;
+    public Profile[] getUsers(){
+        return users;
     }
 
-    public void setUser(Profile p){
-        user = p ;
+    public void setUsers(Profile[] p){
+        int lengthOfUsers = p.length;
+        for (int i = 0; i < p.length; i++) {
+            users[i] = p[i];
+        }
     }
 
     public boolean isOccupied(){
-        if(user==null){
+        if(users==null){
             return false;
         }else{
             return true;
@@ -119,12 +122,12 @@ public class Room extends Component {
     // Method to check and adjust lighting based on autoMode and user presence
     public static void checkAndSetLighting(Room room) {
         if (room.getLights() != null && room.getLights().getIsAutoMode()) {
-            if (room.getUser() != null) {
+            if (room.getUsers() != null) {
                 // Assuming switchLightsOn is a command that takes a Lights object and turns it on
-                room.setCommand(new TurnOnLightsCommand(room.getLights(), room.getUser()));
+                room.setCommand(new TurnOnLightsCommand(room.getLights(), room.getUsers(), null));
             } else {
                 // Assuming switchLightsOff is a command that takes a Lights object and turns it off
-                room.setCommand(new TurnOffLightsCommand(room.getLights(), room.getUser()));
+                room.setCommand(new TurnOffLightsCommand(room.getLights(), room.getUsers(), null));
             }
             room.executeCommand();
         }
