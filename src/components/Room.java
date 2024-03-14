@@ -1,6 +1,5 @@
 package src.components;
 
-import src.commands.Command;
 import src.logic.Profile;
 
 public class Room extends Component {
@@ -12,23 +11,42 @@ public class Room extends Component {
     private int numLights;
     private int numDoors;
     private Profile user;
+    private static int idCounter = 0;
+    private final int identifier;
+
+    static {
+        idCounter = 0;
+    }
 
     //default constructor
-    public Room(){
-        type = RoomType.BEDROOM;
-        numWindows = 0;
-        numLights = 0;
-        numDoors = 0;
-        lights = null;
-        windows = null;
-        doors = null;
-        user = null;
+//    public Room(){
+//        identifier = generateUniqueId();
+//        type = RoomType.BEDROOM;
+//        numWindows = 0;
+//        numLights = 0;
+//        numDoors = 0;
+//        lights = null;
+//        windows = null;
+//        doors = null;
+//        user = null;
+//
+//    }
+
+    public int generateUniqueId() {
+        return ++idCounter;
     }
+
+    public int getId(){
+        return identifier;
+    }
+
 
     //Parameterized Constructor
     public Room(RoomType t, int windows, int lights, int doors, Profile occupied){
         type = t;
         user = occupied;
+        identifier = generateUniqueId();
+
 
         numWindows = windows;
         if(lights > 0)

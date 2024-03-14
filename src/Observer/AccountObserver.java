@@ -1,9 +1,6 @@
 package src.Observer;
 
-import src.logic.Child;
-import src.logic.Guest;
-import src.logic.Parent;
-import src.logic.Profile;
+import src.logic.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -18,28 +15,26 @@ public class AccountObserver implements Observer {
             // Text to write to the file
             String profileInfo="";
             if(user instanceof Parent){
-                profileInfo += "PARENT";
+                profileInfo += "PARENT,";
                 profileInfo += user.getName() + ",";
                 profileInfo += ((Parent) user).getUserName() +",";
                 profileInfo += ((Parent) user).getPassword() +",";
                 profileInfo += user.getLocation().getType().toString() +"\n";
             }else if(user instanceof Child){
-                profileInfo += "CHILD";
+                profileInfo += "CHILD,";
                 profileInfo += user.getName() + ",";
                 profileInfo += ((Child) user).getUserName() +",";
                 profileInfo += ((Child) user).getPassword() +",";
                 profileInfo += user.getLocation().getType().toString() +"\n";
             }else if(user instanceof Guest){
-                profileInfo += "GUEST";
+                profileInfo += "GUEST,";
                 profileInfo += user.getName() + ",";
                 profileInfo += ((Guest) user).getUserName() +",";
                 profileInfo += ((Guest) user).getPassword() +",";
                 profileInfo += user.getLocation().getType().toString() +"\n";
             }else{
-                profileInfo += "STRANGER";
+                profileInfo += "STRANGER,";
                 profileInfo += user.getName() + ",";
-                profileInfo += ((Guest) user).getUserName() +",";
-                profileInfo += ((Guest) user).getPassword() +",";
                 profileInfo += user.getLocation().getType().toString() +"\n";
             }
 

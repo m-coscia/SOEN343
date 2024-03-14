@@ -19,13 +19,6 @@ public class Main {
 
         layout.setHouseLayout(layoutFile);
 
-        for(int i=0;i<layout.getRooms().size();i++){
-            System.out.println("Room type:" + layout.getRooms().get(i).getType());
-            System.out.println("Number of lights:" + layout.getRooms().get(i).getNumLights());
-            System.out.println("Number of windows:" + layout.getRooms().get(i).getNumWindows());
-            System.out.println("Number of doors:" + layout.getRooms().get(i).getNumDoors());
-        }
-
         LocalDate date = LocalDate.of(2000, 5, 15);
         LocalTime time = LocalTime.of(14, 30, 0);
 
@@ -53,14 +46,19 @@ public class Main {
         param.createParentAccount("Naika", "naikiki", "kiki2002",layout.getRooms().get(0));
         param.createChildAccount("Yasmine", "yaya", "yaya2002",layout.getRooms().get(1));
         param.createGuestAccount("Asmae", "asmama", "asmou2002",layout.getRooms().get(0));
+        param.createStrangerAccount("Jay",layout.getRooms().get(0));
+
+
 
         System.out.println("The currently logged in user is: " + param.getLoggedIn().getName() +
                 "\n And the user is located in a: " + param.getLoggedIn().getLocation().getType());
+        System.out.println("The ID of the room is: " + param.getLoggedIn().getLocation().getId());
 
         param.login(param.getProfiles().get(1));
 
         System.out.println("The currently logged in user is: " + param.getLoggedIn().getName() +
                 "\n And the user is located in a: " + param.getLoggedIn().getLocation().getType());
+        System.out.println("The ID of the room is: " + param.getLoggedIn().getLocation().getId());
 
 
 

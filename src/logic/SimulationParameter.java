@@ -107,6 +107,19 @@ public class SimulationParameter {
         }
     }
 
+    //creates a guest account
+    public void createStrangerAccount(String name, Room loc){
+        if(!layout.getRooms().contains(loc)){
+            System.out.println("ERROR: No such room in the house");
+        }else{
+            Profile p = new Stranger(name, loc);
+            db.addAccount(p);
+            login.setCurrentUser(p);
+            notifyObserver(p);
+        }
+    }
+
+
 
     //delete an account
     public void deleteAccount(Profile user){
