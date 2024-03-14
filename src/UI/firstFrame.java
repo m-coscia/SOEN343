@@ -59,6 +59,8 @@ public class firstFrame extends JFrame {
 
     public static void main(String[] args) {
         new firstFrame();
+
+        
     }
 
 
