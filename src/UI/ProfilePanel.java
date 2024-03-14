@@ -1,12 +1,19 @@
 package src.UI;
+import src.Controller;
+
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-
+//todo: if selected type is stranger --> dont let them input a usernmae and password.
+//todo: if selected type is parent --> all checkboxes selected;
 public class ProfilePanel extends JPanel {
+    private Controller controller = new Controller();
     private ArrayList<JTextField> nameFields;
+    private ArrayList<JComboBox<String>> typeFields;
     private ArrayList<JTextField> usernameFields;
     private ArrayList<JPasswordField> passwordFields;
     private ArrayList<JCheckBox> windowsCheckboxes;
@@ -16,17 +23,20 @@ public class ProfilePanel extends JPanel {
     private ArrayList<JCheckBox> lightsCheckboxes;
 
     public ProfilePanel() {
+        setBorder(new LineBorder(Color.BLACK));
         nameFields = new ArrayList<>();
         usernameFields = new ArrayList<>();
         passwordFields = new ArrayList<>();
+        typeFields = new ArrayList<>();
         windowsCheckboxes = new ArrayList<>();
         doorsCheckboxes = new ArrayList<>();
         garageCheckboxes = new ArrayList<>();
         lightsCheckboxes = new ArrayList<>();
 
 
-        setLayout(new GridLayout(0, 9));
+        setLayout(new GridLayout(0, 10));
         JLabel nameLabel = new JLabel("Profile Name");
+        JLabel typeLabel = new JLabel("Profile Type");
         JLabel usernameLabel = new JLabel("Username");
         JLabel passwordLabel = new JLabel("Passwords");
         JLabel windowLabel = new JLabel("Window");
@@ -37,6 +47,7 @@ public class ProfilePanel extends JPanel {
         JLabel randomLabel2 = new JLabel("");
 
         add(nameLabel);
+        add(typeLabel);
         add(usernameLabel);
         add(passwordLabel);
         add(windowLabel);
@@ -49,6 +60,10 @@ public class ProfilePanel extends JPanel {
         JTextField nameField = new JTextField();
         add(nameField);
         nameFields.add(nameField);
+
+        JComboBox<String> typeField= new JComboBox<String>(new String[]{"Parent", "Child", "Guest", "Stranger"});
+        add(typeField);
+        typeFields.add(typeField);
 
         JTextField usernameField = new JTextField();
         add(usernameField);
@@ -90,7 +105,6 @@ public class ProfilePanel extends JPanel {
                saveProfiles();
             }
         });
-
         add(addButton);
         add(stopButton);
     }
@@ -99,6 +113,10 @@ public class ProfilePanel extends JPanel {
         JTextField nameField = new JTextField();
         add(nameField);
         nameFields.add(nameField);
+
+        JComboBox<String> typeField= new JComboBox<String>(new String[]{"Parent", "Child", "Guest", "Stranger"});
+        add(typeField);
+        typeFields.add(typeField);
 
         JTextField usernameField = new JTextField();
         add(usernameField);
@@ -137,7 +155,8 @@ public class ProfilePanel extends JPanel {
     }
 
     private void saveProfiles(){
-
+        controller.saveProfiles(nameFields, usernameFields, passwordFields, typeFields, windowsCheckboxes,
+                doorsCheckboxes, garageCheckboxes, lightsCheckboxes);
 
     }
 
