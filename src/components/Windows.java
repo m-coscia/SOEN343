@@ -5,6 +5,11 @@ public class Windows {
     private IconType icon = IconType.WINDOW;
     private boolean open = false;
 
+    public Windows() {
+        obstructed = false;
+        open = false;
+    }
+
     public void closeWindowsCommand() {
         this.open = false;
     }

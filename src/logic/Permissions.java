@@ -3,13 +3,13 @@ package src.logic;
 public class Permissions {
     private boolean windows;
     private boolean doors;
-    private boolean garage;
+    private boolean garageDoor;
     private boolean lights;
 
     public Permissions(boolean w, boolean d, boolean g, boolean l){
         windows = w;
         doors = d;
-        garage = g;
+        garageDoor = g;
         lights = l;
     }
 
@@ -29,12 +29,12 @@ public class Permissions {
         return doors;
     }
 
-    public void setGaragePermission(boolean permission){
-        garage = permission;
+    public void setGarageDoorPermission(boolean permission){
+        garageDoor = permission;
     }
 
-    public boolean getGaragePermission(){
-        return garage;
+    public boolean getGarageDoorPermission(){
+        return garageDoor;
     }
 
     public void setLightsPermission(boolean permission){

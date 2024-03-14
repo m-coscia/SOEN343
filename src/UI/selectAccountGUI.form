@@ -15,7 +15,7 @@
           <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
-          <font style="1"/>
+          <font name="Baghdad" size="22" style="1"/>
           <foreground color="-16777216"/>
           <text value="Log in to an existing account"/>
         </properties>
@@ -26,7 +26,7 @@
           <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
-          <font style="1"/>
+          <font name="Baghdad" size="22" style="1"/>
           <foreground color="-16777216"/>
           <text value="Create a new account"/>
         </properties>
@@ -37,7 +37,7 @@
           <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
-          <borderPainted value="false"/>
+          <borderPainted value="true"/>
           <margin top="10" left="10" bottom="10" right="10"/>
           <text value="Create Account"/>
         </properties>
@@ -48,7 +48,7 @@
           <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
-          <borderPainted value="false"/>
+          <borderPainted value="true"/>
           <contentAreaFilled value="true"/>
           <margin top="10" left="10" bottom="10" right="10"/>
           <text value="Log in"/>
