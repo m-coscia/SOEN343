@@ -1,5 +1,7 @@
 package src.logic;
 
+import src.Observer.AddAccountObserver;
+
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,13 +19,6 @@ public class Main {
 
         layout.setHouseLayout(layoutFile);
 
-        for(int i=0;i<layout.getRooms().size();i++){
-            System.out.println("Room type:" + layout.getRooms().get(i).getType());
-            System.out.println("Number of lights:" + layout.getRooms().get(i).getNumLights());
-            System.out.println("Number of windows:" + layout.getRooms().get(i).getNumWindows());
-            System.out.println("Number of doors:" + layout.getRooms().get(i).getNumDoors());
-        }
-
         LocalDate date = LocalDate.of(2000, 5, 15);
         LocalTime time = LocalTime.of(14, 30, 0);
 
@@ -39,8 +34,12 @@ public class Main {
 
         Login loggedIn = new Login(null);
         DataBase db = DataBase.getDataBase();
+        db.printAllProfiles();
+        db.printAllRooms();    
         SimulationParameter param = new SimulationParameter(layoutFile, date, time, 21.0, 12.4, loggedIn);
 
+        AddAccountObserver observer = new AddAccountObserver();
+        param.attachObserver(observer);
         System.out.println("The date is: " + param.getDate());
         System.out.println("The time is: " + param.getTime());
         System.out.println("The inside temperature is: " + param.getWeatherInside());
@@ -49,15 +48,24 @@ public class Main {
         param.createParentAccount("Naika", "naikiki", "kiki2002",layout.getRooms().get(0));
         param.createChildAccount("Yasmine", "yaya", "yaya2002",layout.getRooms().get(1));
         param.createGuestAccount("Asmae", "asmama", "asmou2002",layout.getRooms().get(0));
+        param.createStrangerAccount("Jay",layout.getRooms().get(0));
+
+
 
         System.out.println("The currently logged in user is: " + param.getLoggedIn().getName() +
                 "\n And the user is located in a: " + param.getLoggedIn().getLocation().getType());
+        System.out.println("The ID of the room is: " + param.getLoggedIn().getLocation().getId());
 
         param.login(param.getProfiles().get(1));
 
-        System.out.println("The currently logged in user is: " + param.getLoggedIn().getName() +
-                "\n And the user is located in a: " + param.getLoggedIn().getLocation().getType());
+        // System.out.println("The currently logged in user is: " + param.getLoggedIn().getName() +
+        //         "\n And the user is located in a: " + param.getLoggedIn().getLocation().getType());
+        // System.out.println("The ID of the room is: " + param.getLoggedIn().getLocation().getId());
 
+        System.out.println("The number of rooms is: " + db.getRooms().size());
+        for(int i =0;i<db.getRooms().size();i++){
+            System.out.println("Room ID: " + db.getRooms().get(i).getId());
+        }
 
 
     }
