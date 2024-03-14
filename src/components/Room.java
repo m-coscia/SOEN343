@@ -171,6 +171,8 @@ public class Room extends Component {
     }
   
     // Method to check and adjust lighting based on autoMode and user presence
+    // If user clicks automode on layout, you constantly call this method
+    // If user clicks automode off, you don't call this method
     public static void checkAndSetLighting(Room room) {
         if (room.getLights() != null && room.getLights().getIsAutoMode()) {
             if (room.getUsers() != null) {

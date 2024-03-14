@@ -2,13 +2,13 @@ package src.logic;
 
 import src.Observer.AddAccountObserver;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String args[]) throws FileNotFoundException {
+    public static void main(String args[]) throws IOException {
 
         //new firstFrame();
         HouseLayout layout = HouseLayout.getHouseLayout();
