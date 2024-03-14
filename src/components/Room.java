@@ -123,5 +123,16 @@ public class Room extends Component {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Room{" +
+               "type=" + type +
+               ", numWindows=" + numWindows +
+               ", numLights=" + numLights +
+               ", numDoors=" + numDoors +
+               ", occupiedBy=" + (user != null ? user.getName() : "none") +
+               ", identifier=" + identifier +
+               '}';
+    }
 
 }

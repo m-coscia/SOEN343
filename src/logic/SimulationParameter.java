@@ -123,14 +123,14 @@ public class SimulationParameter {
 
 
     //delete an account
-    public void deleteAccount(Profile user){
-        if(db.findProfile(user)){
+    public void deleteAccount(Profile user) {
+        if (db.profileExists(user)) {
             db.deleteAccount(user);
-        }else{
+        } else {
             System.out.println("ERROR: The user does not exist");
         }
     }
-
+    
 
     public void editName(String name){
         login.getCurrentUser().setName(name);
