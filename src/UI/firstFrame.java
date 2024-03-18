@@ -9,8 +9,8 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
 public class firstFrame extends JFrame {
-    private DashboardGUI dash = new DashboardGUI();
     private Controller controller = new Controller();
+    private JFrame thisFrame;
     private selectAccountGUI accountSelection;
 
     private JPanel mainPanel;
@@ -20,6 +20,7 @@ public class firstFrame extends JFrame {
     private JTextField layoutFileName;
 
     public firstFrame(){
+        thisFrame = this;
         setContentPane(mainPanel);
         setTitle("Testing Swing UI Builder");
         getContentPane().setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
@@ -42,17 +43,22 @@ public class firstFrame extends JFrame {
                 } catch (FileNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
-                setVisible(false);
-                //Font font = new Font();
-                accountSelection = new selectAccountGUI(mainPanel);
-                setContentPane(accountSelection.accountCreateForm);
-                //setSize(600,400);
-                setResizable(true);
-                setVisible(true);
-//                setContentPane(dash.dashboard);
-//                setSize(1400,900);
+
+                selectAccountGUI secondFrame = new selectAccountGUI(thisFrame);
+                secondFrame.setVisible(true);
+                dispose();
+
+//                setVisible(false);
+//                //Font font = new Font();
+//                accountSelection = new selectAccountGUI(mainPanel);
+//                setContentPane(accountSelection.accountCreateForm);
+//                //setSize(600,400);
 //                setResizable(true);
 //                setVisible(true);
+////                setContentPane(dash.dashboard);
+////                setSize(1400,900);
+////                setResizable(true);
+////                setVisible(true);
             }
         });
     }

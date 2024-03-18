@@ -6,24 +6,26 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 //todo: if selected type is stranger --> dont let them input a usernmae and password.
 //todo: if selected type is parent --> all checkboxes selected;
-public class ProfilePanel extends JPanel {
+public class ProfilesCreationFrame extends JFrame {
+    JFrame previousFrame = null;
+    JFrame thisFrame = this;
+    JPanel content = new JPanel(new GridLayout(0,10));
     private Controller controller = new Controller();
     private ArrayList<JTextField> nameFields;
     private ArrayList<JComboBox<String>> typeFields;
     private ArrayList<JTextField> usernameFields;
     private ArrayList<JPasswordField> passwordFields;
     private ArrayList<JCheckBox> windowsCheckboxes;
-
     private ArrayList<JCheckBox> doorsCheckboxes;
     private ArrayList<JCheckBox> garageCheckboxes;
     private ArrayList<JCheckBox> lightsCheckboxes;
 
-    public ProfilePanel() {
-        setBorder(new LineBorder(Color.BLACK));
+    public ProfilesCreationFrame(JFrame previousFrame) {
+        this.previousFrame = previousFrame;
+        content.setBorder(new LineBorder(Color.BLACK));
         nameFields = new ArrayList<>();
         usernameFields = new ArrayList<>();
         passwordFields = new ArrayList<>();
@@ -34,7 +36,7 @@ public class ProfilePanel extends JPanel {
         lightsCheckboxes = new ArrayList<>();
 
 
-        setLayout(new GridLayout(0, 10));
+        //setLayout(new GridLayout(0, 10));
         JLabel nameLabel = new JLabel("Profile Name");
         JLabel typeLabel = new JLabel("Profile Type");
         JLabel usernameLabel = new JLabel("Username");
@@ -46,47 +48,47 @@ public class ProfilePanel extends JPanel {
         JLabel randomLabel1 = new JLabel("");
         JLabel randomLabel2 = new JLabel("");
 
-        add(nameLabel);
-        add(typeLabel);
-        add(usernameLabel);
-        add(passwordLabel);
-        add(windowLabel);
-        add(doorLabel);
-        add(garageLabel);
-        add(lightsLabel);
-        add(randomLabel1); // Empty label for spacing
-        add(randomLabel2); // Empty label for spacing
+        content.add(nameLabel);
+        content.add(typeLabel);
+        content.add(usernameLabel);
+        content.add(passwordLabel);
+        content.add(windowLabel);
+        content.add(doorLabel);
+        content.add(garageLabel);
+        content.add(lightsLabel);
+        content.add(randomLabel1); // Empty label for spacing
+        content.add(randomLabel2); // Empty label for spacing
 
         JTextField nameField = new JTextField();
-        add(nameField);
+        content.add(nameField);
         nameFields.add(nameField);
 
         JComboBox<String> typeField= new JComboBox<String>(new String[]{"Parent", "Child", "Guest", "Stranger"});
-        add(typeField);
+        content.add(typeField);
         typeFields.add(typeField);
 
         JTextField usernameField = new JTextField();
-        add(usernameField);
+        content.add(usernameField);
         usernameFields.add(nameField);
 
         JPasswordField passwordField = new JPasswordField();
-        add(passwordField);
+        content.add(passwordField);
         passwordFields.add(passwordField);
 
         JCheckBox windowsCheckbox = new JCheckBox();
-        add(windowsCheckbox);
+        content.add(windowsCheckbox);
         windowsCheckboxes.add(windowsCheckbox);
 
         JCheckBox doorsCheckbox = new JCheckBox();
-        add(doorsCheckbox);
+        content.add(doorsCheckbox);
         doorsCheckboxes.add(doorsCheckbox);
 
         JCheckBox garageCheckbox = new JCheckBox();
-        add(garageCheckbox);
+        content.add(garageCheckbox);
         garageCheckboxes.add(garageCheckbox);
 
         JCheckBox lightsCheckbox = new JCheckBox();
-        add(lightsCheckbox);
+        content.add(lightsCheckbox);
         lightsCheckboxes.add(lightsCheckbox);
 
         JButton addButton = new JButton("Add Profile");
@@ -103,71 +105,87 @@ public class ProfilePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                System.out.println("You stopped adding profiles");
                saveProfiles();
+               DashboardFrame dashboard = new DashboardFrame(thisFrame);
+               dashboard.setVisible(true);
+               dispose();
             }
         });
-        add(addButton);
-        add(stopButton);
+        content.add(addButton);
+        content.add(stopButton);
+
+        setLayout(new BorderLayout());
+        JPanel filler = new JPanel();
+        filler.add(new JLabel("Smart Home Simulator"));
+        filler.setBackground(new Color(180,190,206));
+        JPanel filler2 = new JPanel();
+
+        add(filler, BorderLayout.NORTH);
+        add(filler2, BorderLayout.EAST);
+        //add(filler, BorderLayout.WEST);
+        add(content, BorderLayout.CENTER);
+
+        pack();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     private void addProfileFields() {
         JTextField nameField = new JTextField();
-        add(nameField);
+        content.add(nameField);
         nameFields.add(nameField);
 
         JComboBox<String> typeField= new JComboBox<String>(new String[]{"Parent", "Child", "Guest", "Stranger"});
-        add(typeField);
+        content.add(typeField);
         typeFields.add(typeField);
 
         JTextField usernameField = new JTextField();
-        add(usernameField);
+        content.add(usernameField);
         usernameFields.add(usernameField);
 
         JPasswordField passwordField = new JPasswordField();
-        add(passwordField);
+        content.add(passwordField);
         passwordFields.add(passwordField);
 
         JCheckBox windowsCheckbox = new JCheckBox();
-        add(windowsCheckbox);
+        content.add(windowsCheckbox);
         windowsCheckboxes.add(windowsCheckbox);
 
         JCheckBox doorsCheckbox = new JCheckBox();
-        add(doorsCheckbox);
+        content.add(doorsCheckbox);
         doorsCheckboxes.add(doorsCheckbox);
 
         JCheckBox garageCheckbox = new JCheckBox();
-        add(garageCheckbox);
+        content.add(garageCheckbox);
         garageCheckboxes.add(garageCheckbox);
 
         JCheckBox lightsCheckbox = new JCheckBox();
-        add(lightsCheckbox);
+        content.add(lightsCheckbox);
         lightsCheckboxes.add(lightsCheckbox);
 
         JCheckBox unusable1 = new JCheckBox();
         unusable1.setVisible(false); //so we don't see it, just for formatting
-        add(unusable1);
+        content.add(unusable1);
         JCheckBox unusable2 = new JCheckBox();
         unusable2.setVisible(false); //so we don't see it, just for formatting
-        add(unusable2);
+        content.add(unusable2);
+
 
         //will recheck the placements of the elements in the panel
         revalidate();
         repaint();
+        pack();
     }
 
     private void saveProfiles(){
         controller.saveProfiles(nameFields, usernameFields, passwordFields, typeFields, windowsCheckboxes,
                 doorsCheckboxes, garageCheckboxes, lightsCheckboxes);
-
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Profile Creator");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
 
-        ProfilePanel profilePanel = new ProfilePanel();
-        frame.add(profilePanel);
-        frame.setVisible(true);
+        ProfilesCreationFrame profilePanel = new ProfilesCreationFrame(null);
+        profilePanel.setVisible(true);
+
     }
 }
 
