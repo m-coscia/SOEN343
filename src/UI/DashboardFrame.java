@@ -37,7 +37,7 @@ public class DashboardFrame extends JFrame {
         // Create panel to hold profile icon
         JPanel profilePanel = new JPanel();
         // Add profile icon (you can replace this with your own icon)
-        profilePanel.add(new JLabel(new ImageIcon("Unknown.png")));
+        profilePanel.add(new JLabel(new ImageIcon("src/UI/ProfileIcon.png")));
 
         // Create panel to hold simulation control button
         JPanel controlPanel = new JPanel();
