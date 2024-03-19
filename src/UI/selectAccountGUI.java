@@ -16,6 +16,8 @@ public class selectAccountGUI extends JFrame{
     private JButton backButton;
 
     public selectAccountGUI(JFrame previousFrame){
+
+        setTitle("Log in to Existing Account or Create Accounts");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         //to go back to the previous frame
@@ -28,19 +30,22 @@ public class selectAccountGUI extends JFrame{
         });
 
         //goes to login page
-        //TODO complete this page
+        //TODO complete the login panel (its gonna be selecting a profile an choosing its location
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                LoginFrame nextFrame = new LoginFrame(thisFrame);
+                nextFrame.setVisible(true);
+                dispose();
                 //TODO switch content pane OR new frame?
-                accountCreateForm.setVisible(false);
-                accountCreateForm.removeAll();
-                JPanel Login = new JPanel();
-                Login.add(new JLabel("Username") );
-                Login.add(new JTextField());
-
-                accountCreateForm.add(Login);
-                accountCreateForm.setVisible(true);
+//                accountCreateForm.setVisible(false);
+//                accountCreateForm.removeAll();
+//                JPanel Login = new JPanel();
+//                Login.add(new JLabel("Username") );
+//                Login.add(new JTextField());
+//
+//                accountCreateForm.add(Login);
+//                accountCreateForm.setVisible(true);
             }
         });
 
@@ -59,11 +64,10 @@ public class selectAccountGUI extends JFrame{
 //                accountCreateForm.add(createPanel);
 //                accountCreateForm.setVisible(true);
 //                createPanel.setSize(900,400);
-
-
             }
         });
 
+        thisFrame = this;
         add(accountCreateForm);
         setSize(600,600);
         setLocationRelativeTo(null);

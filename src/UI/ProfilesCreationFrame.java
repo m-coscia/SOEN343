@@ -128,8 +128,10 @@ public class ProfilesCreationFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("You stopped adding profiles");
                 saveProfiles();
-                DashboardFrame dashboard = new DashboardFrame(thisFrame);
-                dashboard.setVisible(true);
+//                DashboardFrame dashboard = new DashboardFrame(thisFrame);
+//                dashboard.setVisible(true);
+                LoginFrame loginFrame = new LoginFrame(thisFrame);
+                loginFrame.setVisible(true);
                 dispose();
             }
         });
