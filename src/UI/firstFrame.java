@@ -1,7 +1,7 @@
 package src.UI;
 
 import src.Controller;
-import src.logic.HouseLayout;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 public class firstFrame extends JFrame {
     private Controller controller = new Controller();
     private JFrame thisFrame;
-    private selectAccountGUI accountSelection;
+    private LogInOrCreateFrame accountSelection;
 
     private JPanel mainPanel;
 
@@ -44,7 +44,7 @@ public class firstFrame extends JFrame {
                     throw new RuntimeException(ex);
                 }
 
-                selectAccountGUI secondFrame = new selectAccountGUI(thisFrame);
+                LogInOrCreateFrame secondFrame = new LogInOrCreateFrame(thisFrame);
                 secondFrame.setVisible(true);
                 dispose();
 

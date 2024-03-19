@@ -27,6 +27,8 @@ public class ProfilesCreationFrame extends JFrame {
     private ArrayList<JCheckBox> garageCheckboxes;
     private ArrayList<JCheckBox> lightsCheckboxes;
 
+    private ArrayList<JComboBox<Integer>> locationsFields;
+
     public ProfilesCreationFrame(JFrame previousFrame) {
         this.previousFrame = previousFrame;
         content.setBorder(new LineBorder(Color.BLACK));
@@ -38,7 +40,7 @@ public class ProfilesCreationFrame extends JFrame {
         doorsCheckboxes = new ArrayList<>();
         garageCheckboxes = new ArrayList<>();
         lightsCheckboxes = new ArrayList<>();
-
+        locationsFields = new ArrayList<>();
 
         //setLayout(new GridLayout(0, 10));
         JLabel nameLabel = new JLabel("Profile Name");
@@ -49,8 +51,9 @@ public class ProfilesCreationFrame extends JFrame {
         JLabel doorLabel = new JLabel("Doors");
         JLabel garageLabel = new JLabel("Garage");
         JLabel lightsLabel = new JLabel("Lights");
+        JLabel locatioLabel = new JLabel("Location");
         JLabel randomLabel1 = new JLabel("");
-        JLabel randomLabel2 = new JLabel("");
+        //JLabel randomLabel2 = new JLabel("");
 
         content.add(nameLabel);
         content.add(typeLabel);
@@ -60,8 +63,9 @@ public class ProfilesCreationFrame extends JFrame {
         content.add(doorLabel);
         content.add(garageLabel);
         content.add(lightsLabel);
+        content.add(locatioLabel);
         content.add(randomLabel1); // Empty label for spacing
-        content.add(randomLabel2); // Empty label for spacing
+        //content.add(randomLabel2); // Empty label for spacing
 
         JTextField nameField = new JTextField();
         content.add(nameField);
@@ -95,6 +99,10 @@ public class ProfilesCreationFrame extends JFrame {
         JCheckBox lightsCheckbox = new JCheckBox();
         content.add(lightsCheckbox);
         lightsCheckboxes.add(lightsCheckbox);
+
+        JComboBox<Integer> locationField = new JComboBox<Integer>(new Integer[]{1, 2, 3, 4});
+        content.add(locationField);
+        locationsFields.add(locationField);
 
         typeField.addItemListener(new ItemListener() {
             @Override
@@ -130,7 +138,8 @@ public class ProfilesCreationFrame extends JFrame {
                 saveProfiles();
 //                DashboardFrame dashboard = new DashboardFrame(thisFrame);
 //                dashboard.setVisible(true);
-                LoginFrame loginFrame = new LoginFrame(thisFrame);
+                ProfilesLoginFrame loginFrame = new ProfilesLoginFrame(thisFrame, controller.getProfiles());
+                loginFrame.setLocationRelativeTo(null);
                 loginFrame.setVisible(true);
                 dispose();
             }
