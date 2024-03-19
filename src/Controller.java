@@ -17,8 +17,6 @@ public class Controller {
         HouseLayout.getHouseLayout().setHouseLayout(filename);
     }
 
-
-
     public void saveProfiles(ArrayList<JTextField> nameFields, ArrayList<JTextField> usernameFields,
                              ArrayList<JPasswordField> passwordFields, ArrayList<JComboBox<String>> typeFields, ArrayList<JCheckBox> windowsCheckboxes,
                              ArrayList<JCheckBox> doorsCheckboxes, ArrayList<JCheckBox> garageCheckboxes,
@@ -63,5 +61,9 @@ public class Controller {
             }
 
         }
+    }
+
+    public ArrayList<Profile> getProfiles(){
+        return database.getProfiles();
     }
 }
