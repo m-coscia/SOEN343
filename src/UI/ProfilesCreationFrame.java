@@ -74,7 +74,7 @@ public class ProfilesCreationFrame extends JFrame {
 
         JTextField usernameField = new JTextField();
         content.add(usernameField);
-        usernameFields.add(nameField);
+        usernameFields.add(usernameField);
 
         JPasswordField passwordField = new JPasswordField();
         content.add(passwordField);

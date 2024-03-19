@@ -33,19 +33,20 @@ public class Controller {
 
                 p = new Parent(nameFields.get(i).getText(),
                         usernameFields.get(i).getText(),
-                        passwordFields.get(i).getPassword().toString(),null );
+                        passwordFields.get(i).getText(),null );
 
             }else if (typeFields.get(i).getSelectedItem().equals("Child")){
 
                 p = new Child(nameFields.get(i).getText(),
                         usernameFields.get(i).getText(),
-                        passwordFields.get(i).getPassword().toString(),null );
+                        passwordFields.get(i).getText(),null );
 
             }else if (typeFields.get(i).getSelectedItem().equals("Guest")){
 
                 p = new Guest(nameFields.get(i).getText(),
                         usernameFields.get(i).getText(),
-                        passwordFields.get(i).getPassword().toString(),null );
+                        passwordFields.get(i).getText(),null );
+
             }else if (typeFields.get(i).getSelectedItem().equals("Stranger")){
 
                 p = new Stranger(nameFields.get(i).getText(), null);
