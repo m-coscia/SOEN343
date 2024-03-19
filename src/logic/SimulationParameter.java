@@ -4,6 +4,7 @@ import src.Observer.Observer;
 import src.components.Room;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -29,7 +30,11 @@ public class SimulationParameter {
     }
 
     public void notifyObserver(Profile user){
-        observer.update(user);
+        try {
+            observer.update(user);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void attachObserver(Observer o){

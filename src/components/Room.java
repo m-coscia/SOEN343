@@ -7,9 +7,9 @@ import src.logic.Profile;
 
 public class Room extends Component {
     private RoomType type;
-    private final Lights lights;
-    private final Windows windows;
-    private final Doors doors;
+    private Lights lights;
+    private Windows windows;
+    private Doors doors;
     private int numWindows;
     private int numLights;
     private int numDoors;
@@ -28,7 +28,7 @@ public class Room extends Component {
 //        lights = null;
 //        windows = null;
 //        doors = null;
-//        users = null;
+//        user = null;
 //
 //    }
 
@@ -55,10 +55,11 @@ public class Room extends Component {
 
 
     //Parameterized Constructor
-//    public Room(RoomType t, int windows, int lights, int doors, Profile occupied){
-//        type = t;
-//        user = occupied;
-//        identifier = generateUniqueId();
+    public Room(RoomType t, int windows, int lights, int doors, Profile occupied) {
+        type = t;
+        users = new Profile[]{occupied};
+        identifier = generateUniqueId();
+    }
 
     public Room(RoomType t, int windows, int lights, int doors, Profile[] occupied){
         this.type = t;
@@ -68,7 +69,7 @@ public class Room extends Component {
         numWindows = windows;
         if(lights > 0)
             this.lights = new Lights();
-        else
+        else 
             this.lights = null;
 
         numLights = lights;
@@ -84,7 +85,7 @@ public class Room extends Component {
         numDoors = doors;
         if(windows > 0)
             this.windows = new Windows();
-        else
+        else 
             this.windows = null;
     }
 
@@ -162,20 +163,20 @@ public class Room extends Component {
                 ", identifier=" + identifier +
                 '}';
     }
-
+  
     // Method to check and adjust lighting based on autoMode and user presence
-//    public static void checkAndSetLighting(Room room) {
-//        if (room.getLights() != null && room.getLights().getIsAutoMode()) {
-//            if (room.getUsers() != null) {
-//                // Assuming switchLightsOn is a command that takes a Lights object and turns it on
-//                room.setCommand(new TurnOnLightsCommand(room.getLights(), room.getUsers(), null));
-//            } else {
-//                // Assuming switchLightsOff is a command that takes a Lights object and turns it off
-//                room.setCommand(new TurnOffLightsCommand(room.getLights(), room.getUsers(), null));
-//            }
-//            room.executeCommand();
-//        }
-//    }
+    public static void checkAndSetLighting(Room room) {
+        if (room.getLights() != null && room.getLights().getIsAutoMode()) {
+            if (room.getUsers() != null) {
+                // Assuming switchLightsOn is a command that takes a Lights object and turns it on
+                room.setCommand(new TurnOnLightsCommand(room.getLights(), room.getUsers(), null));
+            } else {
+                // Assuming switchLightsOff is a command that takes a Lights object and turns it off
+                room.setCommand(new TurnOffLightsCommand(room.getLights(), room.getUsers(), null));
+            }
+            room.executeCommand();
+        }
+    }
 
     public boolean isAwayMode() {
         return awayMode;
