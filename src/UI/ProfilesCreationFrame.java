@@ -1,4 +1,5 @@
 package src.UI;
+
 import src.Controller;
 
 import javax.swing.*;
@@ -6,13 +7,16 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
+
 //todo: if selected type is stranger --> dont let them input a usernmae and password.
 //todo: if selected type is parent --> all checkboxes selected;
 public class ProfilesCreationFrame extends JFrame {
     JFrame previousFrame = null;
     JFrame thisFrame = this;
-    JPanel content = new JPanel(new GridLayout(0,10));
+    JPanel content = new JPanel(new GridLayout(0, 10));
     private Controller controller = new Controller();
     private ArrayList<JTextField> nameFields;
     private ArrayList<JComboBox<String>> typeFields;
@@ -63,9 +67,10 @@ public class ProfilesCreationFrame extends JFrame {
         content.add(nameField);
         nameFields.add(nameField);
 
-        JComboBox<String> typeField= new JComboBox<String>(new String[]{"Parent", "Child", "Guest", "Stranger"});
+        JComboBox<String> typeField = new JComboBox<String>(new String[]{"", "Parent", "Child", "Guest", "Stranger"});
         content.add(typeField);
         typeFields.add(typeField);
+
 
         JTextField usernameField = new JTextField();
         content.add(usernameField);
@@ -91,6 +96,24 @@ public class ProfilesCreationFrame extends JFrame {
         content.add(lightsCheckbox);
         lightsCheckboxes.add(lightsCheckbox);
 
+        typeField.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Parent")) {
+                    lightsCheckbox.setSelected(true);
+                    windowsCheckbox.setSelected(true);
+                    doorsCheckbox.setSelected(true);
+                    garageCheckbox.setSelected(true);
+                }else if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Stranger")){
+                    usernameField.setEnabled(false);
+                    usernameField.setBackground(Color.GRAY);
+                    passwordField.setEnabled(false);
+                    passwordField.setBackground(Color.GRAY);
+                }
+            }
+        });
+
+
         JButton addButton = new JButton("Add Profile");
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -103,11 +126,11 @@ public class ProfilesCreationFrame extends JFrame {
         stopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               System.out.println("You stopped adding profiles");
-               saveProfiles();
-               DashboardFrame dashboard = new DashboardFrame(thisFrame);
-               dashboard.setVisible(true);
-               dispose();
+                System.out.println("You stopped adding profiles");
+                saveProfiles();
+                DashboardFrame dashboard = new DashboardFrame(thisFrame);
+                dashboard.setVisible(true);
+                dispose();
             }
         });
         content.add(addButton);
@@ -116,7 +139,7 @@ public class ProfilesCreationFrame extends JFrame {
         setLayout(new BorderLayout());
         JPanel filler = new JPanel();
         filler.add(new JLabel("Smart Home Simulator"));
-        filler.setBackground(new Color(180,190,206));
+        filler.setBackground(new Color(180, 190, 206));
         JPanel filler2 = new JPanel();
 
         add(filler, BorderLayout.NORTH);
@@ -134,7 +157,7 @@ public class ProfilesCreationFrame extends JFrame {
         content.add(nameField);
         nameFields.add(nameField);
 
-        JComboBox<String> typeField= new JComboBox<String>(new String[]{"Parent", "Child", "Guest", "Stranger"});
+        JComboBox<String> typeField = new JComboBox<String>(new String[]{"","Parent", "Child", "Guest", "Stranger"});
         content.add(typeField);
         typeFields.add(typeField);
 
@@ -170,13 +193,30 @@ public class ProfilesCreationFrame extends JFrame {
         content.add(unusable2);
 
 
+        typeField.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Parent")) {
+                    lightsCheckbox.setSelected(true);
+                    windowsCheckbox.setSelected(true);
+                    doorsCheckbox.setSelected(true);
+                    garageCheckbox.setSelected(true);
+                }else if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Stranger")){
+                    usernameField.setEnabled(false);
+                    usernameField.setBackground(Color.GRAY);
+                    passwordField.setEnabled(false);
+                    passwordField.setBackground(Color.GRAY);
+                }
+            }
+        });
+
         //will recheck the placements of the elements in the panel
         revalidate();
         repaint();
         pack();
     }
 
-    private void saveProfiles(){
+    private void saveProfiles() {
         controller.saveProfiles(nameFields, usernameFields, passwordFields, typeFields, windowsCheckboxes,
                 doorsCheckboxes, garageCheckboxes, lightsCheckboxes);
     }
