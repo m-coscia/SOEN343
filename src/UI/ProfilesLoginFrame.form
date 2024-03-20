@@ -33,28 +33,30 @@
           </vspacer>
         </children>
       </grid>
-      <grid id="53ab7" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="53ab7" binding="selectProfilePanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties>
           <opaque value="false"/>
         </properties>
         <border type="none"/>
         <children>
-          <grid id="a0d76" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+          <grid id="a0d76" binding="commandsPanel" layout-manager="FlowLayout" hgap="20" vgap="5" flow-align="1">
             <constraints border-constraint="South"/>
             <properties>
               <opaque value="false"/>
             </properties>
-            <border type="none"/>
+            <border type="bevel-lowered">
+              <font/>
+            </border>
             <children>
-              <component id="19f22" class="javax.swing.JButton" binding="previousProfile">
+              <component id="19f22" class="javax.swing.JButton" binding="previousProfileButton">
                 <constraints/>
                 <properties>
                   <opaque value="false"/>
                   <text value="Previous"/>
                 </properties>
               </component>
-              <component id="f9674" class="javax.swing.JButton" binding="selectButton" default-binding="true">
+              <component id="f9674" class="javax.swing.JButton" binding="selectProfileButton">
                 <constraints/>
                 <properties>
                   <opaque value="false"/>
@@ -62,7 +64,7 @@
                   <text value="select"/>
                 </properties>
               </component>
-              <component id="82b38" class="javax.swing.JButton" binding="nextButton" default-binding="true">
+              <component id="82b38" class="javax.swing.JButton" binding="nextProfileButton">
                 <constraints/>
                 <properties>
                   <opaque value="false"/>
@@ -72,13 +74,12 @@
               </component>
             </children>
           </grid>
-          <grid id="28a0e" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
+          <grid id="f88df" binding="cardsPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints border-constraint="Center"/>
             <properties>
               <opaque value="false"/>
             </properties>
-            <border type="none"/>
+            <border type="bevel-lowered"/>
             <children/>
           </grid>
         </children>
