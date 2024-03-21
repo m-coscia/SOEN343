@@ -22,23 +22,34 @@
 //    }
 //}
 package src.UI;
+import src.logic.Profile;
+
 import javax.swing.*;
+import java.awt.*;
 
 public class DashboardFrame extends JFrame {
-        public JPanel dashboard;
+
+    public JPanel dashboard;
     private JPanel dashboardPanel;
     private JPanel userInfoPanel;
-    private JTabbedPane tabbedPane1;
     private JPanel toggleButtonPanel;
     private JSlider timeSlider;
     private JPanel lowerPanelofSimParameters;
     private JPanel fillerPanel;
     private JPanel middleOfSimParam;
     private JButton eButton;
+    private JTabbedPane tabbedPane1;
+    private Profile currentProfile;
 
     public DashboardFrame(JFrame previousFrame) {
+
         setTitle("Smart Home Simulator Dashboard");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //TODO add toggle button for on/off simulation
+       ToggleButton toggle = new ToggleButton();
+//        toggleButtonPanel.add(toggle);
+        //dashboard.add(toggle);
 
         // Create panel to hold profile icon
         //JPanel profilePanel = new JPanel();
@@ -67,12 +78,23 @@ public class DashboardFrame extends JFrame {
 //        // Add main panel to the frame
 //        add(mainPanel);
         //userInfoPanel.add(new JLabel(new ImageIcon("src/UI/ProfileIcon.png")));
-        add(dashboard);
+
+        try{
+            toggleButtonPanel.add(toggle, BorderLayout.CENTER);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }finally {
+            add(dashboard);
+            setSize(800, 500);
+            // Center frame on screen
+            setLocationRelativeTo(null);
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+        }
+
+
         // Set size
-        setSize(800, 500);
-        // Center frame on screen
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
     }
 
     public static void main(String[] args) {
