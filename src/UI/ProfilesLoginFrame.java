@@ -88,7 +88,9 @@ public class ProfilesLoginFrame extends JFrame {
                 Component c = cardsPanel.getComponent(cardsPanel.getComponentCount()-1);
                 addAuthentificationFields();
 
-                DashboardFrame dash = new DashboardFrame(thisFrame);
+               // DashboardFrame dash = new DashboardFrame(thisFrame);
+                Dashboard dash = new Dashboard();
+                dash.setLocationRelativeTo(null);
                 dash.setVisible(true);
                 dispose();
 

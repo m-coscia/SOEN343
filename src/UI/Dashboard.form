@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="src.UI.Dashboard">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="CardLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="700" height="381"/>
+      <xy x="20" y="20" width="755" height="419"/>
     </constraints>
     <properties>
       <background color="-4931890"/>
@@ -24,19 +24,17 @@
           <title-color color="-16777216"/>
         </border>
         <children>
-          <splitpane id="d7ba0">
+          <grid id="4a311" binding="fullMainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints>
               <card name="Card1"/>
             </constraints>
             <properties>
               <opaque value="false"/>
             </properties>
-            <border type="etched"/>
+            <border type="none"/>
             <children>
-              <grid id="34478" binding="userInfoPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-                <constraints>
-                  <splitpane position="left"/>
-                </constraints>
+              <grid id="e8c20" binding="userInfoPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints border-constraint="West"/>
                 <properties>
                   <background color="-986115"/>
                 </properties>
@@ -46,14 +44,14 @@
                   <color color="-16777216"/>
                 </border>
                 <children>
-                  <grid id="73708" binding="toggleButtonPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                  <grid id="f627" binding="toggleButtonPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
                     <constraints border-constraint="North"/>
                     <properties>
                       <opaque value="false"/>
                     </properties>
                     <border type="empty" title=""/>
                     <children>
-                      <component id="3105" class="javax.swing.JLabel">
+                      <component id="7a800" class="javax.swing.JLabel">
                         <constraints border-constraint="West"/>
                         <properties>
                           <alignmentX value="1.0"/>
@@ -64,20 +62,29 @@
                       </component>
                     </children>
                   </grid>
-                  <grid id="6d0cc" binding="lowerPanelofSimParameters" layout-manager="BorderLayout" hgap="0" vgap="0">
+                  <grid id="6a3b" binding="lowerPanelofSimParameters" layout-manager="BorderLayout" hgap="0" vgap="0">
                     <constraints border-constraint="South"/>
                     <properties>
                       <opaque value="false"/>
                     </properties>
                     <border type="none"/>
                     <children>
-                      <component id="1b34b" class="javax.swing.JSlider" binding="timeSlider">
+                      <component id="717e3" class="javax.swing.JSlider" binding="timeSlider">
                         <constraints border-constraint="Center"/>
                         <properties>
+                          <inverted value="false"/>
+                          <majorTickSpacing value="2"/>
+                          <maximum value="2"/>
+                          <minorTickSpacing value="1"/>
                           <opaque value="false"/>
+                          <orientation value="0"/>
+                          <paintLabels value="true"/>
+                          <paintTicks value="true"/>
+                          <snapToTicks value="false"/>
+                          <valueIsAdjusting value="false"/>
                         </properties>
                       </component>
-                      <component id="dc72" class="javax.swing.JLabel">
+                      <component id="f9adb" class="javax.swing.JLabel">
                         <constraints border-constraint="North"/>
                         <properties>
                           <alignmentX value="0.5"/>
@@ -86,7 +93,7 @@
                           <text value="               Time Speed"/>
                         </properties>
                       </component>
-                      <grid id="2dfe0" binding="fillerPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                      <grid id="18569" binding="fillerPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                         <margin top="0" left="0" bottom="0" right="0"/>
                         <constraints border-constraint="South"/>
                         <properties>
@@ -97,73 +104,296 @@
                       </grid>
                     </children>
                   </grid>
-                  <grid id="1d19f" binding="middleOfSimParam" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                  <grid id="2ad27" binding="middleOfSimParam" layout-manager="BorderLayout" hgap="0" vgap="0">
                     <constraints border-constraint="Center"/>
                     <properties>
                       <opaque value="false"/>
                     </properties>
                     <border type="none" title=""/>
                     <children>
-                      <component id="be573" class="javax.swing.JButton" binding="eButton" default-binding="true">
-                        <constraints/>
+                      <component id="4cd4d" class="javax.swing.JButton" binding="eButton" default-binding="true">
+                        <constraints border-constraint="North"/>
                         <properties>
                           <background color="-986115"/>
                           <focusPainted value="false"/>
                           <icon value="src/UI/4472997_edit_edit icon_pen edit_pencil_icon.png"/>
+                          <inheritsPopupMenu value="false"/>
                           <opaque value="false"/>
                           <text value=""/>
+                        </properties>
+                      </component>
+                      <grid id="946af" binding="filler" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints border-constraint="West"/>
+                        <properties/>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
+                      <grid id="e87ac" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints border-constraint="East"/>
+                        <properties/>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
+                      <grid id="2d6ba" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints border-constraint="South"/>
+                        <properties/>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
+                      <grid id="bc141" binding="iconPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                        <constraints border-constraint="Center"/>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <grid id="720b5" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints border-constraint="North"/>
+                            <properties/>
+                            <border type="none"/>
+                            <children/>
+                          </grid>
+                          <grid id="44637" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints border-constraint="South"/>
+                            <properties/>
+                            <border type="none"/>
+                            <children/>
+                          </grid>
+                          <grid id="4e04e" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints border-constraint="West"/>
+                            <properties/>
+                            <border type="none"/>
+                            <children/>
+                          </grid>
+                          <grid id="b52c9" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints border-constraint="East"/>
+                            <properties/>
+                            <border type="none"/>
+                            <children/>
+                          </grid>
+                          <grid id="ce0ec" binding="testing" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints border-constraint="Center"/>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="3bb6" class="javax.swing.JLabel">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties>
+                                  <text value="Label"/>
+                                </properties>
+                              </component>
+                            </children>
+                          </grid>
+                        </children>
+                      </grid>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+              <splitpane id="523e" binding="rightMainPanel">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <dividerLocation value="285"/>
+                  <dividerSize value="9"/>
+                  <doubleBuffered value="false"/>
+                  <opaque value="false"/>
+                  <orientation value="0"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <splitpane id="6597b" binding="modulesAndLayoutPanel">
+                    <constraints>
+                      <splitpane position="left"/>
+                    </constraints>
+                    <properties>
+                      <dividerLocation value="274"/>
+                      <opaque value="true"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <tabbedpane id="db066" binding="tabbedPane1" default-binding="true">
+                        <constraints>
+                          <splitpane position="left"/>
+                        </constraints>
+                        <properties>
+                          <opaque value="false"/>
+                        </properties>
+                        <border type="etched"/>
+                        <children>
+                          <grid id="6767b" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="SHS"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children/>
+                          </grid>
+                          <grid id="2eb37" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="SHC"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <hspacer id="fa79d">
+                                <constraints>
+                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                              </hspacer>
+                              <grid id="657ab" layout-manager="BorderLayout" hgap="0" vgap="0">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <grid id="d75e6" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                    <margin top="0" left="0" bottom="0" right="0"/>
+                                    <constraints border-constraint="West"/>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children/>
+                                  </grid>
+                                  <grid id="3edcd" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                    <margin top="0" left="0" bottom="0" right="0"/>
+                                    <constraints border-constraint="East"/>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children/>
+                                  </grid>
+                                  <scrollpane id="f567d">
+                                    <constraints border-constraint="Center"/>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children>
+                                      <component id="e77a8" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+                                        <constraints/>
+                                        <properties>
+                                          <opaque value="false"/>
+                                          <text value=""/>
+                                        </properties>
+                                      </component>
+                                    </children>
+                                  </scrollpane>
+                                </children>
+                              </grid>
+                              <grid id="a2bd3" layout-manager="BorderLayout" hgap="0" vgap="0">
+                                <constraints>
+                                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <grid id="730a6" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                    <margin top="0" left="0" bottom="0" right="0"/>
+                                    <constraints border-constraint="West"/>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children/>
+                                  </grid>
+                                  <grid id="565b8" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                    <margin top="0" left="0" bottom="0" right="0"/>
+                                    <constraints border-constraint="East"/>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children/>
+                                  </grid>
+                                  <component id="57657" class="javax.swing.JList" binding="list1" default-binding="true">
+                                    <constraints border-constraint="Center"/>
+                                    <properties/>
+                                  </component>
+                                </children>
+                              </grid>
+                            </children>
+                          </grid>
+                          <grid id="f7b03" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="SHP"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children/>
+                          </grid>
+                          <grid id="e2f6b" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                            <margin top="0" left="0" bottom="0" right="0"/>
+                            <constraints>
+                              <tabbedpane title="SHH"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children/>
+                          </grid>
+                        </children>
+                      </tabbedpane>
+                      <grid id="993ae" binding="houseLayout" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <splitpane position="right"/>
+                        </constraints>
+                        <properties/>
+                        <border type="etched"/>
+                        <children/>
+                      </grid>
+                    </children>
+                  </splitpane>
+                  <grid id="7c099" binding="consolePanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="20" bottom="10" right="20"/>
+                    <constraints>
+                      <splitpane position="right"/>
+                    </constraints>
+                    <properties>
+                      <background color="-16768062"/>
+                      <opaque value="false"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <scrollpane id="64665">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <foreground color="-10320921"/>
+                          <horizontalScrollBarPolicy value="31"/>
+                          <opaque value="false"/>
+                          <verticalScrollBarPolicy value="20"/>
+                        </properties>
+                        <border type="none"/>
+                        <children>
+                          <component id="c64f5" class="javax.swing.JTextArea" binding="outputArea">
+                            <constraints/>
+                            <properties>
+                              <lineWrap value="true"/>
+                              <opaque value="false"/>
+                              <wrapStyleWord value="true"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <component id="c72e2" class="javax.swing.JLabel" binding="consoleLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Console"/>
                         </properties>
                       </component>
                     </children>
                   </grid>
                 </children>
-              </grid>
-              <grid id="18df2" layout-manager="GridBagLayout">
-                <constraints>
-                  <splitpane position="right"/>
-                </constraints>
-                <properties>
-                  <opaque value="false"/>
-                </properties>
-                <border type="none"/>
-                <children>
-                  <grid id="f9d5" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                    <margin top="0" left="0" bottom="0" right="0"/>
-                    <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="1.0" weighty="1.0"/>
-                    </constraints>
-                    <properties/>
-                    <border type="none"/>
-                    <children/>
-                  </grid>
-                  <tabbedpane id="5cfe" binding="tabbedPane1" default-binding="true">
-                    <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                      <gridbag weightx="1.0" weighty="1.0"/>
-                    </constraints>
-                    <properties>
-                      <opaque value="false"/>
-                    </properties>
-                    <border type="none"/>
-                    <children>
-                      <grid id="c3263" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                        <margin top="0" left="0" bottom="0" right="0"/>
-                        <constraints>
-                          <tabbedpane title="Untitled"/>
-                        </constraints>
-                        <properties>
-                          <opaque value="false"/>
-                        </properties>
-                        <border type="none"/>
-                        <children/>
-                      </grid>
-                    </children>
-                  </tabbedpane>
-                </children>
-              </grid>
+              </splitpane>
             </children>
-          </splitpane>
+          </grid>
         </children>
       </grid>
     </children>

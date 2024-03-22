@@ -38,6 +38,10 @@ public class DashboardFrame extends JFrame {
     private JPanel fillerPanel;
     private JPanel middleOfSimParam;
     private JButton eButton;
+    private JPanel rightMainPanel;
+    private JPanel consolePanel;
+    private JTextArea outputArea;
+    private JLabel consoleLabel;
     private JTabbedPane tabbedPane1;
     private Profile currentProfile;
 

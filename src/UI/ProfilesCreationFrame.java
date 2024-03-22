@@ -42,7 +42,7 @@ public class ProfilesCreationFrame extends JFrame {
         lightsCheckboxes = new ArrayList<>();
         locationsFields = new ArrayList<>();
 
-        //setLayout(new GridLayout(0, 10));
+        //setLayout(new GridLayout(0, 13));
         JLabel nameLabel = new JLabel("Profile Name");
         JLabel typeLabel = new JLabel("Profile Type");
         JLabel usernameLabel = new JLabel("Username");
@@ -54,6 +54,7 @@ public class ProfilesCreationFrame extends JFrame {
         JLabel locatioLabel = new JLabel("Location");
         JLabel randomLabel1 = new JLabel("");
         //JLabel randomLabel2 = new JLabel("");
+        //JLabel randomLabel3 = new JLabel("");
 
         content.add(nameLabel);
         content.add(typeLabel);
@@ -66,6 +67,7 @@ public class ProfilesCreationFrame extends JFrame {
         content.add(locatioLabel);
         content.add(randomLabel1); // Empty label for spacing
         //content.add(randomLabel2); // Empty label for spacing
+        //content.add(randomLabel3); // Empty label for spacing
 
         JTextField nameField = new JTextField();
         content.add(nameField);
@@ -202,6 +204,10 @@ public class ProfilesCreationFrame extends JFrame {
         JCheckBox unusable2 = new JCheckBox();
         unusable2.setVisible(false); //so we don't see it, just for formatting
         content.add(unusable2);
+
+        JCheckBox unusable3 = new JCheckBox();
+        unusable3.setVisible(false); //so we don't see it, just for formatting
+        content.add(unusable3);
 
 
         typeField.addItemListener(new ItemListener() {

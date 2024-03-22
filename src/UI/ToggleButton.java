@@ -88,7 +88,7 @@ public class ToggleButton extends Component {
                         runEvent();
                     }
                 }
-
+                //TODO pause/start the simulation
             }
         });
     }
