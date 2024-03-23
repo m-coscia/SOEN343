@@ -80,12 +80,12 @@ public class Dashboard extends JFrame {
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     super.mouseReleased(e);
-                    if(clock.isRunning().get()){
-                        clock.pause();
-                        start_stop_label.setText("Paused");
-                    }else {
+                    if(!clock.isRunning().get()){
                         clock.start();
                         start_stop_label.setText("Running");
+                    }else {
+                        clock.pause();
+                        start_stop_label.setText("Paused");
                     }
                 }
 
@@ -105,6 +105,7 @@ public class Dashboard extends JFrame {
                 }
             });
             clock.start();
+            clock.pause();
             Timer timer = new Timer(1000, e -> {
                 // Update the clock label with the current time
                 clockDisplay.setText(clock.getTime().toString());

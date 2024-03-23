@@ -57,7 +57,7 @@
                           <alignmentX value="1.0"/>
                           <foreground color="-16777216"/>
                           <horizontalAlignment value="0"/>
-                          <text value="Running"/>
+                          <text value="Paused"/>
                           <visible value="true"/>
                         </properties>
                       </component>
