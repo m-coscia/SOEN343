@@ -10,7 +10,7 @@ public class AddAccountObserver implements Observer {
     private File accountLog = new File("accountLog.txt");
 
     @Override
-    public void update(Profile user) {
+    public void update(Profile user) throws IOException{
         try (FileWriter writer = new FileWriter(accountLog, true)) {
             // Text to write to the file
             String profileInfo="";
