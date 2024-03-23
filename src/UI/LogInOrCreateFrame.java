@@ -49,15 +49,6 @@ public class LogInOrCreateFrame extends JFrame{
                     dispose();
                 }
 
-                //TODO switch content pane OR new frame?
-//                accountCreateForm.setVisible(false);
-//                accountCreateForm.removeAll();
-//                JPanel Login = new JPanel();
-//                Login.add(new JLabel("Username") );
-//                Login.add(new JTextField());
-//
-//                accountCreateForm.add(Login);
-//                accountCreateForm.setVisible(true);
             }
         });
 
@@ -65,17 +56,9 @@ public class LogInOrCreateFrame extends JFrame{
         newAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ProfilesCreationFrame nextFrame = new ProfilesCreationFrame(thisFrame);
+                Profiles nextFrame = new Profiles(thisFrame);
                 nextFrame.setVisible(true);
                 dispose();
-//                accountCreateForm.setVisible(false);
-//                accountCreateForm.removeAll();
-//                JPanel createPanel = new ProfilePanel(thisFrame);
-//                JLabel testing = new JLabel("SET UP ACCOUNTS");
-//                testing.setFont(new Font(Font.SERIF, Font.BOLD, 20));
-//                accountCreateForm.add(createPanel);
-//                accountCreateForm.setVisible(true);
-//                createPanel.setSize(900,400);
             }
         });
 

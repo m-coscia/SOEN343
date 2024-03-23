@@ -48,17 +48,6 @@ public class firstFrame extends JFrame {
                 secondFrame.setVisible(true);
                 dispose();
 
-//                setVisible(false);
-//                //Font font = new Font();
-//                accountSelection = new selectAccountGUI(mainPanel);
-//                setContentPane(accountSelection.accountCreateForm);
-//                //setSize(600,400);
-//                setResizable(true);
-//                setVisible(true);
-////                setContentPane(dash.dashboard);
-////                setSize(1400,900);
-////                setResizable(true);
-////                setVisible(true);
             }
         });
     }
