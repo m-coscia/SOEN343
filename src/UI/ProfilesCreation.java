@@ -196,7 +196,7 @@ public class ProfilesCreation extends JFrame {
 
 
 
-        JComboBox<String> locationField = new JComboBox<String>(new String[]{"" ,"BEDROOM", "LIVING ROOM", "BATHROOM", "KITCHEN", "GARAGE"});
+        JComboBox<String> locationField = new JComboBox<String>(new String[]{"" ,"BEDROOM", "LIVINGROOM", "BATHROOM", "KITCHEN", "GARAGE"});
         middle.add(locationField);
         locationsFields.add(locationField);
 

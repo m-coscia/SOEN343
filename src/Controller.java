@@ -26,6 +26,31 @@ public class Controller {
                              ArrayList<JCheckBox> lightsCheckboxes, ArrayList<JComboBox<String>> locationFields) {
 
         for (int i = 0; i < nameFields.size(); i++){
+
+            ArrayList<Room> rooms = HouseLayout.getHouseLayout().getRooms();
+            Room room = null;
+            for (Room r: rooms){
+                if(String.valueOf(r.getType()).equals(locationFields.get(i).getSelectedItem())){
+                    System.out.println(locationFields.get(i).getSelectedItem());
+                    room = r;
+                    System.out.println(Arrays.toString(r.getUsers()));
+                    break;
+                }
+
+            }
+
+//            if(locationFields.get(i).getSelectedItem().equals("BEDROOM")){
+//
+//            }else if (locationFields.get(i).getSelectedItem().equals("LIVING ROOM")){
+//                //r = RoomType.LIVINGROOM;
+//            } else if (locationFields.get(i).getSelectedItem().equals("BATHROOM")) {
+//               // r = RoomType.BATHROOM;
+//            } else if (locationFields.get(i).getSelectedItem().equals("KITCHEN")) {
+//                //r = RoomType.KITCHEN;
+//            }else if (locationFields.get(i).getSelectedItem().equals("GARAGE")) {
+//                //r = RoomType.GARAGE;
+//            }
+
             boolean window = windowsCheckboxes.get(i).isSelected();
             boolean door = doorsCheckboxes.get(i).isSelected();
             boolean garage = garageCheckboxes.get(i).isSelected();
@@ -36,23 +61,23 @@ public class Controller {
 
                 p = new Parent(nameFields.get(i).getText(),
                         usernameFields.get(i).getText(),
-                        passwordFields.get(i).getText(),null );
+                        passwordFields.get(i).getText(), room);
 
             }else if (typeFields.get(i).getSelectedItem().equals("Child")){
 
                 p = new Child(nameFields.get(i).getText(),
                         usernameFields.get(i).getText(),
-                        passwordFields.get(i).getText(),null );
+                        passwordFields.get(i).getText(),room );
 
             }else if (typeFields.get(i).getSelectedItem().equals("Guest")){
 
                 p = new Guest(nameFields.get(i).getText(),
                         usernameFields.get(i).getText(),
-                        passwordFields.get(i).getText(),null );
+                        passwordFields.get(i).getText(),room );
 
             }else if (typeFields.get(i).getSelectedItem().equals("Stranger")){
 
-                p = new Stranger(nameFields.get(i).getText(), null);
+                p = new Stranger(nameFields.get(i).getText(), room);
             }
             Permissions permission = new Permissions(window,door,garage,lights);
 
@@ -63,6 +88,7 @@ public class Controller {
             }else {
                 System.out.println("Could not add profile with name " +nameFields.get(i).getText() );
             }
+
 
         }
     }
