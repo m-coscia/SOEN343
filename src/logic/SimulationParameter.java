@@ -4,6 +4,7 @@ import src.Observer.Observer;
 import src.components.Room;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class SimulationParameter {
         db.setRooms(layout.getRooms());
     }
 
-    public void notifyObserver(Profile user){
+    public void notifyObserver(Profile user) throws IOException {
         observer.update(user);
     }
 
@@ -73,7 +74,7 @@ public class SimulationParameter {
     }
 
     //creates parent account
-    public void createParentAccount(String name, String id, String pw, Room loc){
+    public void createParentAccount(String name, String id, String pw, Room loc) throws IOException {
         if(!layout.getRooms().contains(loc)){
             System.out.println("ERROR: No such room in the house");
         }else {
@@ -85,7 +86,7 @@ public class SimulationParameter {
     }
 
     //creates a child account
-    public void createChildAccount(String name, String id, String pw, Room loc){
+    public void createChildAccount(String name, String id, String pw, Room loc) throws IOException {
         if(!layout.getRooms().contains(loc)){
             System.out.println("ERROR: No such room in the house");
         }else {
@@ -97,7 +98,7 @@ public class SimulationParameter {
     }
 
     //creates a guest account
-    public void createGuestAccount(String name, String id, String pw, Room loc){
+    public void createGuestAccount(String name, String id, String pw, Room loc) throws IOException {
         if(!layout.getRooms().contains(loc)){
             System.out.println("ERROR: No such room in the house");
         }else{
@@ -109,7 +110,7 @@ public class SimulationParameter {
     }
 
     //creates a guest account
-    public void createStrangerAccount(String name, Room loc){
+    public void createStrangerAccount(String name, Room loc) throws IOException {
         if(!layout.getRooms().contains(loc)){
             System.out.println("ERROR: No such room in the house");
         }else{

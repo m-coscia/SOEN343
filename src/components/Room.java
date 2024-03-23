@@ -5,6 +5,8 @@ import src.commands.TurnOffLightsCommand;
 import src.commands.TurnOnLightsCommand;
 import src.logic.Profile;
 
+import java.util.ArrayList;
+
 public class Room extends Component {
     private RoomType type;
     private final Lights lights;
@@ -18,19 +20,19 @@ public class Room extends Component {
     private static int idCounter = 0;
     private final int identifier;
 
-    //default constructor
-//    public Room(){
-//        identifier = generateUniqueId();
-//        type = RoomType.BEDROOM;
-//        numWindows = 0;
-//        numLights = 0;
-//        numDoors = 0;
-//        lights = null;
-//        windows = null;
-//        doors = null;
-//        user = null;
-//
-//    }
+//    default constructor
+    public Room(){
+        identifier = generateUniqueId();
+        type = RoomType.BEDROOM;
+        numWindows = 0;
+        numLights = 0;
+        numDoors = 0;
+        lights = null;
+        windows = null;
+        doors = null;
+        users = null;
+
+    }
 
     public int generateUniqueId() {
         return ++idCounter;
@@ -41,24 +43,19 @@ public class Room extends Component {
     }
 
     //default constructor
-    public Room(){
-        type = RoomType.BEDROOM;
-        numWindows = 0;
-        numLights = 0;
-        numDoors = 0;
-        lights = null;
-        windows = null;
-        doors = null;
-        users = null;
-    }
+//    public Room(){
+//        type = RoomType.BEDROOM;
+//        numWindows = 0;
+//        numLights = 0;
+//        numDoors = 0;
+//        lights = null;
+//        windows = null;
+//        doors = null;
+//        users = null;
+//    }
 
 
     //Parameterized Constructor
-    public Room(RoomType t, int windows, int lights, int doors, Profile occupied){
-        type = t;
-        user = occupied;
-        identifier = generateUniqueId();
-
     public Room(RoomType t, int windows, int lights, int doors, Profile[] occupied){
         this.type = t;
         this.users = occupied;
@@ -150,16 +147,18 @@ public class Room extends Component {
         }
     }
 
+    //users is an array!!!!
     @Override
     public String toString() {
         return "Room{" +
-               "type=" + type +
-               ", numWindows=" + numWindows +
-               ", numLights=" + numLights +
-               ", numDoors=" + numDoors +
-               ", occupiedBy=" + (user != null ? user.getName() : "none") +
-               ", identifier=" + identifier +
-               '}';
+                "type=" + type +
+                ", numWindows=" + numWindows +
+                ", numLights=" + numLights +
+                ", numDoors=" + numDoors +
+                ", occupiedBy=" + (users != null && users.length > 0 ? users[0].getName() : "none") +
+                ", identifier=" + identifier +
+                '}';
+    }
   
     // Method to check and adjust lighting based on autoMode and user presence
     public static void checkAndSetLighting(Room room) {
@@ -175,11 +174,11 @@ public class Room extends Component {
         }
     }
 
-    public boolean isAwayMode() {
+    public boolean isAwayMode(){
         return awayMode;
     }
 
-    public void setAwayMode(boolean awayMode) {
+    public void setAwayMode(boolean awayMode){
         this.awayMode = awayMode;
     }
 }
