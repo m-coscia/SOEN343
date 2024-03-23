@@ -1,6 +1,10 @@
 package src.UI;
 
+import src.components.Clock;
+
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,8 +32,15 @@ public class Dashboard extends JFrame {
     private JPanel filler;
     private JPanel iconPanel;
     private JPanel testing;
+    private JLabel dateLabel;
+    private JPanel datePanel;
+    private JPanel clockLabel;
+    private JPanel clockPanel;
+    private JLabel clockDisplay;
     private JLabel profileIconLabel;
     private JTextArea consoleText;
+
+    private Clock  clock = new Clock();
 
     Dashboard(){
 //        setLayout(new BorderLayout());
@@ -60,6 +71,21 @@ public class Dashboard extends JFrame {
             //consolePanel.add
 //            testing.
 //            iconPanel.add(new JLabel(new ImageIcon("src/ProfileIcon.png")));
+            System.out.println(timeSlider.getMinimum()+" " + timeSlider.getMaximum() +" " + timeSlider.getExtent());
+            timeSlider.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    System.out.println("Current value" + timeSlider.getValue());
+                    clock.changeSpeed((double) timeSlider.getValue() / 10);
+                }
+            });
+            clock.start();
+            Timer timer = new Timer(1000, e -> {
+                // Update the clock label with the current time
+                clockDisplay.setText(clock.getTime().toString());
+            });
+            timer.start();
+
             outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
             textArea1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
             list1.setListData(new String[] {"idk", "idk", "idk"});

@@ -51,6 +51,9 @@ public class Clock {
     public void shutdown() {
         executor.shutdownNow();
     }
+    public LocalTime getTime() {
+        return time;
+    }
 
     public static void main(String[] args) throws InterruptedException {
         Clock clock = new Clock();
