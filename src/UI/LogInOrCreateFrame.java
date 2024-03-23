@@ -56,7 +56,7 @@ public class LogInOrCreateFrame extends JFrame{
         newAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Profiles nextFrame = new Profiles(thisFrame);
+                ProfilesCreation nextFrame = new ProfilesCreation(thisFrame);
                 nextFrame.setVisible(true);
                 dispose();
             }

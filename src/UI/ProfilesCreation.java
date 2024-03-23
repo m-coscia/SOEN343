@@ -3,7 +3,6 @@ package src.UI;
 import src.Controller;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 
 //todo: if selected type is stranger --> dont let them input a usernmae and password.
 //todo: if selected type is parent --> all checkboxes selected;
-public class Profiles extends JFrame{
+public class ProfilesCreation extends JFrame {
     private final Controller controller = new Controller();
     private JFrame thisFrame;
     private JPanel panel1;
@@ -32,9 +31,9 @@ public class Profiles extends JFrame{
     private ArrayList<JCheckBox> garageCheckboxes;
     private ArrayList<JCheckBox> lightsCheckboxes;
 
-    private ArrayList<JComboBox<Integer>> locationsFields;
+    private ArrayList<JComboBox<String>> locationsFields;
 
-    public Profiles(JFrame previousFrame) {
+    public ProfilesCreation(JFrame previousFrame) {
         thisFrame = this;
         initializeLists();
         backButton.addActionListener(new ActionListener() {
@@ -45,10 +44,6 @@ public class Profiles extends JFrame{
             }
         });
         addComponents();
-//        test.add(new JLabel(""));
-//        test1.add(new JLabel(""));
-//        test2.add(new JLabel(""));
-//        test3.add(new JLabel(""));
         add(panel1);
         pack();
         setLocationRelativeTo(null);
@@ -59,35 +54,35 @@ public class Profiles extends JFrame{
     private void addProfileFields() {
         JTextField nameField = new JTextField();
         middle.add(nameField);
-        //nameFields.add(nameField);
+        nameFields.add(nameField);
 
-        JComboBox<String> typeField = new JComboBox<String>(new String[]{"","Parent", "Child", "Guest", "Stranger"});
+        JComboBox<String> typeField = new JComboBox<String>(new String[]{"", "Parent", "Child", "Guest", "Stranger"});
         middle.add(typeField);
-        //typeFields.add(typeField);
+        typeFields.add(typeField);
 
         JTextField usernameField = new JTextField();
         middle.add(usernameField);
-        //usernameFields.add(usernameField);
+        usernameFields.add(usernameField);
 
         JPasswordField passwordField = new JPasswordField();
         middle.add(passwordField);
-        //passwordFields.add(passwordField);
+        passwordFields.add(passwordField);
 
         JCheckBox windowsCheckbox = new JCheckBox();
         middle.add(windowsCheckbox);
-        //windowsCheckboxes.add(windowsCheckbox);
+        windowsCheckboxes.add(windowsCheckbox);
 
         JCheckBox doorsCheckbox = new JCheckBox();
         middle.add(doorsCheckbox);
-        //doorsCheckboxes.add(doorsCheckbox);
+        doorsCheckboxes.add(doorsCheckbox);
 
         JCheckBox garageCheckbox = new JCheckBox();
         middle.add(garageCheckbox);
-        //garageCheckboxes.add(garageCheckbox);
+        garageCheckboxes.add(garageCheckbox);
 
         JCheckBox lightsCheckbox = new JCheckBox();
         middle.add(lightsCheckbox);
-        //lightsCheckboxes.add(lightsCheckbox);
+        lightsCheckboxes.add(lightsCheckbox);
         JComboBox<Integer> locationField = new JComboBox<Integer>(new Integer[]{1, 2, 3, 4});
         middle.add(locationField);
 
@@ -112,7 +107,7 @@ public class Profiles extends JFrame{
                     windowsCheckbox.setSelected(true);
                     doorsCheckbox.setSelected(true);
                     garageCheckbox.setSelected(true);
-                }else if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Stranger")){
+                } else if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Stranger")) {
                     usernameField.setEnabled(false);
                     usernameField.setBackground(Color.GRAY);
                     passwordField.setEnabled(false);
@@ -129,10 +124,10 @@ public class Profiles extends JFrame{
 
     private void saveProfiles() {
         controller.saveProfiles(nameFields, usernameFields, passwordFields, typeFields, windowsCheckboxes,
-                doorsCheckboxes, garageCheckboxes, lightsCheckboxes);
+                doorsCheckboxes, garageCheckboxes, lightsCheckboxes, locationsFields);
     }
 
-    private void addComponents(){
+    private void addComponents() {
         test.add(new JLabel(""));
         test1.add(new JLabel(""));
         test2.add(new JLabel(""));
@@ -153,100 +148,103 @@ public class Profiles extends JFrame{
         //JLabel randomLabel3 = new JLabel("");
 
 
-            middle.setLayout(new GridLayout(0,11));
-            middle.add(nameLabel);
-            middle.add(typeLabel);
-            middle.add(usernameLabel);
-            middle.add(passwordLabel);
-            middle.add(windowLabel);
-            middle.add(doorLabel);
-            middle.add(garageLabel);
-            middle.add(lightsLabel);
-            middle.add(locatioLabel);
-            middle.add(randomLabel1); // Empty label for spacing
-            middle.add(randomLabel2); // Empty label for spacing
+        middle.setLayout(new GridLayout(0, 11));
+        middle.add(nameLabel);
+        middle.add(typeLabel);
+        middle.add(usernameLabel);
+        middle.add(passwordLabel);
+        middle.add(windowLabel);
+        middle.add(doorLabel);
+        middle.add(garageLabel);
+        middle.add(lightsLabel);
+        middle.add(locatioLabel);
+        middle.add(randomLabel1); // Empty label for spacing
+        middle.add(randomLabel2); // Empty label for spacing
 
-            JTextField nameField = new JTextField();
-            middle.add(nameField);
-            nameFields.add(nameField);
+        JTextField nameField = new JTextField();
+        middle.add(nameField);
+        nameFields.add(nameField);
 
-            JComboBox<String> typeField = new JComboBox<String>(new String[]{"", "Parent", "Child", "Guest", "Stranger"});
-            middle.add(typeField);
-            typeFields.add(typeField);
+        JComboBox<String> typeField = new JComboBox<String>(new String[]{"", "Parent", "Child", "Guest", "Stranger"});
+        middle.add(typeField);
+        typeFields.add(typeField);
 
 
-            JTextField usernameField = new JTextField();
-            middle.add(usernameField);
-            usernameFields.add(usernameField);
+        JTextField usernameField = new JTextField();
+        middle.add(usernameField);
+        usernameFields.add(usernameField);
 
-            JPasswordField passwordField = new JPasswordField();
-            middle.add(passwordField);
-            passwordFields.add(passwordField);
+        JPasswordField passwordField = new JPasswordField();
+        middle.add(passwordField);
+        passwordFields.add(passwordField);
 
-            JCheckBox windowsCheckbox = new JCheckBox();
-            middle.add(windowsCheckbox);
-            windowsCheckboxes.add(windowsCheckbox);
+        JCheckBox windowsCheckbox = new JCheckBox();
+        middle.add(windowsCheckbox);
+        windowsCheckboxes.add(windowsCheckbox);
 
-            JCheckBox doorsCheckbox = new JCheckBox();
-            middle.add(doorsCheckbox);
-            doorsCheckboxes.add(doorsCheckbox);
+        JCheckBox doorsCheckbox = new JCheckBox();
+        middle.add(doorsCheckbox);
+        doorsCheckboxes.add(doorsCheckbox);
 
-            JCheckBox garageCheckbox = new JCheckBox();
-            middle.add(garageCheckbox);
-            garageCheckboxes.add(garageCheckbox);
+        JCheckBox garageCheckbox = new JCheckBox();
+        middle.add(garageCheckbox);
+        garageCheckboxes.add(garageCheckbox);
 
-            JCheckBox lightsCheckbox = new JCheckBox();
-            middle.add(lightsCheckbox);
-            lightsCheckboxes.add(lightsCheckbox);
+        JCheckBox lightsCheckbox = new JCheckBox();
+        middle.add(lightsCheckbox);
+        lightsCheckboxes.add(lightsCheckbox);
 
-            JComboBox<Integer> locationField = new JComboBox<Integer>(new Integer[]{1, 2, 3, 4});
-            middle.add(locationField);
-            locationsFields.add(locationField);
 
-            typeField.addItemListener(new ItemListener() {
-                @Override
-                public void itemStateChanged(ItemEvent e) {
-                    if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Parent")) {
-                        lightsCheckbox.setSelected(true);
-                        windowsCheckbox.setSelected(true);
-                        doorsCheckbox.setSelected(true);
-                        garageCheckbox.setSelected(true);
-                    }else if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Stranger")){
-                        usernameField.setEnabled(false);
-                        usernameField.setBackground(Color.GRAY);
-                        passwordField.setEnabled(false);
-                        passwordField.setBackground(Color.GRAY);
-                    }
+
+        JComboBox<String> locationField = new JComboBox<String>(new String[]{"" ,"BEDROOM", "LIVING ROOM", "BATHROOM", "KITCHEN", "GARAGE"});
+        middle.add(locationField);
+        locationsFields.add(locationField);
+
+        typeField.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Parent")) {
+                    lightsCheckbox.setSelected(true);
+                    windowsCheckbox.setSelected(true);
+                    doorsCheckbox.setSelected(true);
+                    garageCheckbox.setSelected(true);
+                } else if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Stranger")) {
+                    usernameField.setEnabled(false);
+                    usernameField.setBackground(Color.GRAY);
+                    passwordField.setEnabled(false);
+                    passwordField.setBackground(Color.GRAY);
                 }
-            });
+            }
+        });
 
-            JButton addButton = new JButton("Add Profile");
-            addButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                   addProfileFields();
-                }
-            });
-            middle.add(addButton);
+        JButton addButton = new JButton("Add Profile");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addProfileFields();
+            }
+        });
+        middle.add(addButton);
 
-            JButton stopButton = new JButton("Done");
-            stopButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("You stopped adding profiles");
-                    saveProfiles();
+        JButton stopButton = new JButton("Done");
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("You stopped adding profiles");
+                saveProfiles();
 //                DashboardFrame dashboard = new DashboardFrame(thisFrame);
 //                dashboard.setVisible(true);
-                    ProfilesLoginFrame loginFrame = new ProfilesLoginFrame(thisFrame, controller.getProfiles());
-                    loginFrame.setLocationRelativeTo(null);
-                    loginFrame.setVisible(true);
-                    dispose();
-                }
-            });
+                ProfilesLoginFrame loginFrame = new ProfilesLoginFrame(thisFrame, controller.getProfiles());
+                loginFrame.setLocationRelativeTo(null);
+                loginFrame.setVisible(true);
+                dispose();
+            }
+        });
 
-            middle.add(stopButton);
+        middle.add(stopButton);
     }
-    private void initializeLists(){
+
+    private void initializeLists() {
         //content.setBorder(new LineBorder(Color.BLACK));
         nameFields = new ArrayList<>();
         usernameFields = new ArrayList<>();
@@ -256,11 +254,11 @@ public class Profiles extends JFrame{
         doorsCheckboxes = new ArrayList<>();
         garageCheckboxes = new ArrayList<>();
         lightsCheckboxes = new ArrayList<>();
-        locationsFields = new ArrayList<>();
+        locationsFields = new ArrayList<JComboBox<String>>();
     }
 
     public static void main(String[] args) {
-        new Profiles(null);
+        new ProfilesCreation(null);
 
     }
 }

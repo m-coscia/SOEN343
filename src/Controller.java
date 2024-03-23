@@ -1,11 +1,13 @@
 package src;
 
 
+import src.components.Room;
+import src.components.RoomType;
 import src.logic.*;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Controller {
 
@@ -21,7 +23,7 @@ public class Controller {
     public void saveProfiles(ArrayList<JTextField> nameFields, ArrayList<JTextField> usernameFields,
                              ArrayList<JPasswordField> passwordFields, ArrayList<JComboBox<String>> typeFields, ArrayList<JCheckBox> windowsCheckboxes,
                              ArrayList<JCheckBox> doorsCheckboxes, ArrayList<JCheckBox> garageCheckboxes,
-                             ArrayList<JCheckBox> lightsCheckboxes) {
+                             ArrayList<JCheckBox> lightsCheckboxes, ArrayList<JComboBox<String>> locationFields) {
 
         for (int i = 0; i < nameFields.size(); i++){
             boolean window = windowsCheckboxes.get(i).isSelected();
@@ -72,4 +74,10 @@ public class Controller {
     public double getTemperature(){
         return 14.3;
     }
+
+//    public String[] getExistingLocations(){
+//        String[] rooms = new String[]{String.valueOf(RoomType.BEDROOM)};
+//
+//        return rooms;
+//    }
 }
