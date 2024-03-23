@@ -89,6 +89,7 @@ public class ToggleButton extends Component {
                     }
                 }
                 //TODO pause/start the simulation
+
             }
         });
     }
@@ -138,6 +139,7 @@ public class ToggleButton extends Component {
     public static void main(String[] args) {
         JFrame F = new JFrame("Test Toggle button");
         ToggleButton t = new ToggleButton();
+
 
         JPanel p = new JPanel();
         F.add(p.add(t));

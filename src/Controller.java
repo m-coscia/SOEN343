@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Controller {
+
     private DataBase database;
     public Controller(){
         database = DataBase.getDataBase();
@@ -66,5 +67,9 @@ public class Controller {
 
     public ArrayList<Profile> getProfiles(){
         return database.getProfiles();
+    }
+
+    public double getTemperature(){
+        return 14.3;
     }
 }

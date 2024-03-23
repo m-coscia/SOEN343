@@ -86,10 +86,11 @@ public class ProfilesLoginFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Component c = cardsPanel.getComponent(cardsPanel.getComponentCount()-1);
-                addAuthentificationFields();
-
+                //c.get
+                //addAuthentificationFields();
+                //TODO how do i get the profile that is selected
                // DashboardFrame dash = new DashboardFrame(thisFrame);
-                Dashboard dash = new Dashboard();
+                Dashboard dash = new Dashboard(null);
                 dash.setLocationRelativeTo(null);
                 dash.setVisible(true);
                 dispose();
