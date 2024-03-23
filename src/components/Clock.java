@@ -12,10 +12,18 @@ public class Clock {
     private volatile double speedMultiplier;
 
     public Clock() {
-        this.time = LocalTime.NOON;
+        this.time = LocalTime.now();
         this.speedMultiplier = 1.0;
         this.running = new AtomicBoolean(false);
         executor = Executors.newSingleThreadScheduledExecutor();
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time){
+        this.time = time;
     }
 
     public void start() {

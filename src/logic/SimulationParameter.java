@@ -1,6 +1,9 @@
 package src.logic;
 
+import src.Observer.Event;
 import src.Observer.Observer;
+import src.Observer.UserEvent;
+import src.components.Clock;
 import src.components.Room;
 
 import java.io.FileNotFoundException;
@@ -18,19 +21,23 @@ public class SimulationParameter {
     private double weatherInside;
     private double weatherOutside;
     private Observer observer;
+    private Clock clock;
+
+
 
     public SimulationParameter(String layoutFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
         layout.setHouseLayout(layoutFile);
         date = d;
-        time = t;
+        clock = new Clock();
+        clock.setTime(t);
         weatherInside = inside;
         weatherOutside = outside;
         login = loggedIn;
         db.setRooms(layout.getRooms());
     }
 
-    public void notifyObserver(Profile user) throws IOException {
-        observer.update(user);
+    public void notifyObserver(Event e) throws IOException {
+        observer.update(e);
     }
 
     public void attachObserver(Observer o){
@@ -50,7 +57,7 @@ public class SimulationParameter {
     }
 
     public void setTime(LocalTime t){
-        time = t;
+        clock.setTime(t);
     }
 
     public void setDate(LocalDate d){
@@ -63,6 +70,10 @@ public class SimulationParameter {
 
     public double getWeatherOutside(){
         return weatherOutside;
+    }
+
+    public void setWeatherOutside(double temp){
+        weatherOutside = temp;
     }
 
     public void login(Profile user){
@@ -81,7 +92,8 @@ public class SimulationParameter {
             Profile p = new Parent(name, id, pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            notifyObserver(p);
+            UserEvent e = new UserEvent("add",p);
+            notifyObserver(e);
         }
     }
 
@@ -93,7 +105,8 @@ public class SimulationParameter {
             Profile p = new Child(name, id, pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            notifyObserver(p);
+            UserEvent e = new UserEvent("add",p);
+            notifyObserver(e);
         }
     }
 
@@ -105,7 +118,8 @@ public class SimulationParameter {
             Profile p = new Guest(name,id,pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            notifyObserver(p);
+            UserEvent e = new UserEvent("add",p);
+            notifyObserver(e);
         }
     }
 
@@ -117,7 +131,8 @@ public class SimulationParameter {
             Profile p = new Stranger(name, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            notifyObserver(p);
+            UserEvent e = new UserEvent("add",p);
+            notifyObserver(e);
         }
     }
 

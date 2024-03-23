@@ -1,6 +1,7 @@
 package src.logic;
 
-import src.Observer.AddAccountObserver;
+import src.Observer.AccountObserver;
+import src.Observer.Observer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class Main {
         db.printAllRooms();    
         SimulationParameter param = new SimulationParameter(layoutFile, date, time, 21.0, 12.4, loggedIn);
 
-        AddAccountObserver observer = new AddAccountObserver();
+        AccountObserver observer = new AccountObserver();
         param.attachObserver(observer);
         System.out.println("The date is: " + param.getDate());
         System.out.println("The time is: " + param.getTime());
