@@ -68,6 +68,26 @@ public class DataBase {
 
     public void addAccount(Profile p){
         profiles.add(p);
+        try{
+
+            //TODO: location? is 0 equivalent to not being in the home?
+            FileWriter fw = new FileWriter(accountLog,true);
+            if( p instanceof  Parent){
+                fw.write("PARENT," + p.getName() +"," + ((Parent) p).getUserName() + "," + ((Parent) p).getPassword() + ",0\n" );
+            }else if (p instanceof Child){
+                fw.write("CHILD," + p.getName() +"," + ((Child) p).getUserName() + "," + ((Child) p).getPassword() +",0\n" );
+            }else if (p instanceof  Guest){
+                fw.write("GUEST," + p.getName() +"," + ((Guest) p).getUserName() + "," + ((Guest) p).getPassword() + ",0\n");
+            }else if(p instanceof Stranger){
+                fw.write("STRANGER," + p.getName() + ",0\n");
+            }
+
+            fw.close();
+        }catch(IOException e){
+
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public void deleteAccount(Profile p){

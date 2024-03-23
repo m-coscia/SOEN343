@@ -7,9 +7,9 @@ import src.logic.Profile;
 
 public class Room extends Component {
     private RoomType type;
-    private final Lights lights;
-    private final Windows windows;
-    private final Doors doors;
+    private Lights lights;
+    private Windows windows;
+    private Doors doors;
     private int numWindows;
     private int numLights;
     private int numDoors;
@@ -42,6 +42,7 @@ public class Room extends Component {
 
     //default constructor
     public Room(){
+        identifier = generateUniqueId();
         type = RoomType.BEDROOM;
         numWindows = 0;
         numLights = 0;
@@ -54,10 +55,11 @@ public class Room extends Component {
 
 
     //Parameterized Constructor
-    public Room(RoomType t, int windows, int lights, int doors, Profile occupied){
+    public Room(RoomType t, int windows, int lights, int doors, Profile occupied) {
         type = t;
-        user = occupied;
+        users = new Profile[]{occupied};
         identifier = generateUniqueId();
+    }
 
     public Room(RoomType t, int windows, int lights, int doors, Profile[] occupied){
         this.type = t;
@@ -153,13 +155,14 @@ public class Room extends Component {
     @Override
     public String toString() {
         return "Room{" +
-               "type=" + type +
-               ", numWindows=" + numWindows +
-               ", numLights=" + numLights +
-               ", numDoors=" + numDoors +
-               ", occupiedBy=" + (user != null ? user.getName() : "none") +
-               ", identifier=" + identifier +
-               '}';
+                "type=" + type +
+                ", numWindows=" + numWindows +
+                ", numLights=" + numLights +
+                ", numDoors=" + numDoors +
+                //", occupiedBy=" + (user != null ? user.getName() : "none") +
+                ", identifier=" + identifier +
+                '}';
+    }
   
     // Method to check and adjust lighting based on autoMode and user presence
     public static void checkAndSetLighting(Room room) {
