@@ -1,8 +1,8 @@
 package src.components;
 
 import src.commands.Command;
-import src.commands.TurnOffLightsCommand;
-import src.commands.TurnOnLightsCommand;
+//import src.commands.TurnOffLightsCommand;
+//import src.commands.TurnOnLightsCommand;
 import src.logic.Profile;
 
 import java.util.ArrayList;
@@ -169,18 +169,18 @@ public class Room extends Component {
     }
   
     // Method to check and adjust lighting based on autoMode and user presence
-    public static void checkAndSetLighting(Room room) {
-        if (room.getLights() != null && room.getLights().getIsAutoMode()) {
-            if (room.getUsers() != null) {
-                // Assuming switchLightsOn is a command that takes a Lights object and turns it on
-                room.setCommand(new TurnOnLightsCommand(room.getLights(), room.getUsers(), null));
-            } else {
-                // Assuming switchLightsOff is a command that takes a Lights object and turns it off
-                room.setCommand(new TurnOffLightsCommand(room.getLights(), room.getUsers(), null));
-            }
-            room.executeCommand();
-        }
-    }
+//    public static void checkAndSetLighting(Room room) {
+//        if (room.getLights() != null && room.getLights().getIsAutoMode()) {
+//            if (room.getUsers() != null) {
+//                // Assuming switchLightsOn is a command that takes a Lights object and turns it on
+//                room.setCommand(new TurnOnLightsCommand(room.getLights(), room.getUsers(), null));
+//            } else {
+//                // Assuming switchLightsOff is a command that takes a Lights object and turns it off
+//                room.setCommand(new TurnOffLightsCommand(room.getLights(), room.getUsers(), null));
+//            }
+//            room.executeCommand();
+//        }
+//    }
 
     public boolean isAwayMode(){
         return awayMode;
