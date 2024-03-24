@@ -1,6 +1,6 @@
-package src.main.java.Observer;
+package Observer;
 
-import src.main.java.logic.Profile;
+import logic.Profile;
 
 import java.io.*;
 

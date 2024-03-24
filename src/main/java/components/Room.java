@@ -1,8 +1,8 @@
-package src.main.java.components;
+package components;
 
-import src.main.java.commands.TurnOffLightsCommand;
-import src.main.java.commands.TurnOnLightsCommand;
-import src.main.java.logic.Profile;
+import commands.TurnOffLightsCommand;
+import commands.TurnOnLightsCommand;
+import logic.Profile;
 
 public class Room extends Component {
     private RoomType type;

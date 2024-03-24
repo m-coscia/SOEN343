@@ -1,10 +1,11 @@
-package src.main.java.logic;
+package logic;
 
-import src.main.java.components.Room;
-import src.main.java.SmartHomeModule;
+import components.Room;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+
+import Modules.SmartHomeModule;
 
 public class ContextOfSimulation {
     private SmartHomeModule module;

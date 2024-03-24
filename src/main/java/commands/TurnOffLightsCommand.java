@@ -1,12 +1,22 @@
-package src.main.java.commands;
+package commands;
 
 import java.util.Arrays;
 
-import src.main.java.components.Lights;
-import src.main.java.logic.Parent;
-import src.main.java.logic.Profile;
+import components.Lights;
+import logic.Parent;
+import logic.Profile;
 
-public record TurnOffLightsCommand(Lights lights, Profile[] users, Profile caller) implements Command{
+public class TurnOffLightsCommand implements Command{
+    private final Lights lights;
+    private final Profile[] users;
+    private final Profile caller;
+
+    public TurnOffLightsCommand(Lights lights, Profile[] users, Profile caller) {
+        this.lights = lights;
+        this.users = users;
+        this.caller = caller;
+    }
+
     @Override
     public void execute() {
         //verify if caller has permission to lights

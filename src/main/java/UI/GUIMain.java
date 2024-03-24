@@ -1,4 +1,4 @@
-package src.main.java.UI;
+package UI;
 
 public class GUIMain {
     public static void main(String[] args) {

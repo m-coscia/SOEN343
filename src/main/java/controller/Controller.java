@@ -1,7 +1,6 @@
-package src.main.java;
+package controller;
 
-
-import src.main.java.logic.*;
+import logic.*;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;

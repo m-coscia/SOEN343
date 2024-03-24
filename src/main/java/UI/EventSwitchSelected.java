@@ -1,4 +1,5 @@
-package src.main.java.UI;
+package UI;
+
 public interface EventSwitchSelected {
 
     public void onSelected(boolean selected);

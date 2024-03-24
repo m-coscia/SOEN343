@@ -1,4 +1,4 @@
-package src.main.java.components;
+package components;
 
 public class Windows {
     private boolean obstructed;

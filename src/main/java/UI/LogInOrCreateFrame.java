@@ -1,7 +1,7 @@
-package src.main.java.UI;
+package UI;
 
-import src.main.java.logic.Profile;
-import src.main.java.Controller;
+import logic.Profile;
+import controller.Controller;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -1,6 +1,6 @@
-package src.main.java.Observer;
+package Observer;
 
-import src.main.java.logic.*;
+import logic.*;
 
 import java.io.File;
 import java.io.FileWriter;

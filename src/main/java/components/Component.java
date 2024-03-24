@@ -1,6 +1,6 @@
-package src.main.java.components;
+package components;
 
-import src.main.java.commands.Command;
+import commands.Command;
 
 public abstract class Component {
     private Command command;

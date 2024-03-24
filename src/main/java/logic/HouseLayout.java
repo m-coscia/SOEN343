@@ -1,12 +1,12 @@
-package src.main.java.logic;
+package logic;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import src.main.java.components.Room;
-import src.main.java.components.RoomType;
+import components.Room;
+import components.RoomType;
 
 public class HouseLayout {
     private  File layoutFile;

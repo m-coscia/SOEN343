@@ -1,9 +1,9 @@
-package src.main.java.UI;
+package UI;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
-import src.main.java.Controller;
+import controller.Controller;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

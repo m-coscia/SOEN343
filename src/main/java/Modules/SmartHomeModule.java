@@ -1,7 +1,6 @@
-package src.main.java;
-
-import src.main.java.logic.Permissions;
-import src.main.java.logic.SimulationParameter;
+package Modules;
+import logic.Permissions;
+import logic.SimulationParameter;
 
 public abstract class SmartHomeModule {
     protected Permissions parentPermissions;

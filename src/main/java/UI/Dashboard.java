@@ -1,8 +1,8 @@
-package src.main.java.UI;
+package UI;
 
-import src.main.java.components.Clock;
-import src.main.java.logic.Profile;
-import src.main.java.Controller;
+import components.Clock;
+import logic.Profile;
+import controller.Controller;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

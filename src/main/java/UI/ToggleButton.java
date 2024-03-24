@@ -1,4 +1,4 @@
-package src.main.java.UI;
+package UI;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;

@@ -1,11 +1,9 @@
-package src.test.java;
-
 import static org.junit.Assert.assertFalse;
 
 import org.junit.*;
 
-import src.main.java.commands.OpenDoorsCommand;
-import src.main.java.components.Doors;
+import commands.OpenDoorsCommand;
+import components.Doors;
 
 public class OpenDoorsCommandTest {
     // test method while having no doors, no users in the room and no caller to the method

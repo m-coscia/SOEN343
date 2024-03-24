@@ -1,9 +1,20 @@
-package src.main.java.commands;
+package commands;
 
-import src.main.java.components.Doors;
-import src.main.java.logic.Profile;
+import components.Doors;
+import logic.Profile;
 
-public record OpenDoorsCommand(Doors doors, Profile[] users, Profile caller) implements Command{
+public class OpenDoorsCommand implements Command{
+    private final Doors doors;
+    private final Profile[] users;
+    private final Profile caller;
+
+
+    public OpenDoorsCommand(Doors doors, Profile[] users, Profile caller) {
+        this.doors = doors;
+        this.users = users;
+        this.caller = caller;
+    }
+    
     @Override
     public void execute() {
         // Verify if it is a garage door

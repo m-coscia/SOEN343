@@ -1,11 +1,11 @@
-package src.main.java.logic;
+package logic;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Scanner;
 
-import src.main.java.Observer.AddAccountObserver;
+import Observer.AddAccountObserver;
 
 public class Main {
     public static void main(String args[]) throws IOException {

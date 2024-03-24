@@ -1,7 +1,7 @@
-package src.main.java.logic;
+package logic;
 
-import src.main.java.components.Room;
-import src.main.java.Observer.Observer;
+import components.Room;
+import Observer.Observer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -1,6 +1,6 @@
-package src.main.java.logic;
+package logic;
 
-import src.main.java.components.Room;
+import components.Room;
 
 public class Parent extends Profile{
     private String userName;

@@ -1,8 +1,8 @@
-package src.main.java.UI;
+package UI;
 
 import javax.swing.*;
 
-import src.main.java.Controller;
+import controller.Controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

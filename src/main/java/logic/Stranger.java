@@ -1,6 +1,6 @@
-package src.main.java.logic;
+package logic;
 
-import src.main.java.components.Room;
+import components.Room;
 
 public class Stranger extends Profile{
     public Stranger(String n, Room loc) {

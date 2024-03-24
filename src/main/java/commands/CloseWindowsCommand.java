@@ -1,11 +1,21 @@
-package src.main.java.commands;
+package commands;
 
-import src.main.java.components.Windows;
-import src.main.java.logic.Parent;
-import src.main.java.logic.Profile;
+import components.Windows;
+import logic.Parent;
+import logic.Profile;
 import java.util.Arrays;
 
-public record CloseWindowsCommand(Windows windows, Profile[] users, Profile caller) implements Command{
+public class CloseWindowsCommand implements Command{
+    private final Windows windows;
+    private final Profile[] users;
+    private final Profile caller;
+
+    public CloseWindowsCommand(Windows windows, Profile[] users, Profile caller) {
+        this.windows = windows;
+        this.users = users;
+        this.caller = caller;
+    }
+
     @Override
     public void execute() {
         //verify if caller has permission to windows
