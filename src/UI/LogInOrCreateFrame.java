@@ -43,7 +43,7 @@ public class LogInOrCreateFrame extends JFrame{
                     nextFrame.setVisible(true);
                     dispose();
                 }else{
-                    ProfilesLoginFrame nextFrame = new ProfilesLoginFrame(thisFrame, controller.getProfiles());
+                    ProfilesLoginFrame nextFrame = new ProfilesLoginFrame(thisFrame);
                     nextFrame.setVisible(true);
                     nextFrame.setLocationRelativeTo(null);
                     dispose();

@@ -1,10 +1,7 @@
 package src;
-
-
 import src.components.Room;
 import src.components.RoomType;
 import src.logic.*;
-
 import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -50,7 +47,6 @@ public class Controller {
 //            }else if (locationFields.get(i).getSelectedItem().equals("GARAGE")) {
 //                //r = RoomType.GARAGE;
 //            }
-
             boolean window = windowsCheckboxes.get(i).isSelected();
             boolean door = doorsCheckboxes.get(i).isSelected();
             boolean garage = garageCheckboxes.get(i).isSelected();
@@ -99,6 +95,37 @@ public class Controller {
 
     public double getTemperature(){
         return 14.3;
+    }
+
+    public void login(Profile p){
+        Login l = new Login(p);
+//        if(p instanceof Parent){
+//            if(((Parent) p).getUserName().equals(username) && ((Parent) p).getPassword().equals(password)){
+//                 l = new Login(p);
+//            }
+//        } else if (p instanceof Child) {
+//            if(((Child) p).getUserName().equals(username) && ((Child) p).getPassword().equals(password)){
+//                l = new Login(p);
+//            }
+//        }else if (p instanceof Guest){
+//            if(((Guest) p).getUserName().equals(username) && ((Guest) p).getPassword().equals(password)){
+//                l = new Login(p);
+//            }
+//        }else {
+//            l = new Login(p);
+//        }
+    }
+
+    public String getType(Profile profile) {
+        if( profile instanceof Parent){
+            return "Parent";
+        }else if (profile instanceof Guest){
+            return "Guest";
+        }else if(profile instanceof Child){
+            return "Child";
+        }else{
+            return "Stranger";
+        }
     }
 
 //    public String[] getExistingLocations(){

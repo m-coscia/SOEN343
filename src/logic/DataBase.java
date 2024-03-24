@@ -47,6 +47,7 @@ public class DataBase {
                         location = findRoom(locationId);
                         profile = new Stranger(name, location);
                         break;
+
                 }
     
                 if (profile != null) {

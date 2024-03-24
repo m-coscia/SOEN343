@@ -46,9 +46,11 @@ public class ProfilesCreation extends JFrame {
         addComponents();
         add(panel1);
         pack();
+        setSize(1200, getHeight());
         setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
     }
 
     private void addProfileFields() {
@@ -83,7 +85,7 @@ public class ProfilesCreation extends JFrame {
         JCheckBox lightsCheckbox = new JCheckBox();
         middle.add(lightsCheckbox);
         lightsCheckboxes.add(lightsCheckbox);
-        JComboBox<Integer> locationField = new JComboBox<Integer>(new Integer[]{1, 2, 3, 4});
+        JComboBox<String> locationField = new JComboBox<String>(new String[]{"" ,"BEDROOM", "LIVINGROOM", "BATHROOM", "KITCHEN", "GARAGE"});
         middle.add(locationField);
 
         JCheckBox unusable1 = new JCheckBox();
@@ -117,9 +119,10 @@ public class ProfilesCreation extends JFrame {
         });
 
         //will recheck the placements of the elements in the panel
-        revalidate();
+       // revalidate();
         repaint();
         pack();
+        setSize(1200,getHeight());
     }
 
     private void saveProfiles() {
@@ -234,7 +237,7 @@ public class ProfilesCreation extends JFrame {
                 saveProfiles();
 //                DashboardFrame dashboard = new DashboardFrame(thisFrame);
 //                dashboard.setVisible(true);
-                ProfilesLoginFrame loginFrame = new ProfilesLoginFrame(thisFrame, controller.getProfiles());
+                ProfilesLoginFrame loginFrame = new ProfilesLoginFrame(thisFrame);
                 loginFrame.setLocationRelativeTo(null);
                 loginFrame.setVisible(true);
                 dispose();
