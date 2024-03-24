@@ -1,32 +1,35 @@
 package src.logic;
 
-import src.Observer.Event;
-import src.Observer.Observer;
-import src.Observer.UserEvent;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+import src.Observer.*;
 import src.components.Clock;
 import src.components.Room;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SimulationParameter {
     private HouseLayout layout = HouseLayout.getHouseLayout();
     private DataBase db = DataBase.getDataBase();
     private LocalDate date;
-    private LocalTime time;
     private Login login;
     private double weatherInside;
     private double weatherOutside;
-    private Observer observer;
+    private AccountObserver accountObserver;
+    private TimeObserver timeObserver;
     private Clock clock;
+    private LocalTime t;
+    private Map<String, Double> weatherData = new HashMap<>();
 
 
-
-    public SimulationParameter(String layoutFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
+    public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
         layout.setHouseLayout(layoutFile);
         date = d;
         clock = new Clock();
@@ -35,22 +38,42 @@ public class SimulationParameter {
         weatherOutside = outside;
         login = loggedIn;
         db.setRooms(layout.getRooms());
+        uploadTempFile(tempFile);
     }
 
-    public void notifyObserver(Event e) throws IOException {
-        observer.update(e);
+
+    public Clock getClock(){
+        return clock;
     }
 
-    public void attachObserver(Observer o){
-        observer=o;
+    public void notifyAccountObserver(Event e) throws IOException {
+        accountObserver.update(e);
     }
+
+    public void notifyTimeObserver(Event e) throws IOException {
+        timeObserver.update(e);
+    }
+
+
+    public Map getWeatherData(){
+        return weatherData;
+    }
+
+    public void attachAccountObserver(AccountObserver o){
+        accountObserver=o;
+    }
+
+    public void attachTimeObserver(TimeObserver o){
+        timeObserver=o;
+    }
+
 
     public HouseLayout getLayout(){
         return layout;
     }
 
     public LocalTime getTime(){
-        return time;
+        return clock.getTime();
     }
 
     public LocalDate getDate(){
@@ -94,7 +117,7 @@ public class SimulationParameter {
             db.addAccount(p);
             login.setCurrentUser(p);
             UserEvent e = new UserEvent("add",p);
-            notifyObserver(e);
+            notifyAccountObserver(e);
         }
     }
 
@@ -107,7 +130,7 @@ public class SimulationParameter {
             db.addAccount(p);
             login.setCurrentUser(p);
             UserEvent e = new UserEvent("add",p);
-            notifyObserver(e);
+            notifyAccountObserver(e);
         }
     }
 
@@ -120,7 +143,7 @@ public class SimulationParameter {
             db.addAccount(p);
             login.setCurrentUser(p);
             UserEvent e = new UserEvent("add",p);
-            notifyObserver(e);
+            notifyAccountObserver(e);
         }
     }
 
@@ -133,7 +156,7 @@ public class SimulationParameter {
             db.addAccount(p);
             login.setCurrentUser(p);
             UserEvent e = new UserEvent("add",p);
-            notifyObserver(e);
+            notifyAccountObserver(e);
         }
     }
 
@@ -159,20 +182,19 @@ public class SimulationParameter {
             db.deleteAccount(login.getCurrentUser());
             user.setUserName(userName);
             db.addAccount(user);
-//            login.setCurrentUser(user);
 
         }else if(login.getCurrentUser() instanceof Child){
             Child user = (Child)login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setUserName(userName);
             db.addAccount(user);
-//            login.setCurrentUser(user);
+
         }else{
             Guest user = (Guest)login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setUserName(userName);
             db.addAccount(user);
-//            login.setCurrentUser(user);
+
         }
     }
 
@@ -182,20 +204,19 @@ public class SimulationParameter {
             db.deleteAccount(login.getCurrentUser());
             user.setPassword(password);
             db.addAccount(user);
-//            login.setCurrentUser(user);
 
         }else if(login.getCurrentUser() instanceof Child){
             Child user = (Child)login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setPassword(password);
             db.addAccount(user);
-//            login.setCurrentUser(user);
+
         }else{
             Guest user = (Guest)login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setPassword(password);
             db.addAccount(user);
-//            login.setCurrentUser(user);
+
         }
 
     }
@@ -203,6 +224,36 @@ public class SimulationParameter {
     public ArrayList<Profile> getProfiles(){
         return db.getProfiles();
     }
+
+    public void uploadTempFile(String csvFilePath){
+        try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
+            String[] nextLine;
+            reader.readNext();
+            while ((nextLine = reader.readNext()) != null) {
+                String timestamp = nextLine[0] + "," + nextLine[1];
+                // Replace the special character with the standard minus sign
+                String temperatureString = nextLine[2].replace("−", "-");
+                double weather = Double.parseDouble(temperatureString);
+                weatherData.put(timestamp, weather);
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startSimulation() throws IOException {
+        clock.start();
+        Event tempEvent = new TemperatureEvent("temperature", this);
+
+            while (clock.isRunning().get()) {
+                notifyTimeObserver(tempEvent);
+            }
+    }
+
+    public void stopSimulation(){
+        clock.pause();
+    }
+
 
 
 }

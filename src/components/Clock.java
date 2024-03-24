@@ -44,6 +44,7 @@ public class Clock {
     public void changeSpeed(double multiplier) {
         if (multiplier > 0 && multiplier != speedMultiplier) {
             speedMultiplier = multiplier;
+            System.out.println("Speed changed to: " + speedMultiplier);
             if (running.get()) {
                 executor.shutdownNow();
                 executor = Executors.newSingleThreadScheduledExecutor();
@@ -58,9 +59,6 @@ public class Clock {
 
     public void shutdown() {
         executor.shutdownNow();
-    }
-    public LocalTime getTime() {
-        return time;
     }
 
     public AtomicBoolean isRunning(){
@@ -83,4 +81,5 @@ public class Clock {
 
         clock.shutdown();
     }
+
 }

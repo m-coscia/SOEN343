@@ -1,19 +1,20 @@
 package src.Observer;
 
 import src.logic.Profile;
+import src.logic.SimulationParameter;
 
 import java.time.LocalDate;
 
 public class TemperatureEvent extends Event{
 
-    private LocalDate date;
+    private SimulationParameter parameter;
 
-    public TemperatureEvent(String type, LocalDate d){
+    public TemperatureEvent(String type, SimulationParameter param){
         super(type);
-        date = d;
+        parameter = param;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public SimulationParameter getParam() {
+        return parameter;
     }
 }
