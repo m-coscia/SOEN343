@@ -37,7 +37,7 @@ public class ProfilesLoginFrame extends JFrame {
         cardsPanel.setLayout(layout);
 
         JPanel pa = new JPanel();
-        middle.add(pa.add(new JLabel("Hello")), BorderLayout.NORTH);
+        middle.add(pa.add(new JLabel("")), BorderLayout.NORTH);
         loginPanel.setVisible(false);
 
         for (Profile p: profiles){
@@ -60,13 +60,13 @@ public class ProfilesLoginFrame extends JFrame {
             infoPanel.add(nameLabel,BorderLayout.NORTH);
 
             // Add profile type
-            JLabel typeLabel = new JLabel("Type of user");
+            JLabel typeLabel = new JLabel("Type of profile: " + controller.getType(p));
             typeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            infoPanel.add(typeLabel,BorderLayout.SOUTH);
+            infoPanel.add(typeLabel,BorderLayout.CENTER);
 
-            JLabel locationLabel = new JLabel("Location: "/*+ String.valueOf(p.getLocation().getType())*/);
+            JLabel locationLabel = new JLabel("Location: " + controller.getLocation(p));
             locationLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            infoPanel.add(locationLabel, BorderLayout.CENTER);
+            infoPanel.add(locationLabel, BorderLayout.SOUTH);
 
 
 //            usernameLabel.setVisible(false);

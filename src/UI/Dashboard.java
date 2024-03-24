@@ -121,7 +121,7 @@ public class Dashboard extends JFrame {
 
     private void setProfileInfo(Profile profile){
         currentProfile = profile;
-        userTypeLabel.setText(controller.getType(profile));
+        userTypeLabel.setText(controller.getType(profile) + ": " + profile.getName());
     }
     public static void main(String[] args) {
         Profile p = new Profile("Sara", null);

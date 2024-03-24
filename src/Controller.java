@@ -128,6 +128,12 @@ public class Controller {
         }
     }
 
+    public String getLocation(Profile profile){
+
+//        Room r = profile.getLocation();
+//        return String.valueOf(r.getType());
+        return "FIX LOCATION";
+    }
 //    public String[] getExistingLocations(){
 //        String[] rooms = new String[]{String.valueOf(RoomType.BEDROOM)};
 //
