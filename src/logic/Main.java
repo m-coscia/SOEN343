@@ -65,10 +65,6 @@ public class Main {
 
         param.login(param.getProfiles().get(1));
 
-        // System.out.println("The currently logged in user is: " + param.getLoggedIn().getName() +
-        //         "\n And the user is located in a: " + param.getLoggedIn().getLocation().getType());
-        // System.out.println("The ID of the room is: " + param.getLoggedIn().getLocation().getId());
-
         System.out.println("The number of rooms is: " + db.getRooms().size());
         for(int i =0;i<db.getRooms().size();i++){
             System.out.println("Room ID: " + db.getRooms().get(i).getId());

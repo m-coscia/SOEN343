@@ -5,6 +5,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import src.Observer.*;
 import src.components.Clock;
 import src.components.Room;
+import src.components.Zone;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -27,6 +28,7 @@ public class SimulationParameter {
     private Clock clock;
     private LocalTime t;
     private Map<String, Double> weatherData = new HashMap<>();
+    private ArrayList<Zone> zones = new ArrayList<>();
 
 
     public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
