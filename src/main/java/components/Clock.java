@@ -56,7 +56,7 @@ public class Clock {
         return time;
     }
 
-    public AtomicBoolean isRunning(){
+    public boolean isRunning(){
         return running;
     }
 
