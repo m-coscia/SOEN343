@@ -243,13 +243,21 @@ public class SimulationParameter {
 
     public void startSimulation() throws IOException {
         clock.start();
-        Event tempEvent = new TemperatureEvent("temperature", this);
 
+        // Run the while loop in a separate thread
+        new Thread(() -> {
             while (clock.isRunning().get()) {
-                notifyTimeObserver(tempEvent);
+                Event tempEvent = new TemperatureEvent("temperature", this); // Create a new event instance inside the loop
+                try {
+                    notifyTimeObserver(tempEvent);
+                    System.out.println(weatherOutside);
+                    System.out.println(getTime());
+                } catch ( IOException e) {
+                    e.printStackTrace();
+                }
             }
+        }).start();
     }
-
     public void stopSimulation(){
         clock.pause();
     }

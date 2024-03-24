@@ -77,9 +77,8 @@ public class Main {
         param.attachTimeObserver(observer2);
 
         param.startSimulation();
-
-
-        System.out.println(param.getTime());
+        param.getClock().changeSpeed(1000);
+        Thread.sleep(100000);
         param.stopSimulation();
 
 
