@@ -3,7 +3,7 @@ package src.main.java.components;
 public class Doors {
     private IconType icon = IconType.DOOR;
     private String doorType;
-    private boolean open = false;
+    public boolean open = false;
     private boolean isGarageDoor = false;
 
     public Doors(boolean isGarageDoor) {
