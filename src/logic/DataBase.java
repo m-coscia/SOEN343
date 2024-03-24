@@ -47,6 +47,7 @@ public class DataBase {
                         location = findRoom(locationId);
                         profile = new Stranger(name, location);
                         break;
+
                 }
     
                 if (profile != null) {
@@ -73,13 +74,13 @@ public class DataBase {
             //TODO: location? is 0 equivalent to not being in the home?
             FileWriter fw = new FileWriter(accountLog,true);
             if( p instanceof  Parent){
-                fw.write("PARENT," + p.getName() +"," + ((Parent) p).getUserName() + "," + ((Parent) p).getPassword() + ",0\n" );
+                fw.write("PARENT," + p.getName() +"," + ((Parent) p).getUserName() + "," + ((Parent) p).getPassword() + "," +((Parent) p).getLocation().getId()+ "\n" );
             }else if (p instanceof Child){
-                fw.write("CHILD," + p.getName() +"," + ((Child) p).getUserName() + "," + ((Child) p).getPassword() +",0\n" );
+                fw.write("CHILD," + p.getName() +"," + ((Child) p).getUserName() + "," + ((Child) p).getPassword() +  "," +((Child) p).getLocation().getId()+ "\n" );
             }else if (p instanceof  Guest){
-                fw.write("GUEST," + p.getName() +"," + ((Guest) p).getUserName() + "," + ((Guest) p).getPassword() + ",0\n");
+                fw.write("GUEST," + p.getName() +"," + ((Guest) p).getUserName() + "," + ((Guest) p).getPassword() + "," +((Guest) p).getLocation().getId()+ "\n" );
             }else if(p instanceof Stranger){
-                fw.write("STRANGER," + p.getName() + ",0\n");
+                fw.write("STRANGER," + p.getName() + "," +((Stranger) p).getLocation().getId()+ "\n" );
             }
 
             fw.close();
