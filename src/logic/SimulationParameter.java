@@ -5,7 +5,6 @@ import src.components.Room;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -34,6 +33,14 @@ public class SimulationParameter {
         observer.update(user);
     }
 
+    public void notifyObservers(Profile[] users) throws IOException{
+        if (users != null) {
+            for (Profile user : users) {
+                observer.update(user);
+            }
+        }
+    }
+    
     public void attachObserver(Observer o){
         observer=o;
     }
@@ -75,7 +82,7 @@ public class SimulationParameter {
     }
 
     //creates parent account
-    public void createParentAccount(String name, String id, String pw, Room loc) throws IOException {
+    public void createParentAccount(String name, String id, String pw, Room loc) throws IOException{
         if(!layout.getRooms().contains(loc)){
             System.out.println("ERROR: No such room in the house");
         }else {
@@ -87,7 +94,7 @@ public class SimulationParameter {
     }
 
     //creates a child account
-    public void createChildAccount(String name, String id, String pw, Room loc) throws IOException {
+    public void createChildAccount(String name, String id, String pw, Room loc) throws IOException{
         if(!layout.getRooms().contains(loc)){
             System.out.println("ERROR: No such room in the house");
         }else {
@@ -99,7 +106,7 @@ public class SimulationParameter {
     }
 
     //creates a guest account
-    public void createGuestAccount(String name, String id, String pw, Room loc) throws IOException {
+    public void createGuestAccount(String name, String id, String pw, Room loc) throws IOException{
         if(!layout.getRooms().contains(loc)){
             System.out.println("ERROR: No such room in the house");
         }else{
