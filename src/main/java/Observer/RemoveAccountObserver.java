@@ -5,43 +5,47 @@ import logic.Profile;
 import java.io.*;
 
 public class RemoveAccountObserver implements Observer {
-    private File accountLog = new File("accountLog.txt");
+    private File writableFile;
+    
+    public RemoveAccountObserver() {
+        // Determine a writable location (for example, in the user's home directory)
+        String userHomeDir = System.getProperty("user.home");
+        File writableDir = new File(userHomeDir, "MyAppData");
+        if (!writableDir.exists()) {
+            writableDir.mkdirs(); // Create the directory if it doesn't exist
+        }
+        writableFile = new File(writableDir, "accountLog.txt");
+        
+        // Copy the file from resources to the writable location if it doesn't already exist
+        if (!writableFile.exists()) {
+            try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("accountLog.txt");
+                 OutputStream os = new FileOutputStream(writableFile)) {
+                if (is == null) {
+                    throw new IllegalArgumentException("accountLog.txt file not found in resources!");
+                }
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle exceptions appropriately
+            }
+        }
+    }
 
     @Override
     public void update(Profile user) throws IOException {
-//        String fileContent="";
-//        File tempFile = new File("temp.txt");
-//        BufferedReader reader = new BufferedReader(new FileReader(accountLog));
-//        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-//        String currentLine;
-//        int lineNumber = 1;
-//
-//        while ((currentLine = reader.readLine()) != null) {
-//            // If the current line is not the one to be removed, write it to the temp file
-//            lineNumber++;
-//        }
-//        writer.close();
-//        reader.close();
-//
-//        // Delete the original file
-//        if (!inputFile.delete()) {
-//            System.out.println("Could not delete the original file.");
-//            return;
-//        }
-//
-//        // Rename the temp file to the original file name
-//        if (!tempFile.renameTo(inputFile)) {
-//            System.out.println("Could not rename the temp file.");
-//        }
-//
-//        System.out.println("Line removed successfully.");
-//}
-//
-//
-//    String[] parts = input.split(",");
-//
-
-
-
+        // Modify the file as needed, using writableFile
+        // Example: Reading from the file
+        try (BufferedReader reader = new BufferedReader(new FileReader(writableFile))) {
+            String currentLine;
+            while ((currentLine = reader.readLine()) != null) {
+                // Process each line...
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exceptions appropriately
+        }
+        // Further modification logic here
     }
 }
