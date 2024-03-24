@@ -1,4 +1,6 @@
 package src.components;
+
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -6,26 +8,35 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Clock {
+    private LocalDate date;
     private LocalTime time;
     private ScheduledExecutorService executor;
     private final AtomicBoolean running;
     private volatile double speedMultiplier;
     private boolean speedChanged = false;
 
-
     public Clock() {
+        this.date = LocalDate.now();
         this.time = LocalTime.now();
         this.speedMultiplier = 1.0;
         this.running = new AtomicBoolean(false);
         executor = Executors.newSingleThreadScheduledExecutor();
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
     public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time){
+    public void setTime(LocalTime time) {
         this.time = time;
+    }
+
+    public void setDate(LocalDate d){
+        date = d;
     }
 
     public void start() {
@@ -38,7 +49,11 @@ public class Clock {
         executor.scheduleAtFixedRate(() -> {
             if (running.get()) {
                 time = time.plusSeconds(1);
-                System.out.println(time);
+                if (time.equals(LocalTime.MIN)) { // Check if time is midnight
+                    date = date.plusDays(1); // Increment date
+                    System.out.println("Date changed to: " + date);
+                }
+                System.out.println(date + " " + time);
             }
         }, 0, period, TimeUnit.MILLISECONDS);
     }
@@ -56,7 +71,7 @@ public class Clock {
         }
     }
 
-    public boolean getSpeedChanged(){
+    public boolean getSpeedChanged() {
         return speedChanged;
     }
 
@@ -68,13 +83,13 @@ public class Clock {
         executor.shutdownNow();
     }
 
-    public AtomicBoolean isRunning(){
+    public AtomicBoolean isRunning() {
         return running;
     }
 
     public static void main(String[] args) throws InterruptedException {
         Clock clock = new Clock();
-        
+
         clock.start();
         Thread.sleep(10000); // Clock runs for 10 seconds
 
@@ -88,5 +103,4 @@ public class Clock {
 
         clock.shutdown();
     }
-
 }

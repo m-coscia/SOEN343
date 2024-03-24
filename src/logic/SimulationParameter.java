@@ -33,9 +33,9 @@ public class SimulationParameter {
 
     public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
         layout.setHouseLayout(layoutFile);
-        date = d;
         clock = new Clock();
         clock.setTime(t);
+        clock.setDate(d);
         weatherInside = inside;
         weatherOutside = outside;
         login = loggedIn;
@@ -233,7 +233,6 @@ public class SimulationParameter {
             reader.readNext();
             while ((nextLine = reader.readNext()) != null) {
                 String timestamp = nextLine[0] + "," + nextLine[1];
-                // Replace the special character with the standard minus sign
                 String temperatureString = nextLine[2].replace("−", "-");
                 double weather = Double.parseDouble(temperatureString);
                 weatherData.put(timestamp, weather);
@@ -252,9 +251,7 @@ public class SimulationParameter {
                 Event tempEvent = new TemperatureEvent("temperature", this); // Create a new event instance inside the loop
                 try {
                     notifyTimeObserver(tempEvent);
-                    System.out.println(weatherOutside);
-                    System.out.println(getTime());
-                } catch ( IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }

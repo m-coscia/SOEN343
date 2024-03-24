@@ -15,7 +15,6 @@ public class TimeObserver implements Observer{
         SimulationParameter param = ((TemperatureEvent)event).getParam();
         LocalTime currentTime = param.getTime();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
         String formattedTime = currentTime.format(formatter);
         String timestamp = param.getDate().toString() + "," + formattedTime;
         if (param.getWeatherData().containsKey(timestamp)) {
