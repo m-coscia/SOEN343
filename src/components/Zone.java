@@ -22,6 +22,9 @@ public class Zone {
     }
 
     public void setRooms(ArrayList<Room> rooms) {
+        for(Room r:rooms){
+            r.setIsInZone(true);
+        }
         this.rooms = rooms;
     }
 
@@ -30,10 +33,12 @@ public class Zone {
     }
 
     public void addRoom(Room r){
+        r.setIsInZone(true);
         rooms.add(r);
     }
 
     public void removeRoom(Room r){
+        r.setIsInZone(false);
         rooms.remove(r);
     }
 

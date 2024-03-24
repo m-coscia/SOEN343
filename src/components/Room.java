@@ -21,6 +21,7 @@ public class Room extends Component {
     private boolean awayMode = false;
     private static int idCounter = 0;
     private final int identifier;
+    private boolean isInZone = false;
 
 //    default constructor
     public Room(){
@@ -34,6 +35,14 @@ public class Room extends Component {
         doors = null;
         users = null;
 
+    }
+
+    public boolean isInZone() {
+        return isInZone;
+    }
+
+    public void setIsInZone(boolean isInZone){
+        this.isInZone = isInZone;
     }
 
     public int generateUniqueId() {
