@@ -1,56 +1,78 @@
 package src.logic;
 
-import src.Observer.Observer;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+import src.Observer.*;
+import src.components.Clock;
 import src.components.Room;
 
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SimulationParameter {
     private HouseLayout layout = HouseLayout.getHouseLayout();
     private DataBase db = DataBase.getDataBase();
     private LocalDate date;
-    private LocalTime time;
     private Login login;
     private double weatherInside;
     private double weatherOutside;
-    private Observer observer;
+    private AccountObserver accountObserver;
+    private TimeObserver timeObserver;
+    private Clock clock;
+    private LocalTime t;
+    private Map<String, Double> weatherData = new HashMap<>();
 
-    public SimulationParameter(String layoutFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
+
+    public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
         layout.setHouseLayout(layoutFile);
         date = d;
-        time = t;
+        clock = new Clock();
+        clock.setTime(t);
         weatherInside = inside;
         weatherOutside = outside;
         login = loggedIn;
         db.setRooms(layout.getRooms());
+        uploadTempFile(tempFile);
     }
 
-    public void notifyObserver(Profile user) throws IOException {
-        observer.update(user);
+
+    public Clock getClock(){
+        return clock;
     }
 
-    public void notifyObservers(Profile[] users) throws IOException{
-        if (users != null) {
-            for (Profile user : users) {
-                observer.update(user);
-            }
-        }
+    public void notifyAccountObserver(Event e) throws IOException {
+        accountObserver.update(e);
     }
-    
-    public void attachObserver(Observer o){
-        observer=o;
+
+    public void notifyTimeObserver(Event e) throws IOException {
+        timeObserver.update(e);
     }
+
+    public Map getWeatherData(){
+        return weatherData;
+    }
+
+    public void attachAccountObserver(AccountObserver o){
+        accountObserver=o;
+    }
+  
+    public void attachTimeObserver(TimeObserver o){
+        timeObserver=o;
+    }
+
 
     public HouseLayout getLayout(){
         return layout;
     }
 
     public LocalTime getTime(){
-        return time;
+        return clock.getTime();
     }
 
     public LocalDate getDate(){
@@ -58,7 +80,7 @@ public class SimulationParameter {
     }
 
     public void setTime(LocalTime t){
-        time = t;
+        clock.setTime(t);
     }
 
     public void setDate(LocalDate d){
@@ -71,6 +93,10 @@ public class SimulationParameter {
 
     public double getWeatherOutside(){
         return weatherOutside;
+    }
+
+    public void setWeatherOutside(double temp){
+        weatherOutside = temp;
     }
 
     public void login(Profile user){
@@ -89,7 +115,8 @@ public class SimulationParameter {
             Profile p = new Parent(name, id, pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            notifyObserver(p);
+            UserEvent e = new UserEvent("add",p);
+            notifyAccountObserver(e);
         }
     }
 
@@ -101,7 +128,8 @@ public class SimulationParameter {
             Profile p = new Child(name, id, pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            notifyObserver(p);
+            UserEvent e = new UserEvent("add",p);
+            notifyAccountObserver(e);
         }
     }
 
@@ -113,7 +141,8 @@ public class SimulationParameter {
             Profile p = new Guest(name,id,pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            notifyObserver(p);
+            UserEvent e = new UserEvent("add",p);
+            notifyAccountObserver(e);
         }
     }
 
@@ -125,7 +154,8 @@ public class SimulationParameter {
             Profile p = new Stranger(name, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            notifyObserver(p);
+            UserEvent e = new UserEvent("add",p);
+            notifyAccountObserver(e);
         }
     }
 
@@ -151,20 +181,19 @@ public class SimulationParameter {
             db.deleteAccount(login.getCurrentUser());
             user.setUserName(userName);
             db.addAccount(user);
-//            login.setCurrentUser(user);
 
         }else if(login.getCurrentUser() instanceof Child){
             Child user = (Child)login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setUserName(userName);
             db.addAccount(user);
-//            login.setCurrentUser(user);
+
         }else{
             Guest user = (Guest)login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setUserName(userName);
             db.addAccount(user);
-//            login.setCurrentUser(user);
+
         }
     }
 
@@ -174,20 +203,19 @@ public class SimulationParameter {
             db.deleteAccount(login.getCurrentUser());
             user.setPassword(password);
             db.addAccount(user);
-//            login.setCurrentUser(user);
 
         }else if(login.getCurrentUser() instanceof Child){
             Child user = (Child)login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setPassword(password);
             db.addAccount(user);
-//            login.setCurrentUser(user);
+
         }else{
             Guest user = (Guest)login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setPassword(password);
             db.addAccount(user);
-//            login.setCurrentUser(user);
+
         }
 
     }
@@ -195,6 +223,44 @@ public class SimulationParameter {
     public ArrayList<Profile> getProfiles(){
         return db.getProfiles();
     }
+
+    public void uploadTempFile(String csvFilePath){
+        try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
+            String[] nextLine;
+            reader.readNext();
+            while ((nextLine = reader.readNext()) != null) {
+                String timestamp = nextLine[0] + "," + nextLine[1];
+                // Replace the special character with the standard minus sign
+                String temperatureString = nextLine[2].replace("−", "-");
+                double weather = Double.parseDouble(temperatureString);
+                weatherData.put(timestamp, weather);
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startSimulation() throws IOException {
+        clock.start();
+
+        // Run the while loop in a separate thread
+        new Thread(() -> {
+            while (clock.isRunning().get()) {
+                Event tempEvent = new TemperatureEvent("temperature", this); // Create a new event instance inside the loop
+                try {
+                    notifyTimeObserver(tempEvent);
+                    System.out.println(weatherOutside);
+                    System.out.println(getTime());
+                } catch ( IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+    public void stopSimulation(){
+        clock.pause();
+    }
+
 
 
 }

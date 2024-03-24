@@ -10,12 +10,22 @@ public class Clock {
     private ScheduledExecutorService executor;
     private final AtomicBoolean running;
     private volatile double speedMultiplier;
+    private boolean speedChanged = false;
+
 
     public Clock() {
-        this.time = LocalTime.NOON;
+        this.time = LocalTime.now();
         this.speedMultiplier = 1.0;
         this.running = new AtomicBoolean(false);
         executor = Executors.newSingleThreadScheduledExecutor();
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time){
+        this.time = time;
     }
 
     public void start() {
@@ -36,6 +46,8 @@ public class Clock {
     public void changeSpeed(double multiplier) {
         if (multiplier > 0 && multiplier != speedMultiplier) {
             speedMultiplier = multiplier;
+            speedChanged = true;
+            System.out.println("Speed changed to: " + speedMultiplier);
             if (running.get()) {
                 executor.shutdownNow();
                 executor = Executors.newSingleThreadScheduledExecutor();
@@ -44,15 +56,16 @@ public class Clock {
         }
     }
 
+    public boolean getSpeedChanged(){
+        return speedChanged;
+    }
+
     public void pause() {
         running.set(false);
     }
 
     public void shutdown() {
         executor.shutdownNow();
-    }
-    public LocalTime getTime() {
-        return time;
     }
 
     public AtomicBoolean isRunning(){
@@ -75,4 +88,5 @@ public class Clock {
 
         clock.shutdown();
     }
+
 }

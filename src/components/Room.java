@@ -1,6 +1,8 @@
 package src.components;
 
 import src.commands.Command;
+//import src.commands.TurnOffLightsCommand;
+//import src.commands.TurnOnLightsCommand;
 import src.commands.TurnOffLightsCommand;
 import src.commands.TurnOnLightsCommand;
 import src.logic.Profile;
@@ -42,7 +44,21 @@ public class Room extends Component {
         return identifier;
     }
 
-    // Parameterized Constructor
+    //default constructor
+//    public Room(){
+//        identifier = generateUniqueId();
+//        type = RoomType.BEDROOM;
+//        numWindows = 0;
+//        numLights = 0;
+//        numDoors = 0;
+//        lights = null;
+//        windows = null;
+//        doors = null;
+//        users = null;
+//    }
+
+
+    //Parameterized Constructor
     public Room(RoomType t, int windows, int lights, int doors, Profile occupied) {
         type = t;
         users = new Profile[] { occupied };
