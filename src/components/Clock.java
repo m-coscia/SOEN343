@@ -51,6 +51,13 @@ public class Clock {
     public void shutdown() {
         executor.shutdownNow();
     }
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public AtomicBoolean isRunning(){
+        return running;
+    }
 
     public static void main(String[] args) throws InterruptedException {
         Clock clock = new Clock();

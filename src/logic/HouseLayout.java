@@ -60,7 +60,7 @@ public class HouseLayout {
                 case 5:
                     read.nextLine();
                     count=0;
-                    Room newRoom = new Room(type,windows,lights,doors, null);
+                    Room newRoom = new Room(type,windows,lights,doors, (Profile) null);
                     rooms.add(newRoom);
                     break;
             }

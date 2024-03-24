@@ -29,7 +29,7 @@ public class SimulationParameter {
         db.setRooms(layout.getRooms());
     }
 
-    public void notifyObserver(Profile user) throws IOException{
+    public void notifyObserver(Profile user) throws IOException {
         observer.update(user);
     }
 
@@ -118,7 +118,7 @@ public class SimulationParameter {
     }
 
     //creates a guest account
-    public void createStrangerAccount(String name, Room loc) throws IOException{
+    public void createStrangerAccount(String name, Room loc) throws IOException {
         if(!layout.getRooms().contains(loc)){
             System.out.println("ERROR: No such room in the house");
         }else{
