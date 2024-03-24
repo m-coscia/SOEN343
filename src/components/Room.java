@@ -42,20 +42,6 @@ public class Room extends Component {
         return identifier;
     }
 
-    //default constructor
-//    public Room(){
-        identifier = generateUniqueId();
-//        type = RoomType.BEDROOM;
-//        numWindows = 0;
-//        numLights = 0;
-//        numDoors = 0;
-//        lights = null;
-//        windows = null;
-//        doors = null;
-//        users = null;
-//    }
-
-
     //Parameterized Constructor
     public Room(RoomType t, int windows, int lights, int doors, Profile occupied) {
         type = t;
@@ -165,7 +151,6 @@ public class Room extends Component {
                  //", occupiedBy=" + (users != null && users.length > 0 ? users[0].getName() : "none") +
                  ", identifier=" + identifier +
                  '}';
-    }
     }
   
     // Method to check and adjust lighting based on autoMode and user presence
