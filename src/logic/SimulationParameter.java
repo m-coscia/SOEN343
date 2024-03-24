@@ -264,6 +264,33 @@ public class SimulationParameter {
         clock.pause();
     }
 
+    public ArrayList<Zone> getZones(){
+        return zones;
+    }
+
+    public void setZones(ArrayList<Zone> zones) {
+        this.zones = zones;
+    }
+
+    public void setZone(ArrayList<Room> r, double temp, String type){
+        Zone z = new Zone(r,temp,type);
+        zones.add(z);
+    }
+
+    public void setZoneTemperature(double temp, Zone z){
+        int index = zones.indexOf(z);
+        zones.get(index).setTemperature(temp);
+    }
+
+    public double getRoomTemp(Room r){
+        double temp = 0;
+        for(Zone z: zones){
+            if(z.getRooms().contains(r)){
+                temp = z.getTemperature();
+            }
+        }
+        return temp;
+    }
 
 
 }

@@ -52,7 +52,7 @@ public class Controller {
 
                 p = new Stranger(nameFields.get(i).getText(), null);
             }
-            Permissions permission = new Permissions(window,door,garage,lights);
+            Permissions permission = new Permissions(window,door,garage,lights, false);
 
             if(p != null){
                 p.setPermissions(permission);
