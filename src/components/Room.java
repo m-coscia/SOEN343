@@ -230,4 +230,61 @@ public class Room extends Component {
     public void setAwayMode(boolean awayMode) {
         this.awayMode = awayMode;
     }
+
+    public String getLightsStatus() {
+        if (numLights == 0) {
+            return "Lights (0): N/A";
+        }
+        return "Lights (" + numLights + "): " + (lights.isSwitchedOn() ? "ON" : "OFF");
+    }
+
+    public String getDoorsStatus() {
+        if (numDoors == 0) {
+            return "Doors (0): N/A";
+        }
+        return "Doors (" + numDoors + "): " + (doors.isOpen() ? "OPEN" : "CLOSED");
+    }
+
+    public String getWindowsStatus() {
+        if (numWindows == 0) {
+            return "Windows (0): N/A";
+        }
+        return "Windows (" + numWindows + "): " + (windows.isOpen() ? "OPEN" : "CLOSED");
+    }
+
+
+    // Toggles the state of lights, doors, and windows
+    public void toggleLights() {
+        if (lights != null) {
+            if (lights.isSwitchedOn()) lights.switchLightsOff();
+            else lights.switchLightsOn();
+        }
+    }
+
+//    public void toggleLights() {
+//        if (lights != null) {
+//            if (lights.isSwitchedOn()) {
+//                this.setCommand(new TurnOffLightsCommand(lights, users, null));
+//                this.executeCommand();
+//            } else {
+//                this.setCommand(new TurnOnLightsCommand(lights, users, null));
+//                this.executeCommand();
+//            }
+//        }
+//    }
+
+
+    public void toggleDoors() {
+        if (doors != null) {
+            if (doors.isOpen()) doors.closeDoorsCommand();
+            else doors.openDoorsCommand();
+        }
+    }
+
+    public void toggleWindows() {
+        if (windows != null) {
+            if (windows.isOpen()) windows.closeWindowsCommand();
+            else windows.openWindowsCommand();
+        }
+    }
 }
