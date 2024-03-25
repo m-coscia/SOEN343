@@ -1,14 +1,18 @@
 package logic;
 
+import Observer.AccountObserver;
+import Observer.Observer;
+import Observer.TimeObserver;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Map;
 import java.util.Scanner;
 
-import Observer.AddAccountObserver;
-
 public class Main {
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws IOException, InterruptedException {
 
         //new firstFrame();
         HouseLayout layout = HouseLayout.getHouseLayout();
@@ -19,8 +23,8 @@ public class Main {
 
         layout.setHouseLayout(layoutFile);
 
-        LocalDate date = LocalDate.of(2000, 5, 15);
-        LocalTime time = LocalTime.of(14, 30, 0);
+        LocalDate date = LocalDate.of(2023, 1, 1);
+        LocalTime time = LocalTime.of(1, 0, 0);
 
 
         System.out.println("The simulation parameter have been set \n" +
@@ -35,11 +39,14 @@ public class Main {
         Login loggedIn = new Login(null);
         DataBase db = DataBase.getDataBase();
         db.printAllProfiles();
-        db.printAllRooms();    
-        SimulationParameter param = new SimulationParameter(layoutFile, date, time, 21.0, 12.4, loggedIn);
+        db.printAllRooms();
+        String tempFile = "july_temp.csv";
 
-        AddAccountObserver observer = new AddAccountObserver();
-        param.attachObserver(observer);
+        SimulationParameter param = new SimulationParameter(layoutFile, tempFile ,date, time, 21.0, 12.4, loggedIn);
+
+        AccountObserver observer = new AccountObserver();
+        TimeObserver observer2 = new TimeObserver();
+        param.attachAccountObserver(observer);
         System.out.println("The date is: " + param.getDate());
         System.out.println("The time is: " + param.getTime());
         System.out.println("The inside temperature is: " + param.getWeatherInside());
@@ -67,6 +74,12 @@ public class Main {
             System.out.println("Room ID: " + db.getRooms().get(i).getId());
         }
 
+        param.attachTimeObserver(observer2);
+
+        param.startSimulation();
+        param.getClock().changeSpeed(1000);
+        Thread.sleep(100000);
+        param.stopSimulation();
 
     }
 }

@@ -1,93 +1,142 @@
 package UI;
 
+import controller.Controller;
 import logic.Profile;
-import components.Room;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ProfilesLoginFrame extends JFrame {
+    JFrame thisFrame = this;
+    Controller controller = new Controller();
+    private CardLayout layout = new CardLayout();
     private JFrame previousFrame;
-    private JPanel cardsPanel; // Panel holding the profile cards
-    private ArrayList<Profile> profiles; // Profiles to display
-    private int currentIndex = 0; // Index of the currently displayed profile
+    private JPanel panel1;
+    private JButton backButton;
+    private JButton previousProfileButton;
+    private JButton selectProfileButton;
+    private JButton nextProfileButton;
+    private JPanel cardsPanel;
+    private JPanel selectProfilePanel;
+    private JPanel commandsPanel;
+    private JTextField textField1;
+    private JPasswordField passwordField1;
+    private JPanel middle;
+    private JLabel usernameLabel;
+    private JLabel passwordLabel;
+    private JPanel loginPanel;
+    private ArrayList<Profile> profiles;
+    private int currentProfile = 0;
 
-    public ProfilesLoginFrame(JFrame previousFrame, ArrayList<Profile> profiles) {
+    public ProfilesLoginFrame(JFrame previousFrame) {
+        profiles = controller.getProfiles();
         this.previousFrame = previousFrame;
-        this.profiles = profiles;
-        initializeUI();
-    }
+        cardsPanel.setLayout(layout);
 
-    private void initializeUI() {
-        setTitle("Select Profile");
-        setSize(400, 300);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JPanel pa = new JPanel();
+        middle.add(pa.add(new JLabel("")), BorderLayout.NORTH);
+        loginPanel.setVisible(false);
 
-        cardsPanel = new JPanel(new CardLayout());
-        fillCardsPanel();
+        for (Profile p: profiles){
+            JPanel cardPanel = new JPanel();
+            cardPanel.setLayout(new BorderLayout());
+//            cardPanel.setAlignmentY(CENTER_ALIGNMENT);
+//            cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
 
-        // Navigation buttons
-        JButton prevButton = new JButton("<");
-        prevButton.addActionListener(this::showPreviousProfile);
-        JButton nextButton = new JButton(">");
-        nextButton.addActionListener(this::showNextProfile);
-        JButton selectButton = new JButton("Select");
-        selectButton.addActionListener(this::selectProfile);
+            JLabel iconLabel = new JLabel(new ImageIcon("src/UI/smallProfile.png"));
+            iconLabel.setAlignmentX(CENTER_ALIGNMENT);
+            iconLabel.setAlignmentY(CENTER_ALIGNMENT);
+            cardPanel.add(iconLabel,BorderLayout.CENTER);
 
-        JPanel controlPanel = new JPanel();
-        controlPanel.add(prevButton);
-        controlPanel.add(selectButton);
-        controlPanel.add(nextButton);
+            JPanel infoPanel = new JPanel();
+            infoPanel.setLayout(new BorderLayout());
+            //infoPanel.set
+            // Add profile name
+            JLabel nameLabel = new JLabel("Name: " + p.getName());
+            nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            infoPanel.add(nameLabel,BorderLayout.NORTH);
 
-        add(cardsPanel, BorderLayout.CENTER);
-        add(controlPanel, BorderLayout.SOUTH);
+            // Add profile type
+            JLabel typeLabel = new JLabel("Type of profile: " + controller.getType(p));
+            typeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            infoPanel.add(typeLabel,BorderLayout.CENTER);
 
-        setVisible(true);
-    }
+            JLabel locationLabel = new JLabel("Location: " + controller.getLocation(p));
+            locationLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            infoPanel.add(locationLabel, BorderLayout.SOUTH);
 
-    private void fillCardsPanel() {
-        for (Profile profile : profiles) {
-            JPanel profilePanel = new JPanel();
-            profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
-            profilePanel.add(new JLabel("Name: " + profile.getName()));
-            profilePanel.add(new JLabel("Location: " + (profile.getLocation() != null ? profile.getLocation().getId() : "Not Set")));
-            cardsPanel.add(profilePanel);
+
+//            usernameLabel.setVisible(false);
+//            passwordLabel.setVisible(false);
+//            textField1.setVisible(false);
+//            passwordField1.setVisible(false);
+            //ADD INFO PANEL TO CARD PANEL
+            cardPanel.add(infoPanel, BorderLayout.SOUTH);
+            // Add card to cards panel
+            cardsPanel.add(cardPanel);
         }
+        setUpControls();
+        setUpFrame();
+        add(panel1);
     }
 
-    private void showPreviousProfile(ActionEvent event) {
-        CardLayout cl = (CardLayout)(cardsPanel.getLayout());
-        cl.previous(cardsPanel);
-        currentIndex = Math.floorMod(currentIndex - 1, profiles.size());
+    private void setUpFrame(){
+        setTitle("Pick a Profile to log in to");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(500,400);
+        setResizable(false);
     }
 
-    private void showNextProfile(ActionEvent event) {
-        CardLayout cl = (CardLayout)(cardsPanel.getLayout());
-        cl.next(cardsPanel);
-        currentIndex = Math.floorMod(currentIndex + 1, profiles.size());
+    private void setUpControls(){
+        nextProfileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                layout.next(cardsPanel);
+                currentProfile++;
+            }
+
+        });
+
+        previousProfileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                layout.previous(cardsPanel);
+                currentProfile--;
+            }
+        });
+
+        selectProfileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loginPanel.setVisible(true);
+                commandsPanel.setVisible(false);
+                passwordField1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        controller.login(profiles.get(currentProfile % profiles.size()));
+                        System.out.println(profiles.get(currentProfile % profiles.size()).getName());
+
+                        // DashboardFrame dash = new DashboardFrame(thisFrame);
+                        Dashboard dash = new Dashboard(null, profiles.get(currentProfile % profiles.size()));
+                        dash.setLocationRelativeTo(null);
+                        dash.setVisible(true);
+                        dispose();
+
+                    }
+                });
+                //Component c = cardsPanel.getComponent(cardsPanel.getComponentCount()-1);
+
+            }
+        });
     }
 
-    private void selectProfile(ActionEvent event) {
-        Profile selectedProfile = profiles.get(currentIndex);
-        System.out.println("Selected profile: " + selectedProfile.getName());
-        // Further actions here, like opening the main application window with the selected profile
-        // For example:
-        // Dashboard dashboard = new Dashboard(selectedProfile);
-        // dashboard.setVisible(true);
-        dispose();
-    }
+
 
     public static void main(String[] args) {
-        // Example usage
-        SwingUtilities.invokeLater(() -> {
-            ArrayList<Profile> exampleProfiles = new ArrayList<>();
-            Room livingRoom = new Room(); // Assuming a constructor setting a default room
-            exampleProfiles.add(new Profile("John", livingRoom));
-            exampleProfiles.add(new Profile("Jane", null));
-            new ProfilesLoginFrame(null, exampleProfiles);
-        });
+        new ProfilesLoginFrame(null);
     }
 }

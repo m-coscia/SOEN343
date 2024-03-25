@@ -26,7 +26,7 @@ public class TurnOnLightsCommand implements Command{
         } else {
             // verify caller is part of the users that are in the room calling the command
             boolean isCallerInRoom = Arrays.stream(users).anyMatch(user -> user.equals(caller));
-            
+
             // if caller isn't in room, they can't control lights
             if (!isCallerInRoom){
                 // if user isn't parent, you can't control lights if you're not in the room

@@ -5,5 +5,5 @@ import logic.Profile;
 import java.io.IOException;
 
 public interface Observer {
-    public void update(Profile user) throws IOException;
+    public void update(Event event) throws IOException;
 }
