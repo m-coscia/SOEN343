@@ -1,10 +1,8 @@
 package src.components;
 
-import src.commands.Command;
+import src.commands.*;
 //import src.commands.TurnOffLightsCommand;
 //import src.commands.TurnOnLightsCommand;
-import src.commands.TurnOffLightsCommand;
-import src.commands.TurnOnLightsCommand;
 import src.logic.Profile;
 
 import java.util.ArrayList;
@@ -254,37 +252,40 @@ public class Room extends Component {
 
 
     // Toggles the state of lights, doors, and windows
-    public void toggleLights() {
+    public void toggleLights(Profile caller) {
         if (lights != null) {
-            if (lights.isSwitchedOn()) lights.switchLightsOff();
-            else lights.switchLightsOn();
+            if (lights.isSwitchedOn()) {
+                this.setCommand(new TurnOffLightsCommand(lights, users, caller));
+                this.executeCommand();
+            } else {
+                this.setCommand(new TurnOnLightsCommand(lights, users, caller));
+                this.executeCommand();
+            }
         }
     }
 
-//    public void toggleLights() {
-//        if (lights != null) {
-//            if (lights.isSwitchedOn()) {
-//                this.setCommand(new TurnOffLightsCommand(lights, users, null));
-//                this.executeCommand();
-//            } else {
-//                this.setCommand(new TurnOnLightsCommand(lights, users, null));
-//                this.executeCommand();
-//            }
-//        }
-//    }
-
-
-    public void toggleDoors() {
+    public void toggleDoors(Profile caller) {
         if (doors != null) {
-            if (doors.isOpen()) doors.closeDoorsCommand();
-            else doors.openDoorsCommand();
+            if (doors.isOpen()) {
+                this.setCommand(new CloseDoorsCommand(doors, users, caller));
+                this.executeCommand();
+            } else {
+                this.setCommand(new OpenDoorsCommand(doors, users, caller));
+                this.executeCommand();
+            }
         }
     }
 
-    public void toggleWindows() {
+    public void toggleWindows(Profile caller) {
         if (windows != null) {
-            if (windows.isOpen()) windows.closeWindowsCommand();
-            else windows.openWindowsCommand();
+            if (windows.isOpen()) {
+                this.setCommand(new CloseWindowsCommand(windows, users, caller));
+                this.executeCommand();
+            }
+            else {
+                this.setCommand(new OpenWindowsCommand(windows, users, caller));
+                this.executeCommand();
+            }
         }
     }
 }

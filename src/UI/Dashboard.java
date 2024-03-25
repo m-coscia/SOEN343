@@ -4,6 +4,8 @@ import src.Controller;
 import src.components.Clock;
 import src.components.Room;
 import src.components.RoomType;
+import src.logic.Parent;
+import src.logic.Permissions;
 import src.logic.Profile;
 
 import javax.swing.*;
@@ -140,7 +142,7 @@ public class Dashboard extends JFrame {
             if (room.getNumLights() > 0) {
                 updateButtonLook(lightsButton, room.getLights().isSwitchedOn());
                 lightsButton.addActionListener(e -> {
-                    room.toggleLights();
+                    room.toggleLights(currentProfile);
                     updateButtonLook(lightsButton, room.getLights().isSwitchedOn());
                 });
             } else {
@@ -151,7 +153,7 @@ public class Dashboard extends JFrame {
             if (room.getNumDoors() > 0) {
                 updateButtonLook(doorsButton, room.getDoors().isOpen());
                 doorsButton.addActionListener(e -> {
-                    room.toggleDoors();
+                    room.toggleDoors(currentProfile);
                     updateButtonLook(doorsButton, room.getDoors().isOpen());
                 });
             } else {
@@ -162,7 +164,7 @@ public class Dashboard extends JFrame {
             if (room.getNumWindows() > 0) {
                 updateButtonLook(windowsButton, room.getWindows().isOpen());
                 windowsButton.addActionListener(e -> {
-                    room.toggleWindows();
+                    room.toggleWindows(currentProfile);
                     updateButtonLook(windowsButton, room.getWindows().isOpen());
                 });
             } else {
@@ -209,11 +211,15 @@ public class Dashboard extends JFrame {
 
         Room[] rooms = new Room[] {r1, r2, r3, r4, r5};
 
-        System.out.println("Lights: " + r1.getNumLights());
+        System.out.println("Test from Dashboard class Main method:");
+
+        Parent p1 = new Parent("Denis", "Denis123", "123", r1);
+        Permissions p1Permissions = new Permissions(true, true, true, true);
+        p1.setPermissions(p1Permissions);
 
         p.setRoom(r1);
 
-        Dashboard d = new Dashboard(null, p);
+        Dashboard d = new Dashboard(null, p1);
         d.setLocationRelativeTo(null);
 
         d.createHouseLayout(rooms); // Create layout with the array of rooms

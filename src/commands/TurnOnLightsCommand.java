@@ -25,11 +25,11 @@ public record TurnOnLightsCommand(Lights lights, Profile[] users, Profile caller
                     System.out.println("You don't have permission to control lights when you're not in the room");
                     return;
                 } else { // Parent can control lights from anywhere
-                    System.out.println("Parent is closing lights from anywhere");
+                    System.out.println("Parent is turning on lights from anywhere");
                     lights.switchLightsOn();
                 }
             } else { // caller is in room
-                System.out.println("Closing Lights");
+                System.out.println("Turning On Lights");
                 lights.switchLightsOn();
             }
         }
