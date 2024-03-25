@@ -1,135 +1,93 @@
 package UI;
 
 import logic.Profile;
+import components.Room;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class ProfilesLoginFrame extends JFrame {
-    JFrame thisFrame = this;
-    private CardLayout layout = new CardLayout();
     private JFrame previousFrame;
-    private JPanel panel1;
-    private JButton backButton;
-    private JButton previousProfileButton;
-    private JButton selectProfileButton;
-    private JButton nextProfileButton;
-    private JPanel cardsPanel;
-    private JPanel selectProfilePanel;
-    private JPanel commandsPanel;
+    private JPanel cardsPanel; // Panel holding the profile cards
+    private ArrayList<Profile> profiles; // Profiles to display
+    private int currentIndex = 0; // Index of the currently displayed profile
 
     public ProfilesLoginFrame(JFrame previousFrame, ArrayList<Profile> profiles) {
         this.previousFrame = previousFrame;
-        cardsPanel.setLayout(layout);
-        for (Profile p : profiles) {
-            JPanel cardPanel = new JPanel();
-            cardPanel.setAlignmentY(CENTER_ALIGNMENT);
-            cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
-
-            JLabel iconLabel = new JLabel(new ImageIcon("src/UI/ProfileIcon.png"));
-            iconLabel.setAlignmentX(CENTER_ALIGNMENT);
-            iconLabel.setAlignmentY(CENTER_ALIGNMENT);
-            cardPanel.add(iconLabel);
-
-            // Add profile name
-            JLabel nameLabel = new JLabel("Name: " + p.getName());
-            nameLabel.setAlignmentX(CENTER_ALIGNMENT);
-            nameLabel.setAlignmentY(CENTER_ALIGNMENT);
-            cardPanel.add(nameLabel);
-
-            // Add profile type
-            JLabel typeLabel = new JLabel();
-            typeLabel.setAlignmentX(CENTER_ALIGNMENT);
-            typeLabel.setAlignmentY(CENTER_ALIGNMENT);
-            cardPanel.add(typeLabel);
-
-            JLabel locationLabel = new JLabel("Location: " + p.getLocation());
-            locationLabel.setAlignmentX(CENTER_ALIGNMENT);
-            locationLabel.setAlignmentY(CENTER_ALIGNMENT);
-            cardPanel.add(locationLabel);
-
-            // Add card to cards panel
-            cardsPanel.add(cardPanel);
-        }
-        setUpControls();
-        setUpFrame();
-        add(panel1);
+        this.profiles = profiles;
+        initializeUI();
     }
 
-    private void setUpFrame() {
-        setTitle("Pick a Profile to log in to");
+    private void initializeUI() {
+        setTitle("Select Profile");
+        setSize(400, 300);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(500, 400);
-        setResizable(false);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        cardsPanel = new JPanel(new CardLayout());
+        fillCardsPanel();
+
+        // Navigation buttons
+        JButton prevButton = new JButton("<");
+        prevButton.addActionListener(this::showPreviousProfile);
+        JButton nextButton = new JButton(">");
+        nextButton.addActionListener(this::showNextProfile);
+        JButton selectButton = new JButton("Select");
+        selectButton.addActionListener(this::selectProfile);
+
+        JPanel controlPanel = new JPanel();
+        controlPanel.add(prevButton);
+        controlPanel.add(selectButton);
+        controlPanel.add(nextButton);
+
+        add(cardsPanel, BorderLayout.CENTER);
+        add(controlPanel, BorderLayout.SOUTH);
+
+        setVisible(true);
     }
 
-    private void setUpControls() {
-        nextProfileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                layout.next(cardsPanel);
-            }
-        });
-
-        previousProfileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                layout.previous(cardsPanel);
-            }
-        });
-
-        selectProfileButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Component c = cardsPanel.getComponent(cardsPanel.getComponentCount() - 1);
-                //c.get
-                //addAuthentificationFields();
-                //TODO how do i get the profile that is selected
-                // DashboardFrame dash = new DashboardFrame(thisFrame);
-                Dashboard dash = new Dashboard(null);
-                dash.setLocationRelativeTo(null);
-                dash.setVisible(true);
-                dispose();
-
-            }
-        });
+    private void fillCardsPanel() {
+        for (Profile profile : profiles) {
+            JPanel profilePanel = new JPanel();
+            profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
+            profilePanel.add(new JLabel("Name: " + profile.getName()));
+            profilePanel.add(new JLabel("Location: " + (profile.getLocation() != null ? profile.getLocation().getId() : "Not Set")));
+            cardsPanel.add(profilePanel);
+        }
     }
 
-    private void addAuthentificationFields() {
-        // Create panel for username and password fields
-        JPanel usernamePasswordPanel = new JPanel(new GridLayout(2, 2));
-
-        // Add username label and field
-        JLabel usernameLabel = new JLabel("Username:");
-        JTextField usernameField = new JTextField();
-        usernamePasswordPanel.add(usernameLabel);
-        usernamePasswordPanel.add(usernameField);
-
-        // Add password label and field
-        JLabel passwordLabel = new JLabel("Password:");
-        JPasswordField passwordField = new JPasswordField();
-        usernamePasswordPanel.add(passwordLabel);
-        usernamePasswordPanel.add(passwordField);
-
-        // Add username and password panel to the card panel
-        cardsPanel.add(usernamePasswordPanel, "UsernamePassword");
-
-        // Show the added panel
-        layout.show(cardsPanel, "UsernamePassword");
-
-        // Repaint the frame
-        revalidate();
-        repaint();
-        pack();
+    private void showPreviousProfile(ActionEvent event) {
+        CardLayout cl = (CardLayout)(cardsPanel.getLayout());
+        cl.previous(cardsPanel);
+        currentIndex = Math.floorMod(currentIndex - 1, profiles.size());
     }
 
+    private void showNextProfile(ActionEvent event) {
+        CardLayout cl = (CardLayout)(cardsPanel.getLayout());
+        cl.next(cardsPanel);
+        currentIndex = Math.floorMod(currentIndex + 1, profiles.size());
+    }
 
+    private void selectProfile(ActionEvent event) {
+        Profile selectedProfile = profiles.get(currentIndex);
+        System.out.println("Selected profile: " + selectedProfile.getName());
+        // Further actions here, like opening the main application window with the selected profile
+        // For example:
+        // Dashboard dashboard = new Dashboard(selectedProfile);
+        // dashboard.setVisible(true);
+        dispose();
+    }
+
+    public static void main(String[] args) {
+        // Example usage
+        SwingUtilities.invokeLater(() -> {
+            ArrayList<Profile> exampleProfiles = new ArrayList<>();
+            Room livingRoom = new Room(); // Assuming a constructor setting a default room
+            exampleProfiles.add(new Profile("John", livingRoom));
+            exampleProfiles.add(new Profile("Jane", null));
+            new ProfilesLoginFrame(null, exampleProfiles);
+        });
+    }
 }

@@ -27,6 +27,7 @@ public class Clock {
     private void scheduleClockTask() {
         long period = (long) (1000 / speedMultiplier);
         executor.scheduleAtFixedRate(() -> {
+            // Use running.get() to retrieve the boolean value
             if (running.get()) {
                 time = time.plusSeconds(1);
                 System.out.println(time);
@@ -56,8 +57,9 @@ public class Clock {
         return time;
     }
 
-    public boolean isRunning(){
-        return running;
+    // Use running.get() for checking running state in other parts of your code as well
+    public boolean isRunning() {
+        return running.get();
     }
 
     public static void main(String[] args) throws InterruptedException {
