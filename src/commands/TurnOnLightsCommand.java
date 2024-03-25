@@ -1,6 +1,7 @@
 package src.commands;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 
 import src.components.Lights;
 import src.logic.Parent;
@@ -15,7 +16,7 @@ public record TurnOnLightsCommand(Lights lights, Profile[] users, Profile caller
             return;
         } else {
             // verify caller is part of the users that are in the room calling the command
-            boolean isCallerInRoom = Arrays.stream(users).anyMatch(user -> user.equals(caller));
+            boolean isCallerInRoom = users.contains(caller);
 
             // if caller isn't in room, they can't control lights
             if (!isCallerInRoom){

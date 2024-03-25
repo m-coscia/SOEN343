@@ -15,7 +15,7 @@ public record TurnOffLightsCommand(Lights lights, Profile[] users, Profile calle
             return;
         } else {
             // verify caller is part of the users that are in the room calling the command
-            boolean isCallerInRoom = Arrays.stream(users).anyMatch(user -> user.equals(caller));
+            boolean isCallerInRoom = users.contains(caller);
 
             // if caller isn't in room, they can't control lights
             if (!isCallerInRoom){
