@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class DataBase {
     private ArrayList<Profile> profiles = new ArrayList<>();
-    private ArrayList<Room> rooms = new ArrayList<>();
+    private ArrayList<Room> rooms = HouseLayout.getHouseLayout().getRooms();
     private static DataBase db = null;
     private File accountLog;
 
@@ -18,23 +18,22 @@ public class DataBase {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-    
                 String type = parts[0].trim();
                 String name = parts[1].trim();
                 String userName, password;
                 int locationId;
                 Profile profile = null;
-
                 Room location;
+    
                 switch (type) {
                     case "PARENT":
                         userName = parts[2].trim();
                         password = parts[3].trim();
                         locationId = Integer.parseInt(parts[4].trim());
                         location = findRoom(locationId);
-                        System.out.println("location:" + location);
                         profile = new Parent(name, userName, password, location);
                         break;
+
                     case "CHILD":
                         userName = parts[2].trim();
                         password = parts[3].trim();
@@ -42,18 +41,18 @@ public class DataBase {
                         location = findRoom(locationId);
                         profile = new Child(name, userName, password, location);
                         break;
+
                     case "GUEST":
                         userName = parts[2].trim();
                         password = parts[3].trim();
                         locationId = Integer.parseInt(parts[4].trim());
                         location = findRoom(locationId);
-                        System.out.println("location:" + location);
                         profile = new Guest(name, userName, password, location);
                         break;
+
                     case "STRANGER":
                         locationId = Integer.parseInt(parts[2].trim());
                         location = findRoom(locationId);
-                        System.out.println("location:" + location);
                         profile = new Stranger(name, location);
                         break;
 

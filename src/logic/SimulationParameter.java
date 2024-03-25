@@ -5,6 +5,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import src.Observer.*;
 import src.components.Clock;
 import src.components.Room;
+import src.components.Zone;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -27,13 +28,14 @@ public class SimulationParameter {
     private Clock clock;
     private LocalTime t;
     private Map<String, Double> weatherData = new HashMap<>();
+    private ArrayList<Zone> zones = new ArrayList<>();
 
 
     public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
         layout.setHouseLayout(layoutFile);
-        date = d;
         clock = new Clock();
         clock.setTime(t);
+        clock.setDate(d);
         weatherInside = inside;
         weatherOutside = outside;
         login = loggedIn;
@@ -230,7 +232,6 @@ public class SimulationParameter {
             reader.readNext();
             while ((nextLine = reader.readNext()) != null) {
                 String timestamp = nextLine[0] + "," + nextLine[1];
-                // Replace the special character with the standard minus sign
                 String temperatureString = nextLine[2].replace("−", "-");
                 double weather = Double.parseDouble(temperatureString);
                 weatherData.put(timestamp, weather);
@@ -249,9 +250,7 @@ public class SimulationParameter {
                 Event tempEvent = new TemperatureEvent("temperature", this); // Create a new event instance inside the loop
                 try {
                     notifyTimeObserver(tempEvent);
-                    System.out.println(weatherOutside);
-                    System.out.println(getTime());
-                } catch ( IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -261,6 +260,32 @@ public class SimulationParameter {
         clock.pause();
     }
 
+    public ArrayList<Zone> getZones(){
+        return zones;
+    }
+
+    public void setZones(ArrayList<Zone> zones) {
+        this.zones = zones;
+    }
+
+    public void addZone(Zone z){
+        zones.add(z);
+    }
+
+    public void setZoneTemperature(double temp, Zone z){
+        int index = zones.indexOf(z);
+        zones.get(index).setTemperature(temp);
+    }
+
+    public double getRoomTemp(Room r){
+        double temp = 0;
+        for(Zone z: zones){
+            if(z.getRooms().contains(r)){
+                temp = z.getTemperature();
+            }
+        }
+        return temp;
+    }
 
 
 }
