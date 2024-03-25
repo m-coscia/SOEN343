@@ -63,20 +63,14 @@ public class Room extends Component {
         type = t;
         users = new Profile[] { occupied };
         identifier = generateUniqueId();
-    }
 
-    public Room(RoomType t, int windows, int lights, int doors, Profile[] occupied) {
-        this.type = t;
-        this.users = occupied;
-        this.identifier = generateUniqueId();
-
-        numWindows = windows;
+        this.numWindows = windows;
         if (lights > 0)
             this.lights = new Lights();
         else
             this.lights = null;
 
-        numLights = lights;
+        this.numLights = lights;
         if (doors > 0) {
             if (t == RoomType.GARAGE) {
                 this.doors = new Doors(true);
@@ -86,7 +80,35 @@ public class Room extends Component {
         } else {
             this.doors = null;
         }
-        numDoors = doors;
+        this.numDoors = doors;
+        if (windows > 0)
+            this.windows = new Windows();
+        else
+            this.windows = null;
+    }
+
+    public Room(RoomType t, int windows, int lights, int doors, Profile[] occupied) {
+        this.type = t;
+        this.users = occupied;
+        this.identifier = generateUniqueId();
+
+        this.numWindows = windows;
+        if (lights > 0)
+            this.lights = new Lights();
+        else
+            this.lights = null;
+
+        this.numLights = lights;
+        if (doors > 0) {
+            if (t == RoomType.GARAGE) {
+                this.doors = new Doors(true);
+            } else {
+                this.doors = new Doors(false);
+            }
+        } else {
+            this.doors = null;
+        }
+        this.numDoors = doors;
         if (windows > 0)
             this.windows = new Windows();
         else

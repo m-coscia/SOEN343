@@ -3,6 +3,7 @@ package src.logic;
 import src.Observer.AccountObserver;
 import src.Observer.Observer;
 import src.Observer.TimeObserver;
+import src.logic.DataBase;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

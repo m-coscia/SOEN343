@@ -119,15 +119,68 @@ public class Dashboard extends JFrame {
         });
     }
 
+    public void createHouseLayout(Room[] rooms) {
+        houseLayout.removeAll(); // Clear existing layout
+
+        // Calculate the number of rows and columns to make the layout as square as possible
+        int gridSize = (int) Math.ceil(Math.sqrt(rooms.length));
+        houseLayout.setLayout(new GridLayout(gridSize, gridSize)); // Setting a square grid layout
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        for (Room room : rooms) {
+            JPanel roomPanel = new JPanel(new GridBagLayout()); // Changed to GridBagLayout for centering
+            roomPanel.setBorder(BorderFactory.createLineBorder(Color.black)); // Room border
+
+            // Create a label for each detail and center it
+            JLabel roomTypeLabel = new JLabel("Type: " + room.getType(), SwingConstants.CENTER);
+            JLabel numLightsLabel = new JLabel("Lights: " + room.getNumLights(), SwingConstants.CENTER);
+            JLabel numDoorsLabel = new JLabel("Doors: " + room.getNumDoors(), SwingConstants.CENTER);
+            JLabel numWindowsLabel = new JLabel("Windows: " + room.getNumWindows(), SwingConstants.CENTER);
+
+            // Add each label to the room panel with GridBagConstraints
+            roomPanel.add(roomTypeLabel, gbc);
+            roomPanel.add(numLightsLabel, gbc);
+            roomPanel.add(numDoorsLabel, gbc);
+            roomPanel.add(numWindowsLabel, gbc);
+
+            houseLayout.add(roomPanel); // Adding the room to the house layout
+        }
+
+        // Fill remaining grid cells if rooms.length is not a perfect square number
+        for (int i = rooms.length; i < gridSize * gridSize; i++) {
+            houseLayout.add(new JPanel());
+        }
+
+        houseLayout.revalidate();
+        houseLayout.repaint();
+    }
+
     private void setProfileInfo(Profile profile){
         currentProfile = profile;
         userTypeLabel.setText(controller.getType(profile) + ": " + profile.getName());
     }
     public static void main(String[] args) {
         Profile p = new Profile("Sara", null);
-        Room r = new Room(RoomType.BEDROOM,2,3,4,p);
-        p.setRoom(r);
+
+        Room r1 = new Room(RoomType.BEDROOM, 2, 3, 1, p);
+        Room r2 = new Room(RoomType.LIVINGROOM, 1, 4, 2, p);
+        Room r3 = new Room(RoomType.BATHROOM, 0, 1, 1, p);
+        Room r4 = new Room(RoomType.KITCHEN, 1, 2, 1, p);
+        Room r5 = new Room(RoomType.GARAGE, 2, 5, 3, p);
+
+        Room[] rooms = new Room[] {r1, r2, r3, r4, r5};
+
+        System.out.println("Lights: " + r1.getNumLights());
+
+        p.setRoom(r1);
+
         Dashboard d = new Dashboard(null, p);
         d.setLocationRelativeTo(null);
+
+        d.createHouseLayout(rooms); // Create layout with the array of rooms
+
     }
 }
