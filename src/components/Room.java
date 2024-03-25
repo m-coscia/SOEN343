@@ -116,23 +116,12 @@ public class Room extends Component {
     }
 
     public ArrayList<Profile> getUsers(){
-        return users;
+        return this.users;
     }
 
     public void setUsers(ArrayList<Profile> p){
-        users = p;
+        this.users = p;
     }
-  
-//     public Profile[] getUsers() {
-//         return users;
-//     }
-
-//     public void setUsers(Profile[] p) {
-//         int lengthOfUsers = p.length;
-//         for (int i = 0; i < p.length; i++) {
-//             users[i] = p[i];
-//         }
-//     }
 
     public boolean isOccupied(){
         if(users.size()==0 || users == null){
