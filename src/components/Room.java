@@ -1,8 +1,6 @@
 package src.components;
 
 import src.commands.Command;
-//import src.commands.TurnOffLightsCommand;
-//import src.commands.TurnOnLightsCommand;
 import src.commands.TurnOffLightsCommand;
 import src.commands.TurnOnLightsCommand;
 import src.logic.Profile;
@@ -118,23 +116,12 @@ public class Room extends Component {
     }
 
     public ArrayList<Profile> getUsers(){
-        return users;
+        return this.users;
     }
 
     public void setUsers(ArrayList<Profile> p){
-        users = p;
+        this.users = p;
     }
-  
-//     public Profile[] getUsers() {
-//         return users;
-//     }
-
-//     public void setUsers(Profile[] p) {
-//         int lengthOfUsers = p.length;
-//         for (int i = 0; i < p.length; i++) {
-//             users[i] = p[i];
-//         }
-//     }
 
     public boolean isOccupied(){
         if(users.size()==0 || users == null){
@@ -161,18 +148,18 @@ public class Room extends Component {
     // Method to check and adjust lighting based on autoMode and user presence
     // If user clicks automode on layout, you constantly call this method
     // If user clicks automode off, you don't call this method
-//    public static void checkAndSetLighting(Room room) {
-//        if (room.getLights() != null && room.getLights().getIsAutoMode()) {
-//            if (room.getUsers() != null) {
-//                // Assuming switchLightsOn is a command that takes a Lights object and turns it on
-//                room.setCommand(new TurnOnLightsCommand(room.getLights(), room.getUsers(), null));
-//            } else {
-//                // Assuming switchLightsOff is a command that takes a Lights object and turns it off
-//                room.setCommand(new TurnOffLightsCommand(room.getLights(), room.getUsers(), null));
-//            }
-//            room.executeCommand();
-//        }
-//    }
+    public static void checkAndSetLighting(Room room, Profile caller) {
+        if (room.getLights() != null && room.getLights().getIsAutoMode()) {
+            if (room.getUsers() != null) {
+                // Assuming switchLightsOn is a command that takes a Lights object and turns it on
+                room.setCommand(new TurnOnLightsCommand(room.getLights(), room.getUsers(), caller));
+            } else {
+                // Assuming switchLightsOff is a command that takes a Lights object and turns it off
+                room.setCommand(new TurnOffLightsCommand(room.getLights(), room.getUsers(), caller));
+            }
+            room.executeCommand();
+        }
+    }
 
     public boolean isAwayMode(){
         return awayMode;
