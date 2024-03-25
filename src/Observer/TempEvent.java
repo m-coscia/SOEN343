@@ -13,6 +13,7 @@ public class TempEvent extends Event{
         super(type);
         this.indoorTemp = sp.getWeatherInside();
         this.outdoorTemp = sp.getWeatherOutside();
+        this.simulationParameter = sp;
 
         String date = sp.getDate().toString();
         int month = Integer.parseInt(date.substring(5,7));
@@ -28,7 +29,12 @@ public class TempEvent extends Event{
         return outdoorTemp;
     }
 
-    public boolean isSummer() {
+    public boolean getIsSummer() {
         return isSummer;
+    }
+
+
+    public SimulationParameter getSimulationParameter() {
+        return simulationParameter;
     }
 }

@@ -11,12 +11,15 @@ public class TemperatureObserver implements Observer {
         String eventType = event.getType();
         switch(eventType){
             case "ShutdownAC":
+                shutdownAC((TempEvent) event);
+                break;
 
         }
 
     }
 
-    public void shutdownAC(AC cooling){
-
+    public void shutdownAC(TempEvent e){
+        AC ac = e.getSimulationParameter().getCooler();
+        ac.setIsCooling(false);
     }
 }
