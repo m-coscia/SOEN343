@@ -1,0 +1,17 @@
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### IDE ###
+/.idea
+*.iml
+*.iws
+*.ipr
+*.class
+*~
+*.swp
+
+### macOS ###
+.DS_Store
+
+### Windows ###
+Thumbs.db
