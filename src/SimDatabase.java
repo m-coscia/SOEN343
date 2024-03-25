@@ -34,8 +34,35 @@ public class SimDatabase {
         try{
             con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "soen343", "SOEN343&Pr0ject");
             stmt = con.createStatement();
+            String sql1="CREATE DATABASE "+databaseName;
+            String sql2="USE "+databaseName;
+            String sql3="CREATE TABLE smart_home_simulator_db.profiles (" +
+                    "ProfileID INT NOT NULL AUTO_INCREMENT, " +
+                    "Type TEXT, " +
+                    "Name TEXT, " +
+                    "Username TEXT, " +
+                    "Password TEXT, " +
+                    "Room INT, " +
+                    "PRIMARY KEY(ProfileID))";
+            String sql4 = "INSERT INTO Profiles (Type, Name, Username, Password, Room) VALUES " +
+                    "('PARENT', 'Naika', 'naikiki', 'kiki2002', 0),"+
+                    "('PARENT', 'Naika', 'naikiki', 'kiki2002', 3),"+
+                    "('CHILD', 'Yasmine', 'yaya', 'yaya2002', 0),"+
+                    "('CHILD', 'Yasmine', 'yaya', 'yaya2002', 4),"+
+                    "('GUEST', 'Asmae', 'asmama', 'asmou2002', 0),"+
+                    "('GUEST', 'Asmae', 'asmama', 'asmou2002', 3),"+
+                    "('STRANGER', 'Jay', '', '', 0),"+
+                    "('STRANGER', 'Jay', '', '', 3)";
+
+            stmt.addBatch(sql1);
+            stmt.addBatch(sql2);
+            stmt.addBatch(sql3);
+            stmt.addBatch(sql4);
+
+            stmt.executeBatch();
+            /*
             int status = stmt.executeUpdate("CREATE DATABASE "+databaseName);
-            stmt.executeUpdate("CREATE TABLE Profiles1 (" +
+            stmt.executeUpdate("CREATE TABLE smart_home_simulator_db.profiles (" +
                                                 "ProfileID INT NOT NULL AUTO_INCREMENT, " +
                                                 "Type TEXT, " +
                                                 "Name TEXT, " +
@@ -52,8 +79,8 @@ public class SimDatabase {
                                         "('GUEST', 'Asmae', 'asmama', 'asmou2002', 0),"+
                                         "('GUEST', 'Asmae', 'asmama', 'asmou2002', 3),"+
                                         "('STRANGER', 'Jay', 0),"+
-                                        "('STRANGER', 'Jay', 3),");
-            if(status > 0) System.out.println("Database is created successfully !!!");
+                                        "('STRANGER', 'Jay', 3)");
+            if(status > 0) System.out.println("Database is created successfully !!!");*/
         }
         catch(Exception e) {
             e.printStackTrace();
