@@ -3,9 +3,9 @@ package src.commands;
 import src.components.Windows;
 import src.logic.Parent;
 import src.logic.Profile;
-import java.util.Arrays;
+import java.util.ArrayList;
 
-public record CloseWindowsCommand(Windows windows, Profile[] users, Profile caller) implements Command {
+public record CloseWindowsCommand(Windows windows, ArrayList<Profile> users, Profile caller) implements Command {
     @Override
     public void execute() {
         // verify if caller has permission to windows
@@ -18,7 +18,7 @@ public record CloseWindowsCommand(Windows windows, Profile[] users, Profile call
             return;
         } else {
             // verify caller is part of the users that are in the room calling the command
-            boolean isCallerInRoom = Arrays.stream(users).anyMatch(user -> user.equals(caller));
+            boolean isCallerInRoom = users.contains(caller);
 
             // if caller isn't in room, they can't control windows
             if (!isCallerInRoom) {
