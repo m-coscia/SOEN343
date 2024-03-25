@@ -1,13 +1,12 @@
 package src.commands;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 
 import src.components.Lights;
 import src.logic.Parent;
 import src.logic.Profile;
 
-public record TurnOnLightsCommand(Lights lights, Profile[] users, Profile caller) implements Command{
+public record TurnOnLightsCommand(Lights lights, ArrayList<Profile> users, Profile caller) implements Command{
     @Override
     public void execute() {
         //verify if caller has permission to lights
