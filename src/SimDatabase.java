@@ -81,6 +81,7 @@ public class SimDatabase {
                                         "('STRANGER', 'Jay', 0),"+
                                         "('STRANGER', 'Jay', 3)");
             if(status > 0) System.out.println("Database is created successfully !!!");*/
+            con.close();
         }
         catch(Exception e) {
             e.printStackTrace();
