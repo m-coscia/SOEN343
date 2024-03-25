@@ -29,11 +29,11 @@ public record OpenWindowsCommand(Windows windows, ArrayList<Profile> users, Prof
                     System.out.println("You don't have permission to control windows when you're not in the room");
                     return;
                 } else { // Parent can control windows from anywhere
-                    System.out.println("Parent is closing windows from anywhere");
+                    System.out.println("Parent is opening windows from anywhere");
                     windows.openWindowsCommand();
                 }
             } else { // caller is in room
-                System.out.println("Closing Windows");
+                System.out.println("Opening Windows");
                 windows.openWindowsCommand();
             }
         }

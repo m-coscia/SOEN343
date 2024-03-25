@@ -28,4 +28,8 @@ public class Doors {
     public boolean getIsGarageDoor(){
         return isGarageDoor;
     }
+
+    public boolean isOpen() {
+        return this.open;
+    }
 }
