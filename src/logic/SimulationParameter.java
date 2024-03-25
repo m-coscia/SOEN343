@@ -5,6 +5,7 @@ import com.opencsv.exceptions.CsvValidationException;
 import src.Observer.*;
 import src.components.Clock;
 import src.components.Room;
+import src.components.Zone;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,16 +25,19 @@ public class SimulationParameter {
     private double weatherOutside;
     private AccountObserver accountObserver;
     private TimeObserver timeObserver;
+    private ActionObserver actionObserver;
     private Clock clock;
     private LocalTime t;
     private Map<String, Double> weatherData = new HashMap<>();
+    private ArrayList<Zone> zones = new ArrayList<>();
 
 
+    //is not supposed to take any weather, the weather outside is the same as the weather inside when starting the simulation
     public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
         layout.setHouseLayout(layoutFile);
-        date = d;
         clock = new Clock();
         clock.setTime(t);
+        clock.setDate(d);
         weatherInside = inside;
         weatherOutside = outside;
         login = loggedIn;
@@ -54,9 +58,10 @@ public class SimulationParameter {
         timeObserver.update(e);
     }
 
-    public Map getWeatherData(){
-        return weatherData;
+    public void notifyActionObserver(Event e) throws IOException {
+        actionObserver.update(e);
     }
+
 
     public void attachAccountObserver(AccountObserver o){
         accountObserver=o;
@@ -66,6 +71,14 @@ public class SimulationParameter {
         timeObserver=o;
     }
 
+    public void attachActionObserver(ActionObserver o){
+        actionObserver=o;
+    }
+
+
+    public Map getWeatherData(){
+        return weatherData;
+    }
 
     public HouseLayout getLayout(){
         return layout;
@@ -76,7 +89,7 @@ public class SimulationParameter {
     }
 
     public LocalDate getDate(){
-        return date;
+        return clock.getDate();
     }
 
     public void setTime(LocalTime t){
@@ -230,7 +243,6 @@ public class SimulationParameter {
             reader.readNext();
             while ((nextLine = reader.readNext()) != null) {
                 String timestamp = nextLine[0] + "," + nextLine[1];
-                // Replace the special character with the standard minus sign
                 String temperatureString = nextLine[2].replace("−", "-");
                 double weather = Double.parseDouble(temperatureString);
                 weatherData.put(timestamp, weather);
@@ -246,21 +258,118 @@ public class SimulationParameter {
         // Run the while loop in a separate thread
         new Thread(() -> {
             while (clock.isRunning().get()) {
-                Event tempEvent = new TemperatureEvent("temperature", this); // Create a new event instance inside the loop
+                Event tempEvent = new TimeEvent("temperature", this); // Create a new event instance inside the loop
                 try {
                     notifyTimeObserver(tempEvent);
-                    System.out.println(weatherOutside);
-                    System.out.println(getTime());
-                } catch ( IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+
+        weatherInside = weatherOutside;
+
+        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
+                "Event type: Start Simulation \n" +
+                "Event description: The Simulation has been started \n" +
+                "Details: \n" +
+                "Users: ";
+
+        for(Profile p: db.getProfiles()){
+            action += p.toString() +"\n";
+        }
+
+        action += "Rooms: ";
+        for(Room r: db.getRooms()){
+            action += r.toString() +"\n";
+        }
+
+        action += "Temperature outside: " + getWeatherOutside()+ "\n";
+        action += "Temperature inside: " + getWeatherInside() +"\n";
+        action += "LoggedIn user" + getLoggedIn() + "\n";
+
+        ActionEvent actionEvent = new ActionEvent("action", action);
+        notifyActionObserver(actionEvent);
     }
-    public void stopSimulation(){
+    public void stopSimulation() throws IOException {
         clock.pause();
+        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
+                "Event type: Stop Simulation \n" +
+                "Event description: The Simulation has been stopped \n";
+
+        ActionEvent actionEvent = new ActionEvent("action", action);
+        notifyActionObserver(actionEvent);
+
     }
 
+    public ArrayList<Zone> getZones(){
+        return zones;
+    }
+
+    public void setZones(ArrayList<Zone> zones) throws IOException {
+
+        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
+                "Event type: Set Zones for SHH \n" +
+                "Event description: " + zones.size() + " zones have been created \n" +
+                "Details: \n";
+                for(Zone z: zones){
+                    action += "Zone " + zones.indexOf(z) + ": ";
+                    for(Room r:z.getRooms()){
+                        action += r.toString() + "\n";
+                    }
+                    action += "Temperature of the zone: " + z.getTemperature() +"\n";
+                }
+        ActionEvent actionEvent = new ActionEvent("action", action);
+        notifyActionObserver(actionEvent);
+        this.zones = zones;
+    }
+
+    public void addZone(Zone z) throws IOException {
+        zones.add(z);
+        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
+                "Event type: Add Zone for SHH \n" +
+                "Event description: A zone has been added \n" +
+                "Details: \n";
+            action += "Zone " + zones.indexOf(z) + ": ";
+            for(Room r:z.getRooms()){
+                action += r.toString() + "\n";
+            }
+            action += "Temperature of the zone: " + z.getTemperature() +"\n";
+        ActionEvent actionEvent = new ActionEvent("action", action);
+        notifyActionObserver(actionEvent);
+    }
+
+
+    public void setZoneTemperature(double temp, Zone z) throws IOException {
+        int index = zones.indexOf(z);
+        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
+                "Event type: Change Zone Temperature \n";
+
+        if(temp > z.getTemperature()){
+            action += "Event description: The temperature of the Zone has increased \n";
+        }else{
+            action += "Event description: The temperature of the Zone has decreased \n";
+        }
+
+        action += "Details: \n";
+
+        action += "Zone " + zones.indexOf(z) + "\n";
+        action += "Previous temperature: " + z.getTemperature()+"\n";
+        zones.get(index).setTemperature(temp);
+        action += "New temperature: " + z.getTemperature()+"\n";
+        ActionEvent actionEvent = new ActionEvent("action", action);
+        notifyActionObserver(actionEvent);
+    }
+
+    public double getRoomTemp(Room r){
+        double temp = 0;
+        for(Zone z: zones){
+            if(z.getRooms().contains(r)){
+                temp = z.getTemperature();
+            }
+        }
+        return temp;
+    }
 
 
 }

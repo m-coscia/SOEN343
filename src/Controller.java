@@ -30,7 +30,7 @@ public class Controller {
                 if(String.valueOf(r.getType()).equals(locationFields.get(i).getSelectedItem())){
                     System.out.println(locationFields.get(i).getSelectedItem());
                     room = r;
-                    System.out.println(Arrays.toString(r.getUsers()));
+//                    System.out.println(ArrayList.toString(r.getUsers()));
                     break;
                 }
 
@@ -75,7 +75,7 @@ public class Controller {
 
                 p = new Stranger(nameFields.get(i).getText(), room);
             }
-            Permissions permission = new Permissions(window,door,garage,lights);
+            Permissions permission = new Permissions(window,door,garage,lights, false);
 
             if(p != null){
                 p.setPermissions(permission);
