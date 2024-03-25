@@ -2,6 +2,8 @@ package src.UI;
 
 import src.Controller;
 import src.components.Clock;
+import src.components.Room;
+import src.components.RoomType;
 import src.logic.Profile;
 
 import javax.swing.*;
@@ -50,24 +52,10 @@ public class Dashboard extends JFrame {
     private Clock  clock = new Clock();
     private Profile currentProfile;
 
-    public Dashboard(Profile loggedIn){
-//        setLayout(new BorderLayout());
-//        JPanel test = new JPanel();
-//        JButton testButton = new JButton();
-//        test.add(testButton);
-//
-//        JPanel test1 = new JPanel();
-//        test1.add(testButton);
-//
-//        JPanel test2 = new JPanel();
-//        test2.add(testButton);
-//
-//        ToggleButton t = new ToggleButton();
-//        testButton.add(t);
-//        add(test1, BorderLayout.NORTH);
-//        add(test2, BorderLayout.EAST);
-//        add(test, BorderLayout.WEST);
-//        add(t, BorderLayout.SOUTH);
+    public Dashboard(Profile loggedIn, Profile profile){
+
+        setProfileInfo(profile);
+
         tempLabel.setText("Oustide Temp. " + controller.getTemperature() + "ºC");
         ToggleButton toggle = new ToggleButton();
         toggle.setSize(10,10);
@@ -131,8 +119,15 @@ public class Dashboard extends JFrame {
         });
     }
 
+    private void setProfileInfo(Profile profile){
+        currentProfile = profile;
+        userTypeLabel.setText(controller.getType(profile) + ": " + profile.getName());
+    }
     public static void main(String[] args) {
-        Dashboard d = new Dashboard(null);
+        Profile p = new Profile("Sara", null);
+        Room r = new Room(RoomType.BEDROOM,2,3,4,p);
+        p.setRoom(r);
+        Dashboard d = new Dashboard(null, p);
         d.setLocationRelativeTo(null);
     }
 }

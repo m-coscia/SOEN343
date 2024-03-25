@@ -56,7 +56,6 @@ public class SimulationParameter {
         timeObserver.update(e);
     }
 
-
     public Map getWeatherData(){
         return weatherData;
     }
@@ -64,7 +63,7 @@ public class SimulationParameter {
     public void attachAccountObserver(AccountObserver o){
         accountObserver=o;
     }
-
+  
     public void attachTimeObserver(TimeObserver o){
         timeObserver=o;
     }
@@ -111,7 +110,7 @@ public class SimulationParameter {
     }
 
     //creates parent account
-    public void createParentAccount(String name, String id, String pw, Room loc) throws IOException {
+    public void createParentAccount(String name, String id, String pw, Room loc) throws IOException{
         if(!layout.getRooms().contains(loc)){
             System.out.println("ERROR: No such room in the house");
         }else {
@@ -124,7 +123,7 @@ public class SimulationParameter {
     }
 
     //creates a child account
-    public void createChildAccount(String name, String id, String pw, Room loc) throws IOException {
+    public void createChildAccount(String name, String id, String pw, Room loc) throws IOException{
         if(!layout.getRooms().contains(loc)){
             System.out.println("ERROR: No such room in the house");
         }else {
@@ -137,7 +136,7 @@ public class SimulationParameter {
     }
 
     //creates a guest account
-    public void createGuestAccount(String name, String id, String pw, Room loc) throws IOException {
+    public void createGuestAccount(String name, String id, String pw, Room loc) throws IOException{
         if(!layout.getRooms().contains(loc)){
             System.out.println("ERROR: No such room in the house");
         }else{
