@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class AccountObserver implements Observer {
-    private File accountLog = new File("accountLog.txt");
+    private File accountLog = new File("src/main/resources/accountLog.txt");
 
     @Override
     public void update(Event event) throws IOException{

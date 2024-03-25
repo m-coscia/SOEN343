@@ -14,7 +14,7 @@ public class DataBase {
 
     private DataBase() {
         try {
-            accountLog = new File("accountLog.txt");
+            accountLog = new File("src/main/resources/accountLog.txt");
             BufferedReader reader = new BufferedReader(new FileReader(accountLog));
             String line;
             while ((line = reader.readLine()) != null) {
