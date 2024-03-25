@@ -2,8 +2,9 @@ package src.commands;
 
 import src.components.Doors;
 import src.logic.Profile;
+import java.util.ArrayList;
 
-public record CloseDoorsCommand(Doors doors, Profile[] users, Profile caller) implements Command{
+public record CloseDoorsCommand(Doors doors, ArrayList<Profile> users, Profile caller) implements Command{
     @Override
     public void execute() {
 
