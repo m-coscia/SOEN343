@@ -53,6 +53,9 @@ public class Dashboard extends JFrame {
     private Profile currentProfile;
 
     public Dashboard(Profile loggedIn, Profile profile){
+        setVisible(false);
+        SimParameterSetUp s = new SimParameterSetUp();
+        s.setVisible(true);
 
         setProfileInfo(profile);
 
@@ -117,6 +120,9 @@ public class Dashboard extends JFrame {
                 //todo: should be able to edit the simulation context --> maybe switch labels to JTextArea and then when button is clicked make them editable
             }
         });
+
+        rightMainPanel.setVisible(false);
+        fullMainPanel.add(new SimParameterSetUp(), BorderLayout.CENTER);
     }
 
     private void setProfileInfo(Profile profile){

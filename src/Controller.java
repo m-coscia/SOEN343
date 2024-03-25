@@ -1,20 +1,25 @@
 package src;
+
 import src.components.Room;
-import src.components.RoomType;
 import src.logic.*;
+
 import javax.swing.*;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Controller {
 
+    private String layoutFileName;
     private DataBase database;
+    private SimulationParameter simParam = null;
     public Controller(){
         database = DataBase.getDataBase();
     }
 
     public void layoutSetUp(String filename) throws FileNotFoundException {
-        HouseLayout.getHouseLayout().setHouseLayout(filename);
+       layoutFileName = filename;
+       HouseLayout.getHouseLayout().setHouseLayout(filename);
     }
 
     public void saveProfiles(ArrayList<JTextField> nameFields, ArrayList<JTextField> usernameFields,
@@ -94,7 +99,11 @@ public class Controller {
     }
 
     public double getTemperature(){
-        return 14.3;
+        if(simParam == null){
+           return 0;
+        }else{
+           return simParam.getWeatherOutside();
+        }
     }
 
     public void login(Profile p){
@@ -133,6 +142,16 @@ public class Controller {
 //        Room r = profile.getLocation();
 //        return String.valueOf(r.getType());
         return "FIX LOCATION";
+    }
+
+    public ArrayList<Room> getRooms() {
+        return HouseLayout.getHouseLayout().getRooms();
+    }
+
+    public void setZones(ArrayList<ArrayList<JCheckBox>> checkboxes){
+        for (int i = 0; i < checkboxes.size(); i++){
+
+        }
     }
 //    public String[] getExistingLocations(){
 //        String[] rooms = new String[]{String.valueOf(RoomType.BEDROOM)};

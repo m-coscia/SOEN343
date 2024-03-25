@@ -3,7 +3,6 @@ package src.logic;
 import src.components.Room;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class DataBase {
@@ -25,26 +24,36 @@ public class DataBase {
                 String userName, password;
                 int locationId;
                 Profile profile = null;
-    
+
+                Room location;
                 switch (type) {
                     case "PARENT":
+                        userName = parts[2].trim();
+                        password = parts[3].trim();
+                        locationId = Integer.parseInt(parts[4].trim());
+                        location = findRoom(locationId);
+                        System.out.println("location:" + location);
+                        profile = new Parent(name, userName, password, location);
+                        break;
                     case "CHILD":
+                        userName = parts[2].trim();
+                        password = parts[3].trim();
+                        locationId = Integer.parseInt(parts[4].trim());
+                        location = findRoom(locationId);
+                        profile = new Child(name, userName, password, location);
+                        break;
                     case "GUEST":
                         userName = parts[2].trim();
                         password = parts[3].trim();
                         locationId = Integer.parseInt(parts[4].trim());
-                        Room location = findRoom(locationId);
-                        if (type.equals("PARENT")) {
-                            profile = new Parent(name, userName, password, location);
-                        } else if (type.equals("CHILD")) {
-                            profile = new Child(name, userName, password, location);
-                        } else { // GUEST
-                            profile = new Guest(name, userName, password, location);
-                        }
+                        location = findRoom(locationId);
+                        System.out.println("location:" + location);
+                        profile = new Guest(name, userName, password, location);
                         break;
                     case "STRANGER":
                         locationId = Integer.parseInt(parts[2].trim());
                         location = findRoom(locationId);
+                        System.out.println("location:" + location);
                         profile = new Stranger(name, location);
                         break;
 
