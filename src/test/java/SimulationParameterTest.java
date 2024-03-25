@@ -1,8 +1,6 @@
-import org.junit.Before;
-import org.junit.Test;
-import Observer.AccountObserver;
-import Observer.TemperatureEvent;
+import org.junit.*;
 import Observer.UserEvent;
+import Observer.TemperatureEvent;
 import components.Clock;
 import components.Room;
 import components.Zone;
@@ -20,8 +18,8 @@ import static org.junit.Assert.*;
 
 public class SimulationParameterTest {
     private SimulationParameter simulationParameter;
-    private String layoutFile = "houseLayoutFile.txt";
-    private String tempFile = "july_temp.csv";
+    private String layoutFile = "src/test/resources/houseLayoutFile.txt";
+    private String tempFile = "src/main/resources/july_temp.csv";
     private LocalDate date = LocalDate.of(2024, 3, 28);
     private LocalTime time = LocalTime.of(12, 0);
     private double insideTemp = 25.0;
