@@ -24,18 +24,6 @@ public class Room extends Component {
     private final int identifier;
     private boolean isInZone = false;
 
-    public Room(){
-        identifier = generateUniqueId();
-        type = RoomType.BEDROOM;
-        numWindows = 0;
-        numLights = 0;
-        numDoors = 0;
-        lights = null;
-        windows = null;
-        doors = null;
-        users = null;
-    }
-
 
 
     public Room(RoomType t, int windows, int lights, int doors, ArrayList<Profile> occupied){
@@ -64,6 +52,10 @@ public class Room extends Component {
             this.windows = new Windows();
         else
             this.windows = null;
+    }
+
+    public Room(){
+        this.identifier = generateUniqueId();
     }
 
     public boolean isInZone() {
@@ -138,7 +130,7 @@ public class Room extends Component {
 
 
     public boolean isOccupied(){
-        if(users.size()==0){
+        if(users.size()==0 || users == null){
             return false;
         }else{
             return true;

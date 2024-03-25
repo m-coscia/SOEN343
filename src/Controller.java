@@ -30,7 +30,7 @@ public class Controller {
                 if(String.valueOf(r.getType()).equals(locationFields.get(i).getSelectedItem())){
                     System.out.println(locationFields.get(i).getSelectedItem());
                     room = r;
-                    System.out.println(Arrays.toString(r.getUsers()));
+//                    System.out.println(ArrayList.toString(r.getUsers()));
                     break;
                 }
 

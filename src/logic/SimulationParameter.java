@@ -268,8 +268,7 @@ public class SimulationParameter {
         this.zones = zones;
     }
 
-    public void setZone(ArrayList<Room> r, double temp, String type){
-        Zone z = new Zone(r,temp,type);
+    public void addZone(Zone z){
         zones.add(z);
     }
 
