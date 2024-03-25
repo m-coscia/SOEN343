@@ -24,8 +24,6 @@ public class Room extends Component {
     private final int identifier;
     private boolean isInZone = false;
 
-
-
     public Room(RoomType t, int windows, int lights, int doors, ArrayList<Profile> occupied){
         this.type = t;
         this.users = occupied;
@@ -75,7 +73,6 @@ public class Room extends Component {
     }
 
     //default constructor
-
     public void setType(RoomType t){
         type = t;
     }
@@ -127,7 +124,17 @@ public class Room extends Component {
     public void setUsers(ArrayList<Profile> p){
         users = p;
     }
+  
+//     public Profile[] getUsers() {
+//         return users;
+//     }
 
+//     public void setUsers(Profile[] p) {
+//         int lengthOfUsers = p.length;
+//         for (int i = 0; i < p.length; i++) {
+//             users[i] = p[i];
+//         }
+//     }
 
     public boolean isOccupied(){
         if(users.size()==0 || users == null){
@@ -152,6 +159,8 @@ public class Room extends Component {
 
   
     // Method to check and adjust lighting based on autoMode and user presence
+    // If user clicks automode on layout, you constantly call this method
+    // If user clicks automode off, you don't call this method
 //    public static void checkAndSetLighting(Room room) {
 //        if (room.getLights() != null && room.getLights().getIsAutoMode()) {
 //            if (room.getUsers() != null) {
