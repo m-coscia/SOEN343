@@ -5,6 +5,8 @@ import com.opencsv.exceptions.CsvValidationException;
 import src.Observer.*;
 import src.components.Clock;
 import src.components.Room;
+import src.components.AC;
+import src.components.Heating;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,9 +26,12 @@ public class SimulationParameter {
     private double weatherOutside;
     private AccountObserver accountObserver;
     private TimeObserver timeObserver;
+    private TemperatureObserver temperatureObserver;
     private Clock clock;
     private LocalTime t;
     private Map<String, Double> weatherData = new HashMap<>();
+    private AC cooler;
+    private Heating heater;
 
 
     public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
@@ -54,6 +59,10 @@ public class SimulationParameter {
         timeObserver.update(e);
     }
 
+    public void notifyTemperatureObserver(Event e) throws IOException {
+        temperatureObserver.update(e);
+    }
+
     public Map getWeatherData(){
         return weatherData;
     }
@@ -64,6 +73,10 @@ public class SimulationParameter {
   
     public void attachTimeObserver(TimeObserver o){
         timeObserver=o;
+    }
+
+    public void attachTemperatureObserver(TemperatureObserver o){
+        temperatureObserver=o;
     }
 
 
@@ -262,5 +275,19 @@ public class SimulationParameter {
     }
 
 
+    public Heating getHeater() {
+        return heater;
+    }
 
+    public void setHeater(Heating heater) {
+        this.heater = heater;
+    }
+
+    public AC getCooler() {
+        return cooler;
+    }
+
+    public void setCooler(AC cooler) {
+        this.cooler = cooler;
+    }
 }
