@@ -13,7 +13,6 @@ public class Clock {
     private ScheduledExecutorService executor;
     private final AtomicBoolean running;
     private volatile double speedMultiplier;
-    private boolean speedChanged = false;
 
     public Clock() {
         this.date = LocalDate.now();
@@ -61,7 +60,6 @@ public class Clock {
     public void changeSpeed(double multiplier) {
         if (multiplier > 0 && multiplier != speedMultiplier) {
             speedMultiplier = multiplier;
-            speedChanged = true;
             System.out.println("Speed changed to: " + speedMultiplier);
             if (running.get()) {
                 executor.shutdownNow();
@@ -71,8 +69,8 @@ public class Clock {
         }
     }
 
-    public boolean getSpeedChanged() {
-        return speedChanged;
+    public double getSpeedMultiplier() {
+        return speedMultiplier;
     }
 
     public void pause() {

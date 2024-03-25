@@ -11,6 +11,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class Dashboard extends JFrame {
 
@@ -125,7 +126,9 @@ public class Dashboard extends JFrame {
     }
     public static void main(String[] args) {
         Profile p = new Profile("Sara", null);
-        Room r = new Room(RoomType.BEDROOM,2,3,4,p);
+        ArrayList<Profile> profiles = new ArrayList<Profile>();
+        profiles.add(p);
+        Room r = new Room(RoomType.BEDROOM,2,3,4,profiles);
         p.setRoom(r);
         Dashboard d = new Dashboard(null, p);
         d.setLocationRelativeTo(null);

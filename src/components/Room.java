@@ -24,41 +24,13 @@ public class Room extends Component {
     private final int identifier;
     private boolean isInZone = false;
 
-
-    // default constructor
-    public Room() {
-        identifier = generateUniqueId();
-        type = RoomType.BEDROOM;
-        numWindows = 0;
-        numLights = 0;
-        numDoors = 0;
-        lights = null;
-        windows = null;
-        doors = null;
-        users = null;
-    }
-
-    public int generateUniqueId() {
-        return ++idCounter;
-    }
-
-    public int getId() {
-        return identifier;
-
-    }
-
-
-
-
     public Room(RoomType t, int windows, int lights, int doors, ArrayList<Profile> occupied){
-
-   
         this.type = t;
         this.users = occupied;
         this.identifier = generateUniqueId();
 
         numWindows = windows;
-        if (lights > 0)
+        if(lights > 0)
             this.lights = new Lights();
         else
             this.lights = null;
@@ -74,12 +46,15 @@ public class Room extends Component {
             this.doors = null;
         }
         numDoors = doors;
-        if (windows > 0)
+        if(windows > 0)
             this.windows = new Windows();
         else
             this.windows = null;
     }
 
+    public Room(){
+        this.identifier = generateUniqueId();
+    }
 
     public boolean isInZone() {
         return isInZone;
@@ -97,36 +72,36 @@ public class Room extends Component {
         return identifier;
     }
 
-   
-    public void setType(RoomType t) {
+    //default constructor
+    public void setType(RoomType t){
         type = t;
     }
 
-    public void setNumWindows(int windows) {
+    public void setNumWindows(int windows){
         numWindows = windows;
     }
 
-    public void setNumLights(int lights) {
+    public void setNumLights(int lights){
         numLights = lights;
     }
 
-    public void setNumDoors(int doors) {
+    public void setNumDoors(int doors){
         numDoors = doors;
     }
 
-    public RoomType getType() {
+    public RoomType getType(){
         return type;
     }
 
-    public int getNumWindows() {
+    public int getNumWindows(){
         return numWindows;
     }
 
-    public int getNumLights() {
+    public int getNumLights(){
         return numLights;
     }
 
-    public int getNumDoors() {
+    public int getNumDoors(){
         return numDoors;
     }
 
@@ -149,11 +124,7 @@ public class Room extends Component {
     public void setUsers(ArrayList<Profile> p){
         users = p;
     }
-
-
-    public boolean isOccupied(){
-        if(users.size()==0){
-
+  
 //     public Profile[] getUsers() {
 //         return users;
 //     }
@@ -165,46 +136,31 @@ public class Room extends Component {
 //         }
 //     }
 
-    public boolean isOccupied() {
-        if (users == null) {
-
+    public boolean isOccupied(){
+        if(users.size()==0 || users == null){
             return false;
-        } else {
+        }else{
             return true;
         }
     }
 
-    // users is an array!!!!
+    //users is an array!!!!
     @Override
     public String toString() {
-        StringBuilder usersNames = new StringBuilder();
-        if (users != null && users.length > 0) {
-            for (Profile user : users) {
-                if (usersNames.length() > 0) {
-                    usersNames.append(", ");
-                }
-                usersNames.append(user.getName());
-            }
-        } else {
-            usersNames.append("none");
-        }
-
         return "Room{" +
-                "type=" + type +
-                ", numWindows=" + numWindows +
-                ", numLights=" + numLights +
-                ", numDoors=" + numDoors +
-                ", occupiedBy=" + usersNames +
-                // ", occupiedBy=" + (users != null && users.length > 0 ? users[0].getName() :
-                // "none") +
-                ", identifier=" + identifier +
-                '}';
+                 "type=" + type +
+                 ", numWindows=" + numWindows +
+                 ", numLights=" + numLights +
+                 ", numDoors=" + numDoors +
+                 //", occupiedBy=" + (users != null && users.length > 0 ? users[0].getName() : "none") +
+                 ", identifier=" + identifier +
+                 '}';
     }
 
+  
     // Method to check and adjust lighting based on autoMode and user presence
-           // If user clicks automode on layout, you constantly call this method
+    // If user clicks automode on layout, you constantly call this method
     // If user clicks automode off, you don't call this method
-
 //    public static void checkAndSetLighting(Room room) {
 //        if (room.getLights() != null && room.getLights().getIsAutoMode()) {
 //            if (room.getUsers() != null) {
@@ -217,13 +173,12 @@ public class Room extends Component {
 //            room.executeCommand();
 //        }
 //    }
-  
 
-    public boolean isAwayMode() {
+    public boolean isAwayMode(){
         return awayMode;
     }
 
-    public void setAwayMode(boolean awayMode) {
+    public void setAwayMode(boolean awayMode){
         this.awayMode = awayMode;
     }
 }

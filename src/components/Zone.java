@@ -7,7 +7,10 @@ public class Zone {
     private double temperature;
     private String type;
 
-    public Zone(ArrayList<Room> r, double temp, String t){
+    public Zone(ArrayList<Room> r, double temp, String t) {
+        if (!t.equals("HEATING") && !t.equals("COOLING")) {
+            throw new IllegalArgumentException("Type must be either 'HEATING' or 'COOLING'");
+        }
         rooms = r;
         temperature = temp;
         type = t;
@@ -47,6 +50,9 @@ public class Zone {
     }
 
     public void setType(String type) {
+        if (!type.equals("HEATING") && !type.equals("COOLING")) {
+            throw new IllegalArgumentException("Type must be either 'HEATING' or 'COOLING'");
+        }
         this.type = type;
     }
 }
