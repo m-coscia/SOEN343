@@ -1,12 +1,13 @@
 package src.commands;
 
+import src.Observer.ActionObserver;
 import src.components.Doors;
 import src.logic.Profile;
 
 public record CloseDoorsCommand(Doors doors, Profile[] users, Profile caller) implements Command{
+    private static ActionObserver actionObserver;
     @Override
     public void execute() {
-
         // Verify if it is a garage door
         if(doors.getIsGarageDoor()){
             if (!caller.getPermissions().getGarageDoorPermission()){
