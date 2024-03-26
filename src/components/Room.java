@@ -1,8 +1,11 @@
 package src.components;
 
-import src.commands.Command;
-import src.commands.TurnOffLightsCommand;
-import src.commands.TurnOnLightsCommand;
+
+import src.commands.*;
+//import src.commands.Command;
+//import src.commands.TurnOffLightsCommand;
+//import src.commands.TurnOnLightsCommand;
+
 import src.logic.Profile;
 
 import javax.swing.*;
@@ -22,18 +25,19 @@ public class Room extends Component {
     private final int identifier;
     private boolean isInZone = false;
 
+
     public Room(RoomType t, int windows, int lights, int doors, ArrayList<Profile> occupied){
         this.type = t;
         this.users = occupied;
         this.identifier = generateUniqueId();
 
-        numWindows = windows;
-        if(lights > 0)
+        this.numWindows = windows;
+        if (lights > 0)
             this.lights = new Lights();
         else
             this.lights = null;
 
-        numLights = lights;
+        this.numLights = lights;
         if (doors > 0) {
             if (t == RoomType.GARAGE) {
                 this.doors = new Doors(true);
@@ -43,8 +47,10 @@ public class Room extends Component {
         } else {
             this.doors = null;
         }
-        numDoors = doors;
-        if(windows > 0)
+
+  
+        this.numDoors = doors;
+        if (windows > 0)
             this.windows = new Windows();
         else
             this.windows = null;
@@ -167,5 +173,65 @@ public class Room extends Component {
 
     public void setAwayMode(boolean awayMode){
         this.awayMode = awayMode;
+    }
+
+    public String getLightsStatus() {
+        if (numLights == 0) {
+            return "Lights (0): N/A";
+        }
+        return "Lights (" + numLights + "): " + (lights.isSwitchedOn() ? "ON" : "OFF");
+    }
+
+    public String getDoorsStatus() {
+        if (numDoors == 0) {
+            return "Doors (0): N/A";
+        }
+        return "Doors (" + numDoors + "): " + (doors.isOpen() ? "OPEN" : "CLOSED");
+    }
+
+    public String getWindowsStatus() {
+        if (numWindows == 0) {
+            return "Windows (0): N/A";
+        }
+        return "Windows (" + numWindows + "): " + (windows.isOpen() ? "OPEN" : "CLOSED");
+    }
+
+
+    // Toggles the state of lights, doors, and windows
+    public void toggleLights(Profile caller) {
+        if (lights != null) {
+            if (lights.isSwitchedOn()) {
+                this.setCommand(new TurnOffLightsCommand(lights, users, caller));
+                this.executeCommand();
+            } else {
+                this.setCommand(new TurnOnLightsCommand(lights, users, caller));
+                this.executeCommand();
+            }
+        }
+    }
+
+    public void toggleDoors(Profile caller) {
+        if (doors != null) {
+            if (doors.isOpen()) {
+                this.setCommand(new CloseDoorsCommand(doors, users, caller));
+                this.executeCommand();
+            } else {
+                this.setCommand(new OpenDoorsCommand(doors, users, caller));
+                this.executeCommand();
+            }
+        }
+    }
+
+    public void toggleWindows(Profile caller) {
+        if (windows != null) {
+            if (windows.isOpen()) {
+                this.setCommand(new CloseWindowsCommand(windows, users, caller));
+                this.executeCommand();
+            }
+            else {
+                this.setCommand(new OpenWindowsCommand(windows, users, caller));
+                this.executeCommand();
+            }
+        }
     }
 }

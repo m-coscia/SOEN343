@@ -18,6 +18,10 @@ public class Lights {
         switchedOn = false;
     }
 
+    public boolean isSwitchedOn() {
+        return this.switchedOn;
+    }
+
     public boolean getIsAutoMode() {
         return isAutoMode;
     }
