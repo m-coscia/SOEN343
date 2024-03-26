@@ -2,7 +2,10 @@ package src.Observer;
 
 import java.io.*;
 
-public class ActionObserver{
+import src.Observer.Events.ActionEvent;
+import src.Observer.Events.Event;
+
+public class ActionObserver implements Observer {
 
     public void update(Event e){
         try {

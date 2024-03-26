@@ -1,4 +1,4 @@
-package src.Observer;
+package src.Observer.Events;
 
 public class ActionEvent extends Event {
     private String action;

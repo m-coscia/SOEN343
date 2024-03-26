@@ -1,21 +1,39 @@
 package src.commands;
 
+import src.Observer.ActionObserver;
+import src.Observer.ConsoleOutputObserver;
+import src.Observer.Events.ActionEvent;
+import src.Observer.Events.WindowEvent;
+import src.Observer.Events.Event;
 import src.components.Windows;
 import src.logic.Parent;
 import src.logic.Profile;
 
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public record OpenWindowsCommand(Windows windows, ArrayList<Profile> users, Profile caller) implements Command {
+    
+    public static ConsoleOutputObserver consoleObserver;
+    public static WindowEvent windowEvent;
+
+    public void notifyConsoleOutputObserver(Event e) throws IOException {
+        consoleObserver.update(e);
+    }
+
     @Override
-    public void execute() {
+    public void execute() throws IOException {
         // verify if caller has permission to windows
         if (!caller.getPermissions().getWindowsPermission()) {
             System.out.println("Windows cannot be controlled by you Stranger!!");
             return;
         } else if (windows.getObstructed()) {
             // verify if windows are obstructed
-            System.out.println("Windows are obstructed, can't close them");
+            String event = "Windows are obstructed, can't open them";
+            System.out.println(event);
+            windowEvent = new WindowEvent("windowEvent", event);
+            notifyConsoleOutputObserver(windowEvent);
             return;
         } else {
             // verify caller is part of the users that are in the room calling the command

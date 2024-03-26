@@ -1,5 +1,7 @@
 package src.Observer;
 
+import src.Observer.Events.Event;
+import src.Observer.Events.UserEvent;
 import src.logic.*;
 
 import java.io.File;

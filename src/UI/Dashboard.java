@@ -27,7 +27,7 @@ public class Dashboard extends JFrame {
     private JButton editButton;
     private JPanel fullMainPanel;
     private JTabbedPane tabbedPane1;
-    private JTextArea outputArea;
+    public JTextArea outputArea;
     private JPanel consolePanel;
     private JLabel consoleLabel;
     private JSplitPane rightMainPanel;
@@ -118,6 +118,86 @@ public class Dashboard extends JFrame {
                 //todo: should be able to edit the simulation context --> maybe switch labels to JTextArea and then when button is clicked make them editable
             }
         });
+    }
+
+    public void createHouseLayout(Room[] rooms) {
+        houseLayout.removeAll(); // Clear existing layout
+        int gridSize = (int) Math.ceil(Math.sqrt(rooms.length));
+        houseLayout.setLayout(new GridLayout(gridSize, gridSize)); // Setting a square grid layout
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        for (Room room : rooms) {
+            JPanel roomPanel = new JPanel(new GridBagLayout());
+            roomPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+
+            JLabel roomTypeLabel = new JLabel("Type: " + room.getType(), SwingConstants.CENTER);
+            JButton lightsButton = new JButton(room.getLightsStatus());
+            JButton doorsButton = new JButton(room.getDoorsStatus());
+            JButton windowsButton = new JButton(room.getWindowsStatus());
+
+            if (room.getNumLights() > 0) {
+                updateButtonLook(lightsButton, room.getLights().isSwitchedOn());
+                lightsButton.addActionListener(e -> {
+                    room.toggleLights(currentProfile);
+                    updateButtonLook(lightsButton, room.getLights().isSwitchedOn());
+                });
+            } else {
+                lightsButton.setEnabled(false); // Disable the button if there are no lights
+                lightsButton.setText("Lights (0): N/A");
+            }
+
+            if (room.getNumDoors() > 0) {
+                updateButtonLook(doorsButton, room.getDoors().isOpen());
+                doorsButton.addActionListener(e -> {
+                    room.toggleDoors(currentProfile);
+                    updateButtonLook(doorsButton, room.getDoors().isOpen());
+                });
+            } else {
+                doorsButton.setEnabled(false); // Disable the button if there are no doors
+                doorsButton.setText("Doors (0): N/A");
+            }
+
+            if (room.getNumWindows() > 0) {
+                updateButtonLook(windowsButton, room.getWindows().isOpen());
+                windowsButton.addActionListener(e -> {
+                    room.toggleWindows(currentProfile);
+                    updateButtonLook(windowsButton, room.getWindows().isOpen());
+                });
+            } else {
+                windowsButton.setEnabled(false); // Disable the button if there are no windows
+                windowsButton.setText("Windows (0): N/A");
+            }
+
+            // Add components to the room panel with GridBagConstraints
+            roomPanel.add(roomTypeLabel, gbc);
+            roomPanel.add(lightsButton, gbc);
+            roomPanel.add(doorsButton, gbc);
+            roomPanel.add(windowsButton, gbc);
+
+            houseLayout.add(roomPanel); // Adding the room to the house layout
+        }
+
+        // Fill remaining grid cells if rooms.length is not a perfect square number
+        for (int i = rooms.length; i < gridSize * gridSize; i++) {
+            houseLayout.add(new JPanel());
+        }
+
+        houseLayout.revalidate();
+        houseLayout.repaint();
+    }
+    // In the Dashboard class
+    public void appendToOutputArea(String text) {
+        outputArea.append(text + "\n"); // Append the text and a newline to make it readable
+    }
+
+    // Helper method to update the appearance of the buttons
+    private void updateButtonLook(JButton button, boolean isOn) {
+        button.setText(isOn ? button.getText().replace("OFF", "ON") : button.getText().replace("ON", "OFF"));
+        button.setText(isOn ? button.getText().replace("CLOSED", "OPEN") : button.getText().replace("OPEN", "CLOSED"));
+        button.setForeground(isOn ? Color.GREEN : Color.RED);
     }
 
     private void setProfileInfo(Profile profile){

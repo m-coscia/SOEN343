@@ -3,6 +3,10 @@ package src.logic;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import src.Observer.*;
+import src.Observer.Events.ActionEvent;
+import src.Observer.Events.Event;
+import src.Observer.Events.TimeEvent;
+import src.Observer.Events.UserEvent;
 import src.components.Clock;
 import src.components.Room;
 import src.components.Zone;
@@ -49,7 +53,7 @@ public class SimulationParameter {
     public Clock getClock(){
         return clock;
     }
-
+    
     public void notifyAccountObserver(Event e) throws IOException {
         accountObserver.update(e);
     }

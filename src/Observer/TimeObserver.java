@@ -1,6 +1,8 @@
 package src.Observer;
 
 
+import src.Observer.Events.Event;
+import src.Observer.Events.TimeEvent;
 import src.logic.SimulationParameter;
 
 import java.time.LocalTime;
