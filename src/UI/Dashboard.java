@@ -190,6 +190,11 @@ public class Dashboard extends JFrame {
         houseLayout.revalidate();
         houseLayout.repaint();
     }
+    // In the Dashboard class
+    public void appendToOutputArea(String text) {
+        outputArea.append(text + "\n"); // Append the text and a newline to make it readable
+    }
+
     // Helper method to update the appearance of the buttons
     private void updateButtonLook(JButton button, boolean isOn) {
         button.setText(isOn ? button.getText().replace("OFF", "ON") : button.getText().replace("ON", "OFF"));
