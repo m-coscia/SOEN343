@@ -1,13 +1,18 @@
 package src.logic;
 
 import src.Observer.AccountObserver;
+import src.Observer.ActionObserver;
 import src.Observer.Observer;
 import src.Observer.TimeObserver;
+import src.logic.DataBase;
+import src.components.Room;
+import src.components.Zone;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -38,8 +43,6 @@ public class Main {
 
         Login loggedIn = new Login(null);
         DataBase db = DataBase.getDataBase();
-        db.printAllProfiles();
-        db.printAllRooms();
         String tempFile = "july_temp.csv";
 
         SimulationParameter param = new SimulationParameter(layoutFile, tempFile ,date, time, 21.0, 12.4, loggedIn);
@@ -65,20 +68,35 @@ public class Main {
 
         param.login(param.getProfiles().get(1));
 
-        // System.out.println("The currently logged in user is: " + param.getLoggedIn().getName() +
-        //         "\n And the user is located in a: " + param.getLoggedIn().getLocation().getType());
-        // System.out.println("The ID of the room is: " + param.getLoggedIn().getLocation().getId());
-
         System.out.println("The number of rooms is: " + db.getRooms().size());
-        for(int i =0;i<db.getRooms().size();i++){
-            System.out.println("Room ID: " + db.getRooms().get(i).getId());
-        }
 
         param.attachTimeObserver(observer2);
 
+        ActionObserver actionObserver = new ActionObserver();
+        param.attachActionObserver(actionObserver);
+
         param.startSimulation();
-        param.getClock().changeSpeed(1000);
-        Thread.sleep(100000);
+
+        ArrayList<Room> rooms1 = new ArrayList<Room>();
+        rooms1.add(layout.getRooms().get(0));
+        ArrayList<Room> rooms2 = new ArrayList<Room>();
+        rooms2.add(layout.getRooms().get(1));
+
+        Zone zone1 = new Zone(rooms1,20.0,"COOLING");
+        Zone zone2 = new Zone(rooms2,18.5,"HEATING");
+
+        param.addZone(zone1);
+        param.addZone(zone2);
+
+        ArrayList<Zone> zones = new ArrayList<Zone>();
+        zones.add(zone1);
+        zones.add(zone2);
+
+        param.setZones(zones);
+
+        param.setZoneTemperature(15.0, zone1);
+
+        Thread.sleep(10);
         param.stopSimulation();
 
 

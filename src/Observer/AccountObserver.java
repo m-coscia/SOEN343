@@ -45,8 +45,6 @@ public class AccountObserver implements Observer {
                 writer.write(profileInfo);
                 writer.close();
 
-
-                System.out.println("Text has been written to the file successfully.");
             } catch (IOException e) {
                 System.err.println("An error occurred while writing to the file: " + e.getMessage());
             }

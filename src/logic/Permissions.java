@@ -5,12 +5,14 @@ public class Permissions {
     private boolean doors;
     private boolean garageDoor;
     private boolean lights;
+    private boolean temperature;
 
-    public Permissions(boolean w, boolean d, boolean g, boolean l){
+    public Permissions(boolean w, boolean d, boolean g, boolean l, boolean t){
         windows = w;
         doors = d;
         garageDoor = g;
         lights = l;
+        temperature = t;
     }
 
     public void setWindowsPermission(boolean permission){
@@ -44,4 +46,12 @@ public class Permissions {
     public boolean getLightsPermission(){
         return lights;
     }
+
+    public void setTemperaturePermission(boolean permission){
+        temperature = permission;
+    }
+
+    public boolean getTemperaturePermission(){
+        return temperature;
+     }
 }
