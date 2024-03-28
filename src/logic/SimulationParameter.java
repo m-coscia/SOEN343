@@ -41,7 +41,7 @@ public class SimulationParameter {
 
 
     //is not supposed to take any weather, the weather outside is the same as the weather inside when starting the simulation
-    public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
+    public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn, AC ac, Heating heat) throws FileNotFoundException {
         layout.setHouseLayout(layoutFile);
         clock = new Clock();
         clock.setTime(t);
@@ -51,6 +51,8 @@ public class SimulationParameter {
         login = loggedIn;
         db.setRooms(layout.getRooms());
         uploadTempFile(tempFile);
+        cooler = ac;
+        heater = heat;
     }
 
 

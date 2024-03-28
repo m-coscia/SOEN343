@@ -2,14 +2,13 @@ package src.tests;
 
 import org.junit.Before;
 import org.junit.Test;
-
+import src.Observer.TempEvent;
 import src.Observer.Events.TimeEvent;
 import src.Observer.Events.UserEvent;
 import src.components.Clock;
 import src.components.Room;
 import src.components.Zone;
 import src.logic.*;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -17,7 +16,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import static org.junit.Assert.*;
 
 public class SimulationParameterTest {
@@ -58,6 +56,16 @@ public class SimulationParameterTest {
         // Not testing the actual notification mechanism, just checking if method is invoked without errors
         try {
             simulationParameter.notifyTimeObserver(new TimeEvent("temperature", simulationParameter));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testNotifyTemperatureObserver(){
+        // Not testing the actual notification mechanism, just checking if method is invoked without errors
+        try{
+            simulationParameter.notifyTemperatureObserver(new TempEvent("ShutdownAC", simulationParameter));
         } catch (Exception e) {
             e.printStackTrace();
         }
