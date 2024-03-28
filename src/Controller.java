@@ -21,8 +21,15 @@ public class Controller {
     }
 
     public void layoutSetUp(String filename) throws FileNotFoundException {
+        try{
+            HouseLayout.getHouseLayout().setHouseLayout(filename);
+        }catch(FileNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println(filename);
        layoutFileName = filename;
-       HouseLayout.getHouseLayout().setHouseLayout(filename);
+
     }
 
 
@@ -165,7 +172,8 @@ public class Controller {
     public void setSimulationParams(Date date, int hours,int min, double outsideTemp, Profile profile) {
 
         try{
-            simParam = new SimulationParameter(layoutFileName, temperatureFile,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), outsideTemp,0, new Login(profile));
+
+            simParam = new SimulationParameter(null, temperatureFile,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), outsideTemp,0, new Login(profile));
         }catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

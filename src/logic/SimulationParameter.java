@@ -32,7 +32,7 @@ public class SimulationParameter {
 
 
     public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
-        layout.setHouseLayout(layoutFile);
+        //layout.setHouseLayout(layoutFile);
         clock = new Clock();
         clock.setTime(t);
         clock.setDate(d);
@@ -237,7 +237,7 @@ public class SimulationParameter {
                 weatherData.put(timestamp, weather);
             }
         } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
