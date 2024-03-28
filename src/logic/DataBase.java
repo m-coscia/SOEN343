@@ -4,6 +4,7 @@ import src.components.Room;
 
 import java.io.*;
 import java.lang.reflect.Array;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class DataBase {
@@ -13,6 +14,54 @@ public class DataBase {
     private File accountLog;
 
     private DataBase() {
+        Connection con=null;
+        Statement stmt=null;
+        try{
+            //connecting to database
+            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "soen343", "SOEN343&Pr0ject");
+            //required for running SQL commands in Java
+            stmt = con.createStatement();
+            String query = "SELECT * FROM smart_home_simulator_db.profiles";
+            //fetch all profiles from SQL database
+            ResultSet rs = stmt.executeQuery(query);
+            //declaring temp variables
+            String type, name, userName, password;
+            int locationId;
+            //loop through each entry of SQL table and create profiles
+            while(rs.next()) {
+                type = rs.getString("Type");
+                name = rs.getString("Name");
+                userName = rs.getString("Username");
+                password = rs.getString("Password");
+                locationId =  rs.getInt("Room");
+                Profile profile = null;
+                Room location = findRoom(locationId);
+                ;
+                switch(type){
+                    case "PARENT":
+                        profile = new Parent(name, userName, password, location);
+                        break;
+                    case "CHILD":
+                        profile = new Child(name, userName, password, location);
+                        break;
+                    case "GUEST":
+                        profile = new Guest(name, userName, password, location);
+                        break;
+                    case "STRANGER":
+                        profile = new Stranger(name, location);
+                        break;
+                }
+                // add profile to arraylist
+                if (profile != null) {
+                    profiles.add(profile);
+                }
+            }
+            con.close();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        /*
         try {
             accountLog = new File("accountLog.txt");
             BufferedReader reader = new BufferedReader(new FileReader(accountLog));
@@ -66,9 +115,9 @@ public class DataBase {
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } */
     }
-    
+
     public static synchronized DataBase getDataBase(){
         if(db==null){
             db = new DataBase();
@@ -78,9 +127,43 @@ public class DataBase {
 
     public void addAccount(Profile p){
         profiles.add(p);
+        Connection con=null;
+        Statement stmt=null;
+        String name = p.getName();
+        int location = p.getLocation().getId();
         try{
+            //connecting to database
+            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "soen343", "SOEN343&Pr0ject");
+            //required for running SQL commands in Java
+            stmt = con.createStatement();
+            String query = "";
+            //insert profiles into database
+            if(p instanceof Parent){
+                String username = (((Parent) p).getUserName());
+                String password = (((Parent) p).getPassword());
+                query = "INSERT INTO smart_home_simulator_db.profiles VALUES ('PARENT', '"+name+"', '"+username+"', '"+password+"', "+location+")";
+                stmt.executeUpdate(query);
+            }
+            else if(p instanceof Child){
+                String username = (((Child) p).getUserName());
+                String password = (((Child) p).getPassword());
+                query = "INSERT INTO smart_home_simulator_db.profiles VALUES ('CHILD', '"+name+"', '"+username+"', '"+password+"', "+location+")";
+                stmt.executeUpdate(query);
+            }
+            else if(p instanceof Guest){
+                String username = (((Guest) p).getUserName());
+                String password = (((Guest) p).getPassword());
+                query = "INSERT INTO smart_home_simulator_db.profiles VALUES ('GUEST', '"+name+"', '"+username+"', '"+password+"', "+location+")";
+                stmt.executeUpdate(query);
+            }
+            else{
+                query = "INSERT INTO smart_home_simulator_db.profiles VALUES ('STRANGER', '"+name+"', '', '', "+location+")";
+                stmt.executeUpdate(query);
+            }
+            con.close();
 
             //TODO: location? is 0 equivalent to not being in the home?
+            /*
             FileWriter fw = new FileWriter(accountLog,true);
             if( p instanceof  Parent){
                 fw.write("PARENT," + p.getName() +"," + ((Parent) p).getUserName() + "," + ((Parent) p).getPassword() + "," +((Parent) p).getLocation().getId()+ "\n" );
@@ -91,17 +174,82 @@ public class DataBase {
             }else if(p instanceof Stranger){
                 fw.write("STRANGER," + p.getName() + "," +((Stranger) p).getLocation().getId()+ "\n" );
             }
-
-            fw.close();
-        }catch(IOException e){
+            fw.close(); */
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        /* catch(IOException e){
 
             System.out.println(e.getMessage());
-        }
-
+        } */
     }
 
     public void deleteAccount(Profile p){
         profiles.remove(p);
+
+        //remove from SQL table
+        Connection con=null;
+        Statement stmt=null;
+        String name = p.getName();
+        int location = p.getLocation().getId();
+        String type = p.getClass().getName().toUpperCase();
+        String query,username, password;
+
+        try{
+            //connecting to database
+            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "soen343", "SOEN343&Pr0ject");
+            //required for running SQL commands in Java
+            stmt = con.createStatement();
+            switch(type){
+                case "PARENT":
+                    username = (((Parent) p).getUserName());
+                    password = (((Parent) p).getPassword());
+                    query = "DELETE FROM smart_home_simulator_db.profiles " +
+                            "WHERE Type='PARENT' AND " +
+                            "Name='"+name+"' AND " +
+                            "Username='"+username+"' AND " +
+                            "Password='"+password+"' AND " +
+                            "Room="+location;
+                    stmt.executeUpdate(query);
+                    break;
+                case "CHILD":
+                    username = (((Child) p).getUserName());
+                    password = (((Child) p).getPassword());
+                    query = "DELETE FROM smart_home_simulator_db.profiles " +
+                            "WHERE Type='CHILD' AND " +
+                            "Name='"+name+"' AND " +
+                            "Username='"+username+"' AND " +
+                            "Password='"+password+"' AND " +
+                            "Room="+location;
+                    stmt.executeUpdate(query);
+                    break;
+                case "GUEST":
+                    username = (((Guest) p).getUserName());
+                    password = (((Guest) p).getPassword());
+                    query = "DELETE FROM smart_home_simulator_db.profiles " +
+                            "WHERE Type='GUEST' AND " +
+                            "Name='"+name+"' AND " +
+                            "Username='"+username+"' AND " +
+                            "Password='"+password+"' AND " +
+                            "Room="+location;
+                    stmt.executeUpdate(query);
+                    break;
+                case "STRANGER":
+                    query = "DELETE FROM smart_home_simulator_db.profiles " +
+                            "WHERE Type='STRANGER' AND " +
+                            "Name='"+name+"' AND " +
+                            "Room="+location;
+                    stmt.executeUpdate(query);
+                    break;
+            }
+            con.close();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+
+
     }
 
     public void addRoom(Room r){
