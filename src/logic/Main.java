@@ -1,12 +1,8 @@
 package src.logic;
 
-import src.Observer.AccountObserver;
-import src.Observer.ActionObserver;
-import src.Observer.Observer;
-import src.Observer.TimeObserver;
+import src.Observer.*;
+import src.components.*;
 import src.logic.DataBase;
-import src.components.Room;
-import src.components.Zone;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -95,6 +91,32 @@ public class Main {
         param.setZones(zones);
 
         param.setZoneTemperature(15.0, zone1);
+
+        TemperatureObserver temperatureObserver = new TemperatureObserver();
+        param.attachTemperatureObserver(temperatureObserver);
+        Clock clock = new Clock();
+        LocalDate summerdate = LocalDate.of(2023, 7, 1);
+        System.out.print("The date is "+summerdate.toString()+
+                         "\nIs AC on? ");
+        if(param.getCooler().isCooling()){
+            System.out.println("Yes");
+        }
+        else System.out.println("No");
+        ArrayList<Room> rooms = param.getLayout().getRooms();
+        boolean isOpen = true;
+        for(Room r : rooms){
+            Windows windows = r.getWindows();
+            if(!windows.isOpen()){
+                isOpen = false;
+                break;
+            }
+        }
+        if(isOpen){
+            System.out.println("Windows are open!!");
+        }
+        else{
+            System.out.println("Windows are closed!");
+        }
 
         Thread.sleep(10);
         param.stopSimulation();

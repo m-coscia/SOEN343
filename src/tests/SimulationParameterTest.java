@@ -2,6 +2,7 @@ package src.tests;
 
 import org.junit.Before;
 import org.junit.Test;
+import src.Observer.TempEvent;
 import src.Observer.TimeEvent;
 import src.Observer.UserEvent;
 import src.components.Clock;
@@ -57,6 +58,16 @@ public class SimulationParameterTest {
         // Not testing the actual notification mechanism, just checking if method is invoked without errors
         try {
             simulationParameter.notifyTimeObserver(new TimeEvent("temperature", simulationParameter));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testNotifyTemperatureObserver(){
+        // Not testing the actual notification mechanism, just checking if method is invoked without errors
+        try{
+            simulationParameter.notifyTemperatureObserver(new TempEvent("ShutdownAC", simulationParameter));
         } catch (Exception e) {
             e.printStackTrace();
         }
