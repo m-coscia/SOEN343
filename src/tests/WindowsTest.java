@@ -11,21 +11,21 @@ public class WindowsTest {
     public void testDefaultConstructor() {
         Windows windows = new Windows();
         assertFalse(windows.getObstructed());
-        assertFalse(windows.getOpen());
+        assertFalse(windows.isOpen());
     }
 
     @Test
     public void testCloseWindowsCommand() {
         Windows windows = new Windows();
         windows.closeWindowsCommand();
-        assertFalse(windows.getOpen());
+        assertFalse(windows.isOpen());
     }
 
     @Test
     public void testOpenWindowsCommand() {
         Windows windows = new Windows();
         windows.openWindowsCommand();
-        assertTrue(windows.getOpen());
+        assertTrue(windows.isOpen());
     }
 
     @Test

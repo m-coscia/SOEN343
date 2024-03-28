@@ -1,4 +1,4 @@
-package src.Observer;
+package src.Observer.Events;
 
 import src.logic.SimulationParameter;
 
