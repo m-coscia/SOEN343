@@ -11,11 +11,13 @@ import src.logic.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import src.Observer.*;
 
 import static org.junit.Assert.*;
 
@@ -29,10 +31,16 @@ public class SimulationParameterTest {
     private double outsideTemp = 20.0;
     private Login loggedInUser;
 
+
     @Before
     public void setUp() throws FileNotFoundException {
         loggedInUser = new Login(new Parent("John", "john123", "password", new Room()));
         simulationParameter = new SimulationParameter(layoutFile, tempFile, date, time, insideTemp, outsideTemp, loggedInUser);
+        TimeObserver timeObserver = new TimeObserver();
+        ActionObserver actionObserver = new ActionObserver();
+        simulationParameter.attachActionObserver(actionObserver);
+        simulationParameter.attachTimeObserver(timeObserver);
+
     }
 
     @Test

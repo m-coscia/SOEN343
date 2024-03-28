@@ -204,18 +204,20 @@ public class Dashboard extends JFrame {
     public static void main(String[] args) {
         Profile p = new Profile("Sara", null);
 
-        Room r1 = new Room(RoomType.BEDROOM, 2, 3, 1, p);
-        Room r2 = new Room(RoomType.LIVINGROOM, 1, 4, 2, p);
-        Room r3 = new Room(RoomType.BATHROOM, 0, 1, 1, p);
-        Room r4 = new Room(RoomType.KITCHEN, 1, 2, 1, p);
-        Room r5 = new Room(RoomType.GARAGE, 2, 5, 3, p);
+        ArrayList<Profile> profiles = new ArrayList<Profile>();
+        profiles.add(p);
+        Room r1 = new Room(RoomType.BEDROOM, 2, 3, 1, profiles);
+        Room r2 = new Room(RoomType.LIVINGROOM, 1, 4, 2, profiles);
+        Room r3 = new Room(RoomType.BATHROOM, 0, 1, 1, profiles);
+        Room r4 = new Room(RoomType.KITCHEN, 1, 2, 1, profiles);
+        Room r5 = new Room(RoomType.GARAGE, 2, 5, 3, profiles);
 
         Room[] rooms = new Room[] {r1, r2, r3, r4, r5};
 
         System.out.println("Test from Dashboard class Main method:");
 
         Parent p1 = new Parent("Denis", "Denis123", "123", r1);
-        Permissions p1Permissions = new Permissions(true, true, true, true);
+        Permissions p1Permissions = new Permissions(true, true, true, true, false);
         p1.setPermissions(p1Permissions);
 
         p.setRoom(r1);
