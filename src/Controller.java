@@ -5,12 +5,15 @@ import src.logic.*;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 
 public class Controller {
 
     private String layoutFileName;
+    private String temperatureFile;
     private DataBase database;
     private SimulationParameter simParam = null;
     public Controller(){
@@ -21,6 +24,7 @@ public class Controller {
        layoutFileName = filename;
        HouseLayout.getHouseLayout().setHouseLayout(filename);
     }
+
 
     public void saveProfiles(ArrayList<JTextField> nameFields, ArrayList<JTextField> usernameFields,
                              ArrayList<JPasswordField> passwordFields, ArrayList<JComboBox<String>> typeFields, ArrayList<JCheckBox> windowsCheckboxes,
@@ -153,6 +157,22 @@ public class Controller {
 
         }
     }
+
+    public void setTemperatureFile(String filename) {
+        temperatureFile = filename;
+    }
+
+    public void setSimulationParams(Date date, int hours,int min, double outsideTemp, Profile profile) {
+
+        try{
+            simParam = new SimulationParameter(layoutFileName, temperatureFile,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), outsideTemp,0, new Login(profile));
+        }catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
 //    public String[] getExistingLocations(){
 //        String[] rooms = new String[]{String.valueOf(RoomType.BEDROOM)};
 //

@@ -53,11 +53,7 @@ public class Dashboard extends JFrame {
     private Clock  clock = new Clock();
     private Profile currentProfile;
 
-    public Dashboard(Profile loggedIn, Profile profile){
-        setVisible(false);
-        SimParameterSetUp s = new SimParameterSetUp();
-        s.setVisible(true);
-
+    public Dashboard (Profile profile){
         setProfileInfo(profile);
 
         tempLabel.setText("Oustide Temp. " + controller.getTemperature() + "ºC");
@@ -123,7 +119,7 @@ public class Dashboard extends JFrame {
         });
 
         rightMainPanel.setVisible(false);
-        fullMainPanel.add(new SimParameterSetUp(), BorderLayout.CENTER);
+        //fullMainPanel.add(new SimParameterGUI(), BorderLayout.CENTER);
     }
 
     private void setProfileInfo(Profile profile){
@@ -136,7 +132,7 @@ public class Dashboard extends JFrame {
         profiles.add(p);
         Room r = new Room(RoomType.BEDROOM,2,3,4,profiles);
         p.setRoom(r);
-        Dashboard d = new Dashboard(null, p);
+        Dashboard d = new Dashboard( p);
         d.setLocationRelativeTo(null);
     }
 }

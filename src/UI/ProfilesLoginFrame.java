@@ -121,9 +121,13 @@ public class ProfilesLoginFrame extends JFrame {
                         System.out.println(profiles.get(currentProfile % profiles.size()).getName());
 
                         // DashboardFrame dash = new DashboardFrame(thisFrame);
-                        Dashboard dash = new Dashboard(null, profiles.get(currentProfile % profiles.size()));
-                        dash.setLocationRelativeTo(null);
-                        dash.setVisible(true);
+//                        Dashboard dash = new Dashboard(null, profiles.get(currentProfile % profiles.size()));
+//                        dash.setLocationRelativeTo(null);
+//                        dash.setVisible(true);
+//                        dispose();
+                        SimParameterGUI nextFrame = new SimParameterGUI(thisFrame,profiles.get(currentProfile % profiles.size()));
+                        nextFrame.setLocationRelativeTo(null);
+                        nextFrame.setVisible(true);
                         dispose();
 
                     }
