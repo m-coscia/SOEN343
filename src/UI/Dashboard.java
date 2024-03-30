@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class Dashboard extends JFrame {
 
-    Controller controller = new Controller();
+    Controller controller = Controller.getController();
     private JPanel panel1;
     private JPanel dashboardPanel;
     private JPanel toggleButtonPanel;

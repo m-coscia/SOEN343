@@ -13,7 +13,7 @@ import java.util.ArrayList;
 //todo: if selected type is stranger --> dont let them input a usernmae and password.
 //todo: if selected type is parent --> all checkboxes selected;
 public class ProfilesCreation extends JFrame {
-    private final Controller controller = new Controller();
+    private final Controller controller = Controller.getController();
     private JFrame thisFrame;
     private JPanel panel1;
     private JPanel test;

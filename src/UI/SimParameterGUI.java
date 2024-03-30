@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Properties;
 
 public class SimParameterGUI extends JFrame{
-    private Controller controller = new Controller();
+    private Controller controller = Controller.getController();
     JFrame previousFrame = null;
     JFrame thisFrame = this;
     private JPanel panel1;
@@ -156,8 +156,8 @@ public class SimParameterGUI extends JFrame{
         doneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setTemperatureFile(filenameField.getText());
-                controller.setSimulationParams((Date) datePicker.getModel().getValue(), (int) hourSpinner.getModel().getValue(),
+
+                controller.setSimulationParams(filenameField.getText(), (Date) datePicker.getModel().getValue(), (int) hourSpinner.getModel().getValue(),
                         (int) hourSpinner.getModel().getValue(), (int) tempSpinner.getValue(), profile);
 
                 Dashboard dash = new Dashboard(profile);

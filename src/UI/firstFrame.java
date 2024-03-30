@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 
 public class firstFrame extends JFrame {
-    private Controller controller = new Controller();
+    private Controller controller = Controller.getController();
     private JFrame thisFrame;
     private LogInOrCreateFrame accountSelection;
 

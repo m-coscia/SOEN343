@@ -12,12 +12,21 @@ import java.util.Date;
 
 public class Controller {
 
+    private static Controller controller = null;
     private String layoutFileName;
     private String temperatureFile;
     private DataBase database;
     private SimulationParameter simParam = null;
-    public Controller(){
+    private Controller(){
         database = DataBase.getDataBase();
+    }
+
+    public static Controller getController() {
+        if (controller == null) {
+            controller = new Controller();
+        }
+        return controller;
+
     }
 
     public void layoutSetUp(String filename) throws FileNotFoundException {
@@ -169,11 +178,11 @@ public class Controller {
         temperatureFile = filename;
     }
 
-    public void setSimulationParams(Date date, int hours,int min, double outsideTemp, Profile profile) {
+    public void setSimulationParams(String temperatureFile, Date date, int hours,int min, double outsideTemp, Profile profile) {
 
         try{
 
-            simParam = new SimulationParameter(null, temperatureFile,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), outsideTemp,0, new Login(profile));
+            simParam = new SimulationParameter(layoutFileName, temperatureFile ,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), outsideTemp,0, new Login(profile));
         }catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class ProfilesLoginFrame extends JFrame {
     JFrame thisFrame = this;
-    Controller controller = new Controller();
+    Controller controller = Controller.getController();
     private CardLayout layout = new CardLayout();
     private JFrame previousFrame;
     private JPanel panel1;
