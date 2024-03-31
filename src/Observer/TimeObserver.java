@@ -13,12 +13,14 @@ import java.time.format.DateTimeFormatter;
 public class TimeObserver implements Observer{
 
     JLabel clockDisplay = null;
+    JLabel dateDisplay = null;
 
     public TimeObserver(){
         super();
     }
-    public TimeObserver(JLabel clockDisplay){
+    public TimeObserver(JLabel clockDisplay, JLabel dateDisplay){
         this.clockDisplay = clockDisplay;
+        this.dateDisplay = dateDisplay;
     }
 
     @Override
@@ -33,6 +35,7 @@ public class TimeObserver implements Observer{
             SwingUtilities.invokeLater(() -> {
                 try {
                     clockDisplay.setText(formattedTime);
+                    dateDisplay.setText(param.getDate().toString());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

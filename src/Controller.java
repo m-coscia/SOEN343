@@ -220,10 +220,10 @@ public class Controller {
         return simParam.getTime();
     }
 
-    public void attachObservers(JLabel clockDisplay) {
+    public void attachObservers(JLabel clockDisplay, JLabel dateDisplay) {
 //        TimeObserver to = new TimeObserver(clockDisplay);
 //        simParam.attachTimeObserver(to);
-        simParam.attachTimeObserver(new TimeObserver(clockDisplay));
+        simParam.attachTimeObserver(new TimeObserver(clockDisplay, dateDisplay));
 
         ActionObserver ao = new ActionObserver();
         simParam.attachActionObserver(ao);

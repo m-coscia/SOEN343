@@ -1,7 +1,6 @@
 package src.UI;
 
 import src.Controller;
-import src.components.Clock;
 import src.components.Room;
 import src.components.RoomType;
 import src.logic.Parent;
@@ -56,14 +55,13 @@ public class Dashboard extends JFrame {
     private JLabel locationLabel;
     private JTextArea consoleText;
 
-    private Clock  clock = new Clock();
     private Profile currentProfile;
 
     public Dashboard (Profile profile){
         setProfileInfo(profile);
 
         tempLabel.setText("Oustide Temp. " + controller.getTemperature() + "ºC");
-        dateLabel.setText(controller.getDate());
+        //dateLabel.setText(controller.getDate());
         ToggleButton toggle = new ToggleButton();
         toggle.setSize(10,10);
 
@@ -87,7 +85,7 @@ public class Dashboard extends JFrame {
 
             });
 
-            controller.attachObservers(clockDisplay);
+            controller.attachObservers(clockDisplay, dateLabel);
 
 
         }catch (Exception e){
@@ -109,6 +107,7 @@ public class Dashboard extends JFrame {
             Timer timer = new Timer(1000, e -> {
                 // Update the clock label with the current time
                 clockDisplay.setText(controller.getTime().toString());
+                //dateLabel.setText((controller.getDate()));
             });
             timer.start();
 
