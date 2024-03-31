@@ -75,15 +75,15 @@
                         <properties>
                           <font size="12" style="1"/>
                           <inverted value="false"/>
-                          <majorTickSpacing value="20"/>
-                          <maximum value="500"/>
-                          <minorTickSpacing value="10"/>
+                          <majorTickSpacing value="100"/>
+                          <maximum value="2000"/>
+                          <minorTickSpacing value="50"/>
                           <opaque value="false"/>
                           <orientation value="0"/>
                           <paintLabels value="false"/>
                           <paintTicks value="true"/>
                           <snapToTicks value="true"/>
-                          <value value="10"/>
+                          <value value="50"/>
                           <valueIsAdjusting value="false"/>
                         </properties>
                       </component>

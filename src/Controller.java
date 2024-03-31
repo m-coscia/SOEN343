@@ -215,6 +215,9 @@ public class Controller {
         }
 
     }
+    public void changeSpeed(double multiplier){
+        simParam.getClock().changeSpeed(multiplier);
+    }
 
     public LocalTime getTime() {
         return simParam.getTime();

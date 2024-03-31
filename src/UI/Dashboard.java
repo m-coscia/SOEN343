@@ -139,8 +139,8 @@ public class Dashboard extends JFrame {
             timeSlider.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
-                    System.out.println("Current value" + timeSlider.getValue());
-                    controller.getClock().changeSpeed((double) timeSlider.getValue() / 10);
+                    //System.out.println("Current value" + timeSlider.getValue());
+                    controller.changeSpeed((double) timeSlider.getValue() / 100);
                 }
             });
             controller.startSimulation();
