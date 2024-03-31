@@ -203,7 +203,13 @@ public class Controller {
     }
 
     public void stopSimulation() {
-        simParam.stopSimulation();
+        try{
+            simParam.stopSimulation();
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
     public LocalTime getTime() {
