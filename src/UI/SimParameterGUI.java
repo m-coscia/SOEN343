@@ -158,7 +158,7 @@ public class SimParameterGUI extends JFrame{
             public void actionPerformed(ActionEvent e) {
 
                 controller.setSimulationParams(filenameField.getText(), (Date) datePicker.getModel().getValue(), (int) hourSpinner.getModel().getValue(),
-                        (int) hourSpinner.getModel().getValue(), (int) tempSpinner.getValue(), profile);
+                        (int) minuteSpinner.getModel().getValue(), (int) tempSpinner.getValue(), profile);
 
                 Dashboard dash = new Dashboard(profile);
                 dash.setVisible(true);
