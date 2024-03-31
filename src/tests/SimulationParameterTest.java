@@ -2,8 +2,8 @@ package src.tests;
 
 import org.junit.Before;
 import org.junit.Test;
-import src.Observer.TemperatureEvent;
-import src.Observer.UserEvent;
+import src.Observer.Events.TimeEvent;
+import src.Observer.Events.UserEvent;
 import src.components.Clock;
 import src.components.Room;
 import src.components.Zone;
@@ -56,7 +56,7 @@ public class SimulationParameterTest {
     public void testNotifyTimeObserver() {
         // Not testing the actual notification mechanism, just checking if method is invoked without errors
         try {
-            simulationParameter.notifyTimeObserver(new TemperatureEvent("temperature", simulationParameter));
+            simulationParameter.notifyTimeObserver(new TimeEvent("temperature", simulationParameter));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,7 +98,7 @@ public class SimulationParameterTest {
 
 
     @Test
-    public void testSetZoneTemperature() {
+    public void testSetZoneTemperature() throws IOException {
         // Test if setting temperature of a zone updates correctly
         ArrayList<Room> rooms = new ArrayList<>();
         Room room = new Room();
@@ -110,7 +110,7 @@ public class SimulationParameterTest {
     }
 
     @Test
-    public void testGetRoomTemp() {
+    public void testGetRoomTemp() throws IOException {
         // Test if getting room temperature returns correct temperature
         ArrayList<Room> rooms = new ArrayList<>();
         Room room = new Room();

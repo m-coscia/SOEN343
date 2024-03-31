@@ -4,6 +4,8 @@ import src.Controller;
 import src.components.Clock;
 import src.components.Room;
 import src.components.RoomType;
+import src.logic.Parent;
+import src.logic.Permissions;
 import src.logic.Profile;
 
 import javax.swing.*;
@@ -11,6 +13,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.sql.Array;
 import java.util.ArrayList;
 
 public class Dashboard extends JFrame {
@@ -27,7 +31,7 @@ public class Dashboard extends JFrame {
     private JButton editButton;
     private JPanel fullMainPanel;
     private JTabbedPane tabbedPane1;
-    private JTextArea outputArea;
+    public JTextArea outputArea;
     private JPanel consolePanel;
     private JLabel consoleLabel;
     private JSplitPane rightMainPanel;
@@ -125,17 +129,138 @@ public class Dashboard extends JFrame {
         //fullMainPanel.add(new SimParameterGUI(), BorderLayout.CENTER);
     }
 
+    public void createHouseLayout(Room[] rooms) {
+        houseLayout.removeAll(); // Clear existing layout
+        int gridSize = (int) Math.ceil(Math.sqrt(rooms.length));
+        houseLayout.setLayout(new GridLayout(gridSize, gridSize)); // Setting a square grid layout
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        for (Room room : rooms) {
+            JPanel roomPanel = new JPanel(new GridBagLayout());
+            roomPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+
+            JLabel roomTypeLabel = new JLabel("Type: " + room.getType(), SwingConstants.CENTER);
+            JButton lightsButton = new JButton(room.getLightsStatus());
+            JButton doorsButton = new JButton(room.getDoorsStatus());
+            JButton windowsButton = new JButton(room.getWindowsStatus());
+
+            if (room.getNumLights() > 0) {
+                updateButtonLook(lightsButton, room.getLights().isSwitchedOn());
+                lightsButton.addActionListener(e -> {
+                    try {
+                        room.toggleLights(currentProfile);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    updateButtonLook(lightsButton, room.getLights().isSwitchedOn());
+                });
+            } else {
+                lightsButton.setEnabled(false); // Disable the button if there are no lights
+                lightsButton.setText("Lights (0): N/A");
+            }
+
+            if (room.getNumDoors() > 0) {
+                updateButtonLook(doorsButton, room.getDoors().isOpen());
+                doorsButton.addActionListener(e -> {
+                    try {
+                        room.toggleDoors(currentProfile);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    updateButtonLook(doorsButton, room.getDoors().isOpen());
+                });
+            } else {
+                doorsButton.setEnabled(false); // Disable the button if there are no doors
+                doorsButton.setText("Doors (0): N/A");
+            }
+
+            if (room.getNumWindows() > 0) {
+                updateButtonLook(windowsButton, room.getWindows().isOpen());
+                windowsButton.addActionListener(e -> {
+                    try {
+                        room.toggleWindows(currentProfile);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    updateButtonLook(windowsButton, room.getWindows().isOpen());
+                });
+            } else {
+                windowsButton.setEnabled(false); // Disable the button if there are no windows
+                windowsButton.setText("Windows (0): N/A");
+            }
+
+            // Add components to the room panel with GridBagConstraints
+            roomPanel.add(roomTypeLabel, gbc);
+            roomPanel.add(lightsButton, gbc);
+            roomPanel.add(doorsButton, gbc);
+            roomPanel.add(windowsButton, gbc);
+
+            houseLayout.add(roomPanel); // Adding the room to the house layout
+        }
+
+        // Fill remaining grid cells if rooms.length is not a perfect square number
+        for (int i = rooms.length; i < gridSize * gridSize; i++) {
+            houseLayout.add(new JPanel());
+        }
+
+        houseLayout.revalidate();
+        houseLayout.repaint();
+    }
+
+    // In the Dashboard class
+    public void appendToOutputArea(String text) {
+        outputArea.append(text + "\n"); // Append the text and a newline to make it readable
+    }
+
+    // Helper method to update the appearance of the buttons
+    private void updateButtonLook(JButton button, boolean isOn) {
+        button.setText(isOn ? button.getText().replace("OFF", "ON") : button.getText().replace("ON", "OFF"));
+        button.setText(isOn ? button.getText().replace("CLOSED", "OPEN") : button.getText().replace("OPEN", "CLOSED"));
+        button.setForeground(isOn ? Color.GREEN : Color.RED);
+    }
+
     private void setProfileInfo(Profile profile){
         currentProfile = profile;
         userTypeLabel.setText(controller.getType(profile) + ": " + profile.getName());
     }
     public static void main(String[] args) {
         Profile p = new Profile("Sara", null);
-        ArrayList<Profile> profiles = new ArrayList<Profile>();
-        profiles.add(p);
-        Room r = new Room(RoomType.BEDROOM,2,3,4,profiles);
-        p.setRoom(r);
-        Dashboard d = new Dashboard( p);
+        ArrayList<Profile> pfs = new ArrayList<Profile>();
+        pfs.add(p);
+
+        Room r1 = new Room(RoomType.BEDROOM, 2, 3, 1, pfs);
+        Room r2 = new Room(RoomType.LIVINGROOM, 1, 4, 2, pfs);
+        Room r3 = new Room(RoomType.BATHROOM, 0, 1, 1, pfs);
+        Room r4 = new Room(RoomType.KITCHEN, 1, 2, 1, pfs);
+        Room r5 = new Room(RoomType.GARAGE, 2, 5, 3, pfs);
+
+        Room[] rooms = new Room[] {r1, r2, r3, r4, r5};
+
+        System.out.println("Test from Dashboard class Main method:");
+
+        Parent p1 = new Parent("Denis", "Denis123", "123", r1);
+        Permissions p1Permissions = new Permissions(true, true, true, true, true);
+        p1.setPermissions(p1Permissions);
+
+        p.setRoom(r1);
+
+        Dashboard d = new Dashboard(null, p1);
+      
+//         ArrayList<Profile> profiles = new ArrayList<Profile>();
+//         profiles.add(p);
+//         Room r = new Room(RoomType.BEDROOM,2,3,4,profiles);
+//         p.setRoom(r);
+//         Dashboard d = new Dashboard(null, p);
+      
         d.setLocationRelativeTo(null);
+
+        d.createHouseLayout(rooms); // Create layout with the array of rooms
+
     }
 }

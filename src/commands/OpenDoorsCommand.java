@@ -3,7 +3,9 @@ package src.commands;
 import src.components.Doors;
 import src.logic.Profile;
 
-public record OpenDoorsCommand(Doors doors, Profile[] users, Profile caller) implements Command{
+import java.util.ArrayList;
+
+public record OpenDoorsCommand(Doors doors, ArrayList<Profile> users, Profile caller) implements Command{
     @Override
     public void execute() {
         // Verify if it is a garage door

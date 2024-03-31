@@ -26,8 +26,8 @@ public class Windows {
         return obstructed;
     }
 
-    public boolean getOpen(){
-        return open;
+    public boolean isOpen() {
+        return this.open;
     }
 
 

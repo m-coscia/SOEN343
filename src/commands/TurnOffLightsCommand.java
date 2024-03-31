@@ -1,12 +1,12 @@
 package src.commands;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import src.components.Lights;
 import src.logic.Parent;
 import src.logic.Profile;
 
-public record TurnOffLightsCommand(Lights lights, Profile[] users, Profile caller) implements Command{
+public record TurnOffLightsCommand(Lights lights, ArrayList<Profile> users, Profile caller) implements Command{
     @Override
     public void execute() {
         //verify if caller has permission to lights
@@ -15,7 +15,7 @@ public record TurnOffLightsCommand(Lights lights, Profile[] users, Profile calle
             return;
         } else {
             // verify caller is part of the users that are in the room calling the command
-            boolean isCallerInRoom = Arrays.stream(users).anyMatch(user -> user.equals(caller));
+            boolean isCallerInRoom = users.contains(caller);
 
             // if caller isn't in room, they can't control lights
             if (!isCallerInRoom){
