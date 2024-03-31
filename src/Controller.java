@@ -1,5 +1,7 @@
 package src;
 
+import src.Observer.ActionObserver;
+import src.Observer.TimeObserver;
 import src.components.Clock;
 import src.components.Room;
 import src.logic.*;
@@ -182,8 +184,10 @@ public class Controller {
     public void setSimulationParams(String temperatureFile, Date date, int hours,int min, double outsideTemp, Profile profile) {
 
         try{
-
+            this.temperatureFile = temperatureFile;
             simParam = new SimulationParameter(layoutFileName, temperatureFile ,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), 0,outsideTemp, new Login(profile));
+            //attachObservers(null);
+
         }catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -214,6 +218,15 @@ public class Controller {
 
     public LocalTime getTime() {
         return simParam.getTime();
+    }
+
+    public void attachObservers(JLabel clockDisplay) {
+//        TimeObserver to = new TimeObserver(clockDisplay);
+//        simParam.attachTimeObserver(to);
+        simParam.attachTimeObserver(new TimeObserver(clockDisplay));
+
+        ActionObserver ao = new ActionObserver();
+        simParam.attachActionObserver(ao);
     }
 
 

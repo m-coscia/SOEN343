@@ -75,9 +75,9 @@
                         <properties>
                           <font size="12" style="1"/>
                           <inverted value="false"/>
-                          <majorTickSpacing value="2"/>
-                          <maximum value="50"/>
-                          <minorTickSpacing value="1"/>
+                          <majorTickSpacing value="10"/>
+                          <maximum value="500"/>
+                          <minorTickSpacing value="5"/>
                           <opaque value="false"/>
                           <orientation value="0"/>
                           <paintLabels value="false"/>

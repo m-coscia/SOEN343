@@ -75,7 +75,7 @@ public class Dashboard extends JFrame {
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     super.mouseReleased(e);
-                    if(controller.getClock().isRunning().get()){
+                    if(!controller.getClock().isRunning().get()){
                         controller.startSimulation();
                         start_stop_label.setText("Running");
                     }
@@ -87,6 +87,8 @@ public class Dashboard extends JFrame {
 
             });
 
+            controller.attachObservers(clockDisplay);
+
 
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -97,21 +99,26 @@ public class Dashboard extends JFrame {
                 @Override
                 public void stateChanged(ChangeEvent e) {
                     System.out.println("Current value" + timeSlider.getValue());
-                    clock.changeSpeed((double) timeSlider.getValue() / 10);
+                    controller.getClock().changeSpeed((double) timeSlider.getValue() / 10);
                 }
             });
             controller.startSimulation();
             controller.stopSimulation();
+            //controller.attachObservers(clockDisplay);
 
             Timer timer = new Timer(1000, e -> {
                 // Update the clock label with the current time
                 clockDisplay.setText(controller.getTime().toString());
             });
             timer.start();
+
+
             outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
             textArea1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
             list1.setListData(new String[] {"idk", "idk", "idk"});
             add(panel1);
+
+
             setSize(1000, 500);
             // Center frame on screen
 
@@ -127,7 +134,18 @@ public class Dashboard extends JFrame {
             }
         });
 
-        rightMainPanel.setVisible(false);
+
+        //todo get rooms array form controller
+        rightMainPanel.setVisible(true);
+        Room r1 = new Room(RoomType.BEDROOM, 2, 3, 1, null);
+        Room r2 = new Room(RoomType.LIVINGROOM, 1, 4, 2, null);
+        Room r3 = new Room(RoomType.BATHROOM, 0, 1, 1, null);
+        Room r4 = new Room(RoomType.KITCHEN, 1, 2, 1, null);
+        Room r5 = new Room(RoomType.GARAGE, 2, 5, 3,null);
+
+        Room[] rooms = new Room[] {r1, r2, r3, r4, r5};
+        createHouseLayout(rooms);
+
         //fullMainPanel.add(new SimParameterGUI(), BorderLayout.CENTER);
     }
 
