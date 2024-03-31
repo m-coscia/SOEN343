@@ -57,73 +57,33 @@ public class Dashboard extends JFrame {
 
     private Profile currentProfile;
 
-    public Dashboard (Profile profile){
+    public Dashboard(Profile profile) {
         setProfileInfo(profile);
 
-        tempLabel.setText("Oustide Temp. " + controller.getTemperature() + "ºC");
+//        Timer timer = new Timer(1000, e -> {
+//            // Update the temp label with the current time
+//            tempLabel.setText("Oustide Temp. " + controller.getTemperature() + "ºC");
+//            //dateLabel.setText((controller.getDate()));
+//        });
+//        timer.start();
+
+
         //dateLabel.setText(controller.getDate());
-        ToggleButton toggle = new ToggleButton();
-        toggle.setSize(10,10);
+        setUpClockUI();
+        //setUpOutputUI();
 
 
-        try{
-            toggleButtonPanel.add(toggle, BorderLayout.CENTER);
+        outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+        textArea1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+        list1.setListData(new String[]{"idk", "idk", "idk"});
+        add(panel1);
 
-            toggle.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    super.mouseReleased(e);
-                    if(!controller.getClock().isRunning().get()){
-                        controller.startSimulation();
-                        start_stop_label.setText("Running");
-                    }
-                   else {
-                        controller.stopSimulation();
-                        start_stop_label.setText("Paused");
-                   }
-                }
+        setSize(1000, 500);
+        // Center frame on screen
 
-            });
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
 
-            controller.attachObservers(clockDisplay, dateLabel);
-
-
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }finally {
-
-            System.out.println(timeSlider.getMinimum()+" " + timeSlider.getMaximum() +" " + timeSlider.getExtent());
-            timeSlider.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    System.out.println("Current value" + timeSlider.getValue());
-                    controller.getClock().changeSpeed((double) timeSlider.getValue() / 10);
-                }
-            });
-            controller.startSimulation();
-            controller.stopSimulation();
-            //controller.attachObservers(clockDisplay);
-
-            Timer timer = new Timer(1000, e -> {
-                // Update the clock label with the current time
-                clockDisplay.setText(controller.getTime().toString());
-                //dateLabel.setText((controller.getDate()));
-            });
-            timer.start();
-
-
-            outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-            textArea1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-            list1.setListData(new String[] {"idk", "idk", "idk"});
-            add(panel1);
-
-
-            setSize(1000, 500);
-            // Center frame on screen
-
-            setDefaultCloseOperation(EXIT_ON_CLOSE);
-            setVisible(true);
-        }
 //        add(panel1);
 //        setVisible(true);
         editButton.addActionListener(new ActionListener() {
@@ -140,12 +100,62 @@ public class Dashboard extends JFrame {
         Room r2 = new Room(RoomType.LIVINGROOM, 1, 4, 2, null);
         Room r3 = new Room(RoomType.BATHROOM, 0, 1, 1, null);
         Room r4 = new Room(RoomType.KITCHEN, 1, 2, 1, null);
-        Room r5 = new Room(RoomType.GARAGE, 2, 5, 3,null);
+        Room r5 = new Room(RoomType.GARAGE, 2, 5, 3, null);
 
-        Room[] rooms = new Room[] {r1, r2, r3, r4, r5};
+        Room[] rooms = new Room[]{r1, r2, r3, r4, r5};
         createHouseLayout(rooms);
 
         //fullMainPanel.add(new SimParameterGUI(), BorderLayout.CENTER);
+    }
+
+    private void setUpClockUI() {
+        ToggleButton toggle = new ToggleButton();
+        toggle.setSize(10, 10);
+        try {
+            toggleButtonPanel.add(toggle, BorderLayout.CENTER);
+
+            toggle.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    super.mouseReleased(e);
+                    if (!controller.getClock().isRunning().get()) {
+                        controller.startSimulation();
+                        start_stop_label.setText("Running");
+                    } else {
+                        controller.stopSimulation();
+                        start_stop_label.setText("Paused");
+                    }
+                }
+
+            });
+
+            controller.attachObservers(clockDisplay, dateLabel,tempLabel);
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            System.out.println(timeSlider.getMinimum() + " " + timeSlider.getMaximum() + " " + timeSlider.getExtent());
+            timeSlider.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    System.out.println("Current value" + timeSlider.getValue());
+                    controller.getClock().changeSpeed((double) timeSlider.getValue() / 10);
+                }
+            });
+            controller.startSimulation();
+            controller.stopSimulation();
+            //controller.attachObservers(clockDisplay);
+
+            Timer timer = new Timer(1000, e -> {
+                // Update the clock label with the current time
+                clockDisplay.setText(controller.getTime().toString());
+                tempLabel.setText("Oustide Temp. " + controller.getTemperature() + "ºC");
+                //dateLabel.setText((controller.getDate()));
+            });
+            timer.start();
+        }
+
     }
 
     public void createHouseLayout(Room[] rooms) {
@@ -244,10 +254,11 @@ public class Dashboard extends JFrame {
         button.setForeground(isOn ? Color.GREEN : Color.RED);
     }
 
-    private void setProfileInfo(Profile profile){
+    private void setProfileInfo(Profile profile) {
         currentProfile = profile;
         userTypeLabel.setText(controller.getType(profile) + ": " + profile.getName());
     }
+
     public static void main(String[] args) {
         Profile p = new Profile("Sara", null);
         ArrayList<Profile> pfs = new ArrayList<Profile>();
@@ -259,7 +270,7 @@ public class Dashboard extends JFrame {
         Room r4 = new Room(RoomType.KITCHEN, 1, 2, 1, pfs);
         Room r5 = new Room(RoomType.GARAGE, 2, 5, 3, pfs);
 
-        Room[] rooms = new Room[] {r1, r2, r3, r4, r5};
+        Room[] rooms = new Room[]{r1, r2, r3, r4, r5};
 
         System.out.println("Test from Dashboard class Main method:");
 
@@ -269,14 +280,14 @@ public class Dashboard extends JFrame {
 
         p.setRoom(r1);
 
-        Dashboard d = new Dashboard( p1);
-      
+        Dashboard d = new Dashboard(p1);
+
 //         ArrayList<Profile> profiles = new ArrayList<Profile>();
 //         profiles.add(p);
 //         Room r = new Room(RoomType.BEDROOM,2,3,4,profiles);
 //         p.setRoom(r);
 //         Dashboard d = new Dashboard(null, p);
-      
+
         d.setLocationRelativeTo(null);
 
         d.createHouseLayout(rooms); // Create layout with the array of rooms

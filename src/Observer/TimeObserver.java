@@ -14,13 +14,15 @@ public class TimeObserver implements Observer{
 
     JLabel clockDisplay = null;
     JLabel dateDisplay = null;
+    JLabel tempDisplay = null;
 
     public TimeObserver(){
         super();
     }
-    public TimeObserver(JLabel clockDisplay, JLabel dateDisplay){
+    public TimeObserver(JLabel clockDisplay, JLabel dateDisplay, JLabel tempDisplay){
         this.clockDisplay = clockDisplay;
         this.dateDisplay = dateDisplay;
+        this.tempDisplay = tempDisplay;
     }
 
     @Override
@@ -31,6 +33,10 @@ public class TimeObserver implements Observer{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formattedTime = currentTime.format(formatter);
         String timestamp = param.getDate().toString() + "," + formattedTime;
+
+
+
+        //updates in GUI
         if(clockDisplay != null){
             SwingUtilities.invokeLater(() -> {
                 try {
@@ -41,11 +47,14 @@ public class TimeObserver implements Observer{
                 }
             });
         }
-        if (param.getWeatherData().containsKey(timestamp)) {
+
+
+        if (param.getWeatherData().get(timestamp) != null) {
             double currentWeather = (double) param.getWeatherData().get(timestamp);
             param.setWeatherOutside(currentWeather);
+
         } else {
-//            System.out.println("No weather data available for the current time.");
+           //System.out.println("No weather data available for the current time.");
         }
     }
 

@@ -175,7 +175,7 @@ public class SimParameterGUI extends JFrame{
 
 
         UtilDateModel model = new UtilDateModel();
-        model.setDate(2002,9,14);
+        model.setDate(2022,12,30);
         Properties p = new Properties();
         p.put("text.today", "Today");
         p.put("text.month", "Month");

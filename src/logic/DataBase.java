@@ -2,8 +2,7 @@ package src.logic;
 
 import src.components.Room;
 
-import java.io.*;
-import java.lang.reflect.Array;
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ public class DataBase {
         Statement stmt=null;
         try{
             //connecting to database
-            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "soen343", "SOEN343&Pr0ject");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "123");
             //required for running SQL commands in Java
             stmt = con.createStatement();
             String query = "SELECT * FROM smart_home_simulator_db.profiles";
@@ -133,7 +132,7 @@ public class DataBase {
         int location = p.getLocation().getId();
         try{
             //connecting to database
-            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "soen343", "SOEN343&Pr0ject");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "123");
             //required for running SQL commands in Java
             stmt = con.createStatement();
             String query = "";
@@ -198,7 +197,7 @@ public class DataBase {
 
         try{
             //connecting to database
-            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "soen343", "SOEN343&Pr0ject");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "123");
             //required for running SQL commands in Java
             stmt = con.createStatement();
             switch(type){
