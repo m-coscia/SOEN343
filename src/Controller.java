@@ -1,10 +1,12 @@
 package src;
 
+import src.components.Clock;
 import src.components.Room;
 import src.logic.*;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -126,6 +128,9 @@ public class Controller {
         }
     }
 
+    public String getDate(){
+        return String.valueOf(simParam.getDate());
+    }
     public void login(Profile p){
         Login l = new Login(p);
 //        if(p instanceof Parent){
@@ -158,10 +163,10 @@ public class Controller {
     }
 
     public String getLocation(Profile profile){
-
-//        Room r = profile.getLocation();
-//        return String.valueOf(r.getType());
-        return "FIX LOCATION";
+       // return simParam.getLoggedIn().getLocation().toString();
+        //TODO this returns null always ? to fix
+       // return profile.getLocation().toString();
+        return "fix location";
     }
 
     public ArrayList<Room> getRooms() {
@@ -174,19 +179,35 @@ public class Controller {
         }
     }
 
-    public void setTemperatureFile(String filename) {
-        temperatureFile = filename;
-    }
-
     public void setSimulationParams(String temperatureFile, Date date, int hours,int min, double outsideTemp, Profile profile) {
 
         try{
 
-            simParam = new SimulationParameter(layoutFileName, temperatureFile ,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), outsideTemp,0, new Login(profile));
+            simParam = new SimulationParameter(layoutFileName, temperatureFile ,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), 0,outsideTemp, new Login(profile));
         }catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public Clock getClock() {
+        return simParam.getClock();
+    }
+
+    public void startSimulation() {
+        try{
+            simParam.startSimulation();
+        }catch (IOException e){
+            System.out.println("ERROR: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void stopSimulation() {
+        simParam.stopSimulation();
+    }
+
+    public LocalTime getTime() {
+        return simParam.getTime();
     }
 
 

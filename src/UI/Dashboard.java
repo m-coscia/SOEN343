@@ -57,6 +57,7 @@ public class Dashboard extends JFrame {
         setProfileInfo(profile);
 
         tempLabel.setText("Oustide Temp. " + controller.getTemperature() + "ºC");
+        dateLabel.setText(controller.getDate());
         ToggleButton toggle = new ToggleButton();
         toggle.setSize(10,10);
 
@@ -68,13 +69,14 @@ public class Dashboard extends JFrame {
                 @Override
                 public void mouseReleased(MouseEvent e) {
                     super.mouseReleased(e);
-                    if(!clock.isRunning().get()){
-                        clock.start();
+                    if(controller.getClock().isRunning().get()){
+                        controller.startSimulation();
                         start_stop_label.setText("Running");
-                    }else {
-                        clock.pause();
-                        start_stop_label.setText("Paused");
                     }
+                   else {
+                        controller.stopSimulation();
+                        start_stop_label.setText("Paused");
+                   }
                 }
 
             });
@@ -92,11 +94,12 @@ public class Dashboard extends JFrame {
                     clock.changeSpeed((double) timeSlider.getValue() / 10);
                 }
             });
-            clock.start();
-            clock.pause();
+            controller.startSimulation();
+            controller.stopSimulation();
+
             Timer timer = new Timer(1000, e -> {
                 // Update the clock label with the current time
-                clockDisplay.setText(clock.getTime().toString());
+                clockDisplay.setText(controller.getTime().toString());
             });
             timer.start();
             outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
