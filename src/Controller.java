@@ -234,9 +234,12 @@ public class Controller {
     }
 
 
-//    public String[] getExistingLocations(){
-//        String[] rooms = new String[]{String.valueOf(RoomType.BEDROOM)};
-//
-//        return rooms;
-//    }
+    public String[] getExistingLocations(){
+        ArrayList<Room> rooms = getRooms();
+        String[] roomNames = new String[rooms.size()];
+        for (int i = 0; i < rooms.size(); i++){
+            roomNames[i] = rooms.get(i).getType().toString();
+        }
+        return roomNames;
+    }
 }
