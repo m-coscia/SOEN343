@@ -22,7 +22,7 @@ public class Controller {
     private DataBase database;
     private SimulationParameter simParam = null;
     private Controller(){
-        database = DataBase.getDataBase();
+
     }
 
     public static Controller getController() {
@@ -36,12 +36,13 @@ public class Controller {
     public void layoutSetUp(String filename) throws FileNotFoundException {
         try{
             HouseLayout.getHouseLayout().setHouseLayout(filename);
+            database = DataBase.getDataBase();
         }catch(FileNotFoundException e){
             System.out.println(e.getMessage());
         }
 
         System.out.println(filename);
-       layoutFileName = filename;
+        layoutFileName = filename;
 
     }
 
