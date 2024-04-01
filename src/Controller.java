@@ -228,13 +228,14 @@ public class Controller {
         return simParam.getTime();
     }
 
-    public void attachObservers(JLabel clockDisplay, JLabel dateDisplay, JLabel tempLabel) {
+    public void attachObservers(JLabel clockDisplay, JLabel dateDisplay, JLabel tempLabel, JTextPane consoleText) {
 //        TimeObserver to = new TimeObserver(clockDisplay);
 //        simParam.attachTimeObserver(to);
         simParam.attachTimeObserver(new TimeObserver(clockDisplay, dateDisplay, tempLabel));
 
-        ActionObserver ao = new ActionObserver();
+        ActionObserver ao = new ActionObserver(consoleText);
         simParam.attachActionObserver(ao);
+
 
     }
 

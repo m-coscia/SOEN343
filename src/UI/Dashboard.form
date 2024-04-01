@@ -294,7 +294,7 @@
                                   <text value="Parent"/>
                                 </properties>
                               </component>
-                              <component id="294e" class="javax.swing.JLabel">
+                              <component id="294e" class="javax.swing.JLabel" binding="profileLocationLabel">
                                 <constraints>
                                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                                 </constraints>
@@ -476,19 +476,15 @@
                         </constraints>
                         <properties>
                           <foreground color="-10320921"/>
-                          <horizontalScrollBarPolicy value="31"/>
+                          <horizontalScrollBarPolicy value="30"/>
                           <opaque value="false"/>
                           <verticalScrollBarPolicy value="20"/>
                         </properties>
                         <border type="none"/>
                         <children>
-                          <component id="c64f5" class="javax.swing.JTextArea" binding="outputArea">
+                          <component id="19565" class="javax.swing.JTextPane" binding="consoleOutput">
                             <constraints/>
-                            <properties>
-                              <lineWrap value="true"/>
-                              <opaque value="false"/>
-                              <wrapStyleWord value="true"/>
-                            </properties>
+                            <properties/>
                           </component>
                         </children>
                       </scrollpane>

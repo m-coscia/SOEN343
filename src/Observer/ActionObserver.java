@@ -1,12 +1,23 @@
 package src.Observer;
 
-import java.io.*;
-
 import src.Observer.Events.ActionEvent;
 import src.Observer.Events.Event;
 
-public class ActionObserver implements Observer {
+import javax.swing.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
+public class ActionObserver implements Observer {
+    JTextPane console = null;
+
+    public ActionObserver(){
+
+    }
+
+    public ActionObserver(JTextPane console){
+        this.console = console;
+    }
     public void update(Event e){
         try {
             // Open the file in append mode
@@ -16,6 +27,10 @@ public class ActionObserver implements Observer {
             // Write the event string to the file
             bw.write(((ActionEvent)e).getAction());
             bw.newLine(); // Add a new line for the next event
+
+            if(console != null){
+                console.setText(console.getText() + "\n" + ((ActionEvent) e).getAction());
+            }
 
             // Close the writer
             bw.close();

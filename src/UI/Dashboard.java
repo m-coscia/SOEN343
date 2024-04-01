@@ -53,27 +53,23 @@ public class Dashboard extends JFrame {
     private JLabel start_stop_label;
     private JLabel userTypeLabel;
     private JLabel locationLabel;
-    private JTextArea consoleText;
+    private JLabel profileLocationLabel;
+    private JTextPane consoleOutput;
+    //private JLabel consoleText;
 
     private Profile currentProfile;
 
     public Dashboard(Profile profile) {
         setProfileInfo(profile);
-
-//        Timer timer = new Timer(1000, e -> {
-//            // Update the temp label with the current time
-//            tempLabel.setText("Oustide Temp. " + controller.getTemperature() + "ºC");
-//            //dateLabel.setText((controller.getDate()));
-//        });
-//        timer.start();
-
+        tempLabel.setVerticalAlignment(SwingConstants.TOP);
+        tempLabel.setPreferredSize(new Dimension(300, 200));
 
         //dateLabel.setText(controller.getDate());
         setUpClockUI();
         //setUpOutputUI();
+        profileLocationLabel.setText(profile.getLocation().getType().toString());
 
-
-        outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+        //outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
         textArea1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
         list1.setListData(new String[]{"idk", "idk", "idk"});
         add(panel1);
@@ -95,14 +91,11 @@ public class Dashboard extends JFrame {
 
 
         //todo get rooms array form controller
-        rightMainPanel.setVisible(true);
-        Room r1 = new Room(RoomType.BEDROOM, 2, 3, 1, null);
-        Room r2 = new Room(RoomType.LIVINGROOM, 1, 4, 2, null);
-        Room r3 = new Room(RoomType.BATHROOM, 0, 1, 1, null);
-        Room r4 = new Room(RoomType.KITCHEN, 1, 2, 1, null);
-        Room r5 = new Room(RoomType.GARAGE, 2, 5, 3, null);
 
-        Room[] rooms = new Room[]{r1, r2, r3, r4, r5};
+        rightMainPanel.setVisible(true);
+
+        ArrayList<Room> ar = controller.getRooms();
+        Room[] rooms = ar.toArray(new Room[ar.size()]);
         createHouseLayout(rooms);
 
         //fullMainPanel.add(new SimParameterGUI(), BorderLayout.CENTER);
@@ -129,7 +122,7 @@ public class Dashboard extends JFrame {
 
             });
 
-            controller.attachObservers(clockDisplay, dateLabel,tempLabel);
+            controller.attachObservers(clockDisplay, dateLabel,tempLabel,consoleOutput);
 
 
         } catch (Exception e) {
@@ -246,6 +239,8 @@ public class Dashboard extends JFrame {
     public void appendToOutputArea(String text) {
         outputArea.append(text + "\n"); // Append the text and a newline to make it readable
     }
+
+
 
     // Helper method to update the appearance of the buttons
     private void updateButtonLook(JButton button, boolean isOn) {
