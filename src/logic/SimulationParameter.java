@@ -70,9 +70,6 @@ public class SimulationParameter {
         temperatureObserver.update(e);
     }
 
-    public Map getWeatherData(){
-        return weatherData;
-    }
 
     public void notifyActionObserver(Event e) throws IOException {
         actionObserver.update(e);
