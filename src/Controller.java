@@ -168,7 +168,12 @@ public class Controller {
        // return simParam.getLoggedIn().getLocation().toString();
         //TODO this returns null always ? to fix
        // return profile.getLocation().toString();
-        return "fix location";
+        if (profile.getLocation() == null){
+            return "fix location";
+        }else{
+            return profile.getLocation().getType().toString();
+        }
+
     }
 
     public ArrayList<Room> getRooms() {
