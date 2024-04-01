@@ -323,6 +323,7 @@ public class SimulationParameter {
 
     public void setHeater(Heating heater) {
         this.heater = heater;
+    }
 
     public ArrayList<Zone> getZones(){
         return zones;

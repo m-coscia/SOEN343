@@ -41,7 +41,7 @@ public class TimeObserver implements Observer{
             SwingUtilities.invokeLater(() -> {
                 try {
                     clockDisplay.setText(formattedTime);
-                    dateDisplay.setText(param.getDate().toString());
+                    dateDisplay.setText(param.getDate().getMonth() + " " + param.getDate().getDayOfMonth() + ", " + param.getDate().getYear());
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
