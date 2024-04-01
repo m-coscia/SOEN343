@@ -140,23 +140,24 @@ public class DataBase {
             if(p instanceof Parent){
                 String username = (((Parent) p).getUserName());
                 String password = (((Parent) p).getPassword());
-                query = "INSERT INTO smart_home_simulator_db.profiles VALUES ('PARENT', '"+name+"', '"+username+"', '"+password+"', "+location+")";
+                //query = "INSERT INTO smart_home_simulator_db.profiles VALUES ('PARENT', '"+name+"', '"+username+"', '"+password+"', "+location+")";
+               query = "INSERT INTO smart_home_simulator_db.Profiles (Type,Name, Username, Password, Room) VALUES ('PARENT', '"+name+"', '"+username+"', '"+password+"', "+location+")";
                 stmt.executeUpdate(query);
             }
             else if(p instanceof Child){
                 String username = (((Child) p).getUserName());
                 String password = (((Child) p).getPassword());
-                query = "INSERT INTO smart_home_simulator_db.profiles VALUES ('CHILD', '"+name+"', '"+username+"', '"+password+"', "+location+")";
+                query = "INSERT INTO smart_home_simulator_db.profiles (Type, Name, Username, Password, Room) VALUES ('CHILD', '"+name+"', '"+username+"', '"+password+"', "+location+")";
                 stmt.executeUpdate(query);
             }
             else if(p instanceof Guest){
                 String username = (((Guest) p).getUserName());
                 String password = (((Guest) p).getPassword());
-                query = "INSERT INTO smart_home_simulator_db.profiles VALUES ('GUEST', '"+name+"', '"+username+"', '"+password+"', "+location+")";
+                query = "INSERT INTO smart_home_simulator_db.profiles (Type, Name, Username, Password, Room) VALUES ('GUEST', '"+name+"', '"+username+"', '"+password+"', "+location+")";
                 stmt.executeUpdate(query);
             }
             else{
-                query = "INSERT INTO smart_home_simulator_db.profiles VALUES ('STRANGER', '"+name+"', '', '', "+location+")";
+                query = "INSERT INTO Smart_Home_Simulator_db.profiles (Type, Name, Username, Password, Room) VALUES ('STRANGER', '"+name+"','','', "+location+")";
                 stmt.executeUpdate(query);
             }
             con.close();
@@ -176,6 +177,7 @@ public class DataBase {
             fw.close(); */
         }
         catch(SQLException e){
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
         /* catch(IOException e){
