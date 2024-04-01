@@ -32,7 +32,7 @@ public class SimDatabase {
         Statement stmt=null;
         String databaseName="Smart_Home_Simulator_DB";
         try{
-            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "soen343", "SOEN343&Pr0ject");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "123");
             stmt = con.createStatement();
             String sql1="CREATE DATABASE "+databaseName;
             String sql2="USE "+databaseName;
@@ -45,13 +45,9 @@ public class SimDatabase {
                     "Room INT, " +
                     "PRIMARY KEY(ProfileID))";
             String sql4 = "INSERT INTO Profiles (Type, Name, Username, Password, Room) VALUES " +
-                    "('PARENT', 'Naika', 'naikiki', 'kiki2002', 0),"+
                     "('PARENT', 'Naika', 'naikiki', 'kiki2002', 3),"+
-                    "('CHILD', 'Yasmine', 'yaya', 'yaya2002', 0),"+
                     "('CHILD', 'Yasmine', 'yaya', 'yaya2002', 4),"+
-                    "('GUEST', 'Asmae', 'asmama', 'asmou2002', 0),"+
                     "('GUEST', 'Asmae', 'asmama', 'asmou2002', 3),"+
-                    "('STRANGER', 'Jay', '', '', 0),"+
                     "('STRANGER', 'Jay', '', '', 3)";
 
             stmt.addBatch(sql1);
