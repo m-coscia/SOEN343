@@ -43,7 +43,9 @@ public class ProfilesCreation extends JFrame {
                 previousFrame.setVisible(true);
             }
         });
+
         addComponents();
+
         add(panel1);
         pack();
         setSize(1200, getHeight());
@@ -51,83 +53,6 @@ public class ProfilesCreation extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-    }
-
-    private void addProfileFields() {
-        JTextField nameField = new JTextField();
-        middle.add(nameField);
-        nameFields.add(nameField);
-
-        JComboBox<String> typeField = new JComboBox<String>(new String[]{"", "Parent", "Child", "Guest", "Stranger"});
-        middle.add(typeField);
-        typeFields.add(typeField);
-
-        JTextField usernameField = new JTextField();
-        middle.add(usernameField);
-        usernameFields.add(usernameField);
-
-        JPasswordField passwordField = new JPasswordField();
-        middle.add(passwordField);
-        passwordFields.add(passwordField);
-
-        JCheckBox windowsCheckbox = new JCheckBox();
-        middle.add(windowsCheckbox);
-        windowsCheckboxes.add(windowsCheckbox);
-
-        JCheckBox doorsCheckbox = new JCheckBox();
-        middle.add(doorsCheckbox);
-        doorsCheckboxes.add(doorsCheckbox);
-
-        JCheckBox garageCheckbox = new JCheckBox();
-        middle.add(garageCheckbox);
-        garageCheckboxes.add(garageCheckbox);
-
-        JCheckBox lightsCheckbox = new JCheckBox();
-        middle.add(lightsCheckbox);
-        lightsCheckboxes.add(lightsCheckbox);
-        JComboBox<String> locationField = new JComboBox<String>(new String[]{"" ,"BEDROOM", "LIVINGROOM", "BATHROOM", "KITCHEN", "GARAGE"});
-        middle.add(locationField);
-
-        JCheckBox unusable1 = new JCheckBox();
-        unusable1.setVisible(false); //so we don't see it, just for formatting
-        middle.add(unusable1);
-
-        JCheckBox unusable2 = new JCheckBox();
-        unusable2.setVisible(false);
-        middle.add(unusable2);//so we don't see it, just for formatting
-        //middle.add(unusable2);
-
-        JCheckBox unusable3 = new JCheckBox();
-        unusable3.setVisible(false); //so we don't see it, just for formatting
-        //middle.add(unusable3);
-
-        typeField.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Parent")) {
-                    lightsCheckbox.setSelected(true);
-                    windowsCheckbox.setSelected(true);
-                    doorsCheckbox.setSelected(true);
-                    garageCheckbox.setSelected(true);
-                } else if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Stranger")) {
-                    usernameField.setEnabled(false);
-                    usernameField.setBackground(Color.GRAY);
-                    passwordField.setEnabled(false);
-                    passwordField.setBackground(Color.GRAY);
-                }
-            }
-        });
-
-        //will recheck the placements of the elements in the panel
-       // revalidate();
-        repaint();
-        pack();
-        setSize(1200,getHeight());
-    }
-
-    private void saveProfiles() {
-        controller.saveProfiles(nameFields, usernameFields, passwordFields, typeFields, windowsCheckboxes,
-                doorsCheckboxes, garageCheckboxes, lightsCheckboxes, locationsFields);
     }
 
     private void addComponents() {
@@ -198,8 +123,9 @@ public class ProfilesCreation extends JFrame {
         lightsCheckboxes.add(lightsCheckbox);
 
 
-
-        JComboBox<String> locationField = new JComboBox<String>(new String[]{"" ,"BEDROOM", "LIVINGROOM", "BATHROOM", "KITCHEN", "GARAGE"});
+        String[] rooms = controller.getExistingLocations();
+        //JComboBox<String> locationField = new JComboBox<String>(new String[]{"" ,"BEDROOM", "LIVINGROOM", "BATHROOM", "KITCHEN", "GARAGE"});
+        JComboBox<String> locationField = new JComboBox<>(rooms);
         middle.add(locationField);
         locationsFields.add(locationField);
 
@@ -246,6 +172,90 @@ public class ProfilesCreation extends JFrame {
 
         middle.add(stopButton);
     }
+
+    private void addProfileFields() {
+        JTextField nameField = new JTextField();
+        middle.add(nameField);
+        nameFields.add(nameField);
+
+        JComboBox<String> typeField = new JComboBox<String>(new String[]{"", "Parent", "Child", "Guest", "Stranger"});
+        middle.add(typeField);
+        typeFields.add(typeField);
+
+        JTextField usernameField = new JTextField();
+        middle.add(usernameField);
+        usernameFields.add(usernameField);
+
+        JPasswordField passwordField = new JPasswordField();
+        middle.add(passwordField);
+        passwordFields.add(passwordField);
+
+        JCheckBox windowsCheckbox = new JCheckBox();
+        middle.add(windowsCheckbox);
+        windowsCheckboxes.add(windowsCheckbox);
+
+        JCheckBox doorsCheckbox = new JCheckBox();
+        middle.add(doorsCheckbox);
+        doorsCheckboxes.add(doorsCheckbox);
+
+        JCheckBox garageCheckbox = new JCheckBox();
+        middle.add(garageCheckbox);
+        garageCheckboxes.add(garageCheckbox);
+
+        JCheckBox lightsCheckbox = new JCheckBox();
+        middle.add(lightsCheckbox);
+        lightsCheckboxes.add(lightsCheckbox);
+
+
+        String[] rooms = controller.getExistingLocations();
+        //JComboBox<String> locationField = new JComboBox<String>(new String[]{"" ,"BEDROOM", "LIVINGROOM", "BATHROOM", "KITCHEN", "GARAGE"});
+        JComboBox<String> locationField = new JComboBox<>(rooms);
+        locationsFields.add(locationField);
+        middle.add(locationField);
+
+        JCheckBox unusable1 = new JCheckBox();
+        unusable1.setVisible(false); //so we don't see it, just for formatting
+        middle.add(unusable1);
+
+        JCheckBox unusable2 = new JCheckBox();
+        unusable2.setVisible(false);
+        middle.add(unusable2);//so we don't see it, just for formatting
+        //middle.add(unusable2);
+
+        JCheckBox unusable3 = new JCheckBox();
+        unusable3.setVisible(false); //so we don't see it, just for formatting
+        //middle.add(unusable3);
+
+        typeField.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Parent")) {
+                    lightsCheckbox.setSelected(true);
+                    windowsCheckbox.setSelected(true);
+                    doorsCheckbox.setSelected(true);
+                    garageCheckbox.setSelected(true);
+                } else if (e.getStateChange() == ItemEvent.SELECTED && e.getItem().equals("Stranger")) {
+                    usernameField.setEnabled(false);
+                    usernameField.setBackground(Color.GRAY);
+                    passwordField.setEnabled(false);
+                    passwordField.setBackground(Color.GRAY);
+                }
+            }
+        });
+
+        //will recheck the placements of the elements in the panel
+       // revalidate();
+        repaint();
+        pack();
+        setSize(1200,getHeight());
+    }
+
+    private void saveProfiles() {
+        controller.saveProfiles(nameFields, usernameFields, passwordFields, typeFields, windowsCheckboxes,
+                doorsCheckboxes, garageCheckboxes, lightsCheckboxes, locationsFields);
+    }
+
+
 
     private void initializeLists() {
         //content.setBorder(new LineBorder(Color.BLACK));
