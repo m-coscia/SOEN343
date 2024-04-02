@@ -349,24 +349,23 @@
                             <border type="none"/>
                             <children/>
                           </grid>
-                          <grid id="2eb37" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                          <grid id="2eb37" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                             <margin top="0" left="0" bottom="0" right="0"/>
                             <constraints>
                               <tabbedpane title="SHC"/>
                             </constraints>
-                            <properties/>
+                            <properties>
+                              <opaque value="false"/>
+                            </properties>
                             <border type="none"/>
                             <children>
-                              <hspacer id="fa79d">
-                                <constraints>
-                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                              </hspacer>
                               <grid id="657ab" layout-manager="BorderLayout" hgap="0" vgap="0">
                                 <constraints>
                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                 </constraints>
-                                <properties/>
+                                <properties>
+                                  <opaque value="false"/>
+                                </properties>
                                 <border type="none"/>
                                 <children>
                                   <grid id="d75e6" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -385,45 +384,26 @@
                                   </grid>
                                   <scrollpane id="f567d">
                                     <constraints border-constraint="Center"/>
-                                    <properties/>
+                                    <properties>
+                                      <autoscrolls value="true"/>
+                                      <horizontalScrollBarPolicy value="31"/>
+                                      <opaque value="false"/>
+                                      <verticalScrollBarPolicy value="22"/>
+                                    </properties>
                                     <border type="none"/>
                                     <children>
-                                      <component id="e77a8" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+                                      <grid id="d1933" binding="SHCmainPanel" layout-manager="GridBagLayout">
                                         <constraints/>
                                         <properties>
+                                          <autoscrolls value="false"/>
+                                          <maximumSize width="100" height="600"/>
                                           <opaque value="false"/>
-                                          <text value=""/>
                                         </properties>
-                                      </component>
+                                        <border type="none"/>
+                                        <children/>
+                                      </grid>
                                     </children>
                                   </scrollpane>
-                                </children>
-                              </grid>
-                              <grid id="a2bd3" layout-manager="BorderLayout" hgap="0" vgap="0">
-                                <constraints>
-                                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties/>
-                                <border type="none"/>
-                                <children>
-                                  <grid id="730a6" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                                    <margin top="0" left="0" bottom="0" right="0"/>
-                                    <constraints border-constraint="West"/>
-                                    <properties/>
-                                    <border type="none"/>
-                                    <children/>
-                                  </grid>
-                                  <grid id="565b8" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                                    <margin top="0" left="0" bottom="0" right="0"/>
-                                    <constraints border-constraint="East"/>
-                                    <properties/>
-                                    <border type="none"/>
-                                    <children/>
-                                  </grid>
-                                  <component id="57657" class="javax.swing.JList" binding="list1" default-binding="true">
-                                    <constraints border-constraint="Center"/>
-                                    <properties/>
-                                  </component>
                                 </children>
                               </grid>
                             </children>
