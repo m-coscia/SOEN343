@@ -9,6 +9,7 @@ import src.logic.Permissions;
 import src.logic.Profile;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
@@ -59,6 +60,7 @@ public class Dashboard extends JFrame {
     private JTextPane consoleOutput;
     private JPanel SHHPanel;
     private JTable zoneTable;
+    private JPanel SHCmainPanel;
     //private JLabel consoleText;
 
     private Profile currentProfile;
@@ -71,12 +73,13 @@ public class Dashboard extends JFrame {
         //dateLabel.setText(controller.getDate());
         setUpClockUI();
         setUpSHHTab();
+        setUpSHCTab();
         //setUpOutputUI();
         profileLocationLabel.setText(profile.getLocation().getType().toString());
 
         //outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        textArea1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        list1.setListData(new String[]{"idk", "idk", "idk"});
+        //textArea1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+        //list1.setListData(new String[]{"idk", "idk", "idk"});
         add(panel1);
 
         setSize(1000, 500);
@@ -280,6 +283,78 @@ public class Dashboard extends JFrame {
         zoneTable.getColumnModel().getColumn(1).setPreferredWidth(50);
 
 
+    }
+
+    private void setUpSHCTab(){
+        ArrayList<Room> rooms = controller.getRooms();
+        SHCmainPanel.setLayout(new GridLayout(rooms.size(),1));
+        for(Room r: rooms){
+            JPanel roomPanel = new JPanel();
+            TitledBorder titledBorder = BorderFactory.createTitledBorder(r.getType().toString() + " " + r.getId());
+
+            titledBorder.setTitleJustification(TitledBorder.CENTER); // Title alignment
+            titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 14)); // Title font
+            roomPanel.setBorder(titledBorder);
+            roomPanel.setLayout(new GridLayout(3,1));
+
+            JButton lightsButton = new JButton(r.getLightsStatus());
+            JButton doorsButton = new JButton(r.getDoorsStatus());
+            JButton windowsButton = new JButton(r.getWindowsStatus());
+
+            roomPanel.add(lightsButton);
+            roomPanel.add(doorsButton);
+            roomPanel.add(windowsButton);
+
+            if (r.getNumLights() > 0) {
+                updateButtonLook(lightsButton, r.getLights().isSwitchedOn());
+                lightsButton.addActionListener(e -> {
+                    try {
+                        r.toggleLights(currentProfile);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    updateButtonLook(lightsButton, r.getLights().isSwitchedOn());
+                });
+            } else {
+                lightsButton.setEnabled(false); // Disable the button if there are no lights
+                lightsButton.setText("Lights (0): N/A");
+            }
+
+            if (r.getNumDoors() > 0) {
+                updateButtonLook(doorsButton, r.getDoors().isOpen());
+                doorsButton.addActionListener(e -> {
+                    try {
+                        r.toggleDoors(currentProfile);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    updateButtonLook(doorsButton, r.getDoors().isOpen());
+                });
+            } else {
+                doorsButton.setEnabled(false); // Disable the button if there are no doors
+                doorsButton.setText("Doors (0): N/A");
+            }
+
+            if (r.getNumWindows() > 0) {
+                updateButtonLook(windowsButton, r.getWindows().isOpen());
+                windowsButton.addActionListener(e -> {
+                    try {
+                        r.toggleWindows(currentProfile);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    updateButtonLook(windowsButton, r.getWindows().isOpen());
+                });
+            } else {
+                windowsButton.setEnabled(false); // Disable the button if there are no windows
+                windowsButton.setText("Windows (0): N/A");
+            }
+
+            SHCmainPanel.add(roomPanel);
+        }
     }
     public static void main(String[] args) {
         Profile p = new Profile("Sara", null);
