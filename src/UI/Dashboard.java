@@ -222,10 +222,10 @@ public class Dashboard extends JFrame {
             }
 
             // Add components to the room panel with GridBagConstraints
-            roomPanel.add(roomTypeLabel, gbc);
-            roomPanel.add(lightsButton, gbc);
-            roomPanel.add(doorsButton, gbc);
-            roomPanel.add(windowsButton, gbc);
+              roomPanel.add(roomTypeLabel, gbc);
+//            roomPanel.add(lightsButton, gbc);
+//            roomPanel.add(doorsButton, gbc);
+//            roomPanel.add(windowsButton, gbc);
 
             houseLayout.add(roomPanel); // Adding the room to the house layout
         }
