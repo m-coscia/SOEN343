@@ -154,17 +154,19 @@ public class SimParameterGUI extends JFrame{
             }
         });
 
-        doneZoneButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                listOfZones.add(zones);
-                controller.setZones(listOfZones,temperatures,typesOfZonesList);
-            }
-        });
+//        doneZoneButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                listOfZones.add(zones);
+//                controller.setZones(listOfZones,temperatures,typesOfZonesList);
+//            }
+//        });
 
         doneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                listOfZones.add(zones);
+                controller.setZones(listOfZones,temperatures,typesOfZonesList);
 
                 controller.setSimulationParams(filenameField.getText(), (Date) datePicker.getModel().getValue(), (int) hourSpinner.getModel().getValue(),
                         (int) minuteSpinner.getModel().getValue(), (int) tempSpinner.getValue(), profile);

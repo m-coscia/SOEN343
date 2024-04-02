@@ -44,7 +44,7 @@ public class ProfilesLoginFrame extends JFrame {
             JPanel cardPanel = new JPanel();
             cardPanel.setLayout(new BorderLayout());
 
-            JLabel iconLabel = new JLabel(new ImageIcon("src/UI/smallProfile.png"));
+            JLabel iconLabel = new JLabel(new ImageIcon("src/UI/Icons/smallProfile.png"));
             iconLabel.setAlignmentX(CENTER_ALIGNMENT);
             iconLabel.setAlignmentY(CENTER_ALIGNMENT);
             cardPanel.add(iconLabel,BorderLayout.CENTER);

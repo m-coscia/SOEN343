@@ -299,6 +299,7 @@ public class Dashboard extends JFrame {
                 case 1: // Type column
                     String newType = (String) model.getValueAt(row, column);
                     System.out.println(newType);
+                    controller.setZoneType(z, newType);
                     break;
                 case 2: // Temperature column
                     String temperature = (String) model.getValueAt(row, column);

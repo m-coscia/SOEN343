@@ -234,6 +234,10 @@ public class Controller {
         }
     }
 
+    public void setZoneType(Zone zone, String type){
+        simParam.setZoneType(zone,type);
+    }
+
     public void setSimulationParams(String temperatureFile, Date date, int hours,int min, double outsideTemp, Profile profile) {
 
         try{

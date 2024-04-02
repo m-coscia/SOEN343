@@ -365,7 +365,6 @@ public class SimulationParameter {
         notifyActionObserver(actionEvent);
     }
 
-
     public void setZoneTemperature(double temp, Zone z) throws IOException {
         int index = zones.indexOf(z);
         String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
@@ -406,17 +405,21 @@ public class SimulationParameter {
     }
 
     public void changeInWeather(){
-//        if(this.getWeatherOutside() < this.getWeatherInside()){
-//            Event temp1 = new TempEvent("ShutdownAC", this);
-//            Event temp2 = new TempEvent("OpenWindows", this);
-//
-//            try{
-//                notifyTemperatureObserver(temp1);
-//                notifyTemperatureObserver(temp2);
-//            }
-//            catch ( IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        if(this.getWeatherOutside() < this.getWeatherInside()){
+            Event temp1 = new TempEvent("ShutdownAC", this);
+            Event temp2 = new TempEvent("OpenWindows", this);
+
+            try{
+                notifyTemperatureObserver(temp1);
+                notifyTemperatureObserver(temp2);
+            }
+            catch ( IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setZoneType(Zone zone, String type) {
+        zone.setType(type);
     }
 }
