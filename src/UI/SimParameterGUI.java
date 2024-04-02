@@ -42,6 +42,7 @@ public class SimParameterGUI extends JFrame{
     private ArrayList<JCheckBox> zones = new ArrayList<>();
     private ArrayList<ArrayList<JCheckBox>> listOfZones = new ArrayList<>();
     private ArrayList<JTextField> temperatures = new ArrayList<>();
+    private ArrayList<JComboBox<String>> typesOfZonesList = new ArrayList<>();
 
     private Profile profile;
     public SimParameterGUI(JFrame previousFrame, Profile profile){
@@ -66,13 +67,15 @@ public class SimParameterGUI extends JFrame{
         JLabel empty1 = new JLabel("Temperature");
         empty1.setHorizontalAlignment(SwingConstants.CENTER);
         zoneCreationPanel.add(empty1);
-        empty1.setVisible(true);
+        //empty1.setVisible(true);
 
         //for spacing
-        JLabel empty2 = new JLabel("");
-        zoneCreationPanel.add(empty2);
-        empty2.setVisible(false);
+        JLabel typeLabel = new JLabel("Type of Zone");
+        typeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        zoneCreationPanel.add(typeLabel);
+        //typeLabel.setVisible(false);
 
+        //TO choose type of zones
 
         JLabel zoneLabel = new JLabel("Zone 1");
         zoneLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -91,10 +94,15 @@ public class SimParameterGUI extends JFrame{
         tempField.setHorizontalAlignment(SwingConstants.CENTER);
         zoneCreationPanel.add(tempField);
 
-        //for spacing
-        JLabel empty3 = new JLabel("");
-        zoneCreationPanel.add(empty3);
-        empty3.setVisible(false);
+        JComboBox<String> typesOfZones = new JComboBox<>(new String[]{"HEATING", "COOLING"});
+        zoneCreationPanel.add(typesOfZones);
+        typesOfZonesList.add(typesOfZones);
+
+
+//        //for spacing
+//        JLabel empty3 = new JLabel("");
+//        zoneCreationPanel.add(empty3);
+//        empty3.setVisible(false);
         //this button will add rows as needed
 //        JButton addZoneButton = new JButton("Add Zone");
 //        addZoneButton.addActionListener(new ActionListener() {
@@ -150,7 +158,7 @@ public class SimParameterGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 listOfZones.add(zones);
-                controller.setZones(listOfZones,temperatures);
+                controller.setZones(listOfZones,temperatures,typesOfZonesList);
             }
         });
 
@@ -217,9 +225,13 @@ public class SimParameterGUI extends JFrame{
         tempField.setHorizontalAlignment(SwingConstants.CENTER);
         zoneCreationPanel.add(tempField);
 
-        JLabel empty1 = new JLabel("");
-        zoneCreationPanel.add(empty1);
-        empty1.setVisible(false);
+        JComboBox<String> typesOfZones = new JComboBox<>(new String[]{"HEATING", "COOLING"});
+        zoneCreationPanel.add(typesOfZones);
+        typesOfZonesList.add(typesOfZones);
+
+//        JLabel empty1 = new JLabel("");
+//        zoneCreationPanel.add(empty1);
+//        empty1.setVisible(false);
 
 //        JLabel empty2 = new JLabel("");
 //        zoneCreationPanel.add(empty2);
