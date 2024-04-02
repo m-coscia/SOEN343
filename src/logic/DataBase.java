@@ -7,25 +7,27 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class DataBase {
+    Connection con;
     private ArrayList<Profile> profiles = new ArrayList<>();
     private ArrayList<Room> rooms = HouseLayout.getHouseLayout().getRooms();
     private static DataBase db = null;
     private File accountLog;
 
     private DataBase() {
-        Connection con=null;
+        //Connection con=null;
         Statement stmt=null;
         try{
             //connecting to database
             con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "123");
             //required for running SQL commands in Java
             stmt = con.createStatement();
-            String query = "SELECT * FROM smart_home_simulator_db.profiles";
+            String query = "SELECT * FROM smart_home_simulator_db.FullProfiles";
             //fetch all profiles from SQL database
             ResultSet rs = stmt.executeQuery(query);
             //declaring temp variables
             String type, name, userName, password;
             int locationId;
+            boolean window, lights, garage, doors;
             //loop through each entry of SQL table and create profiles
             while(rs.next()) {
                 type = rs.getString("Type");
@@ -33,21 +35,36 @@ public class DataBase {
                 userName = rs.getString("Username");
                 password = rs.getString("Password");
                 locationId =  rs.getInt("Room");
+                window = rs.getBoolean("Window");
+                lights = rs.getBoolean("Lights");
+                garage = rs.getBoolean("Garage");
+                doors = rs.getBoolean("Doors");
                 Profile profile = null;
+                Permissions permissions = new Permissions(window,doors,garage,lights,true);
+                // I THINK THE ISSUE IS BCZ THIS IS DONE BEFORE THE HOUSE LAYOUT IS SET SO THE FINDROOM() ALWAYS IS NULL
                 Room location = findRoom(locationId);
                 ;
                 switch(type){
                     case "PARENT":
                         profile = new Parent(name, userName, password, location);
+                        profile.setPermissions(permissions);
+                        location.addUserToRoom(profile);
                         break;
                     case "CHILD":
                         profile = new Child(name, userName, password, location);
+                        profile.setPermissions(permissions);
+                        location.addUserToRoom(profile);
                         break;
                     case "GUEST":
                         profile = new Guest(name, userName, password, location);
+                        profile.setPermissions(permissions);
+                        location.addUserToRoom(profile);
                         break;
                     case "STRANGER":
                         profile = new Stranger(name, location);
+                        permissions.setTemperaturePermission(false);
+                        profile.setPermissions(permissions);
+                        location.addUserToRoom(profile);
                         break;
                 }
                 // add profile to arraylist
@@ -55,7 +72,7 @@ public class DataBase {
                     profiles.add(profile);
                 }
             }
-            con.close();
+            //con.close();
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -124,15 +141,17 @@ public class DataBase {
         return db;
     }
 
+
     public void addAccount(Profile p){
         profiles.add(p);
-        Connection con=null;
+        //Connection con=null;
         Statement stmt=null;
         String name = p.getName();
         int location = p.getLocation().getId();
+        Permissions permission = p.getPermissions();
         try{
             //connecting to database
-            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "123");
+            //con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "123");
             //required for running SQL commands in Java
             stmt = con.createStatement();
             String query = "";
@@ -141,26 +160,50 @@ public class DataBase {
                 String username = (((Parent) p).getUserName());
                 String password = (((Parent) p).getPassword());
                 //query = "INSERT INTO smart_home_simulator_db.profiles VALUES ('PARENT', '"+name+"', '"+username+"', '"+password+"', "+location+")";
-               query = "INSERT INTO smart_home_simulator_db.Profiles (Type,Name, Username, Password, Room) VALUES ('PARENT', '"+name+"', '"+username+"', '"+password+"', "+location+")";
+               query = "INSERT INTO smart_home_simulator_db.FullProfiles (Type,Name, Username, Password, Room, `Window`, Lights, Garage, Doors) VALUES " +
+                       "('PARENT', \'"+name+"\', \'"+username+"\', '"+password+"', "+location+","
+                       + permission.getWindowsPermission() +"," +
+                       permission.getLightsPermission() + "," +
+                       permission.getGarageDoorPermission() +"," +
+                       permission.getDoorsPermission() +
+                       ")";
                 stmt.executeUpdate(query);
             }
             else if(p instanceof Child){
                 String username = (((Child) p).getUserName());
                 String password = (((Child) p).getPassword());
-                query = "INSERT INTO smart_home_simulator_db.profiles (Type, Name, Username, Password, Room) VALUES ('CHILD', '"+name+"', '"+username+"', '"+password+"', "+location+")";
+                query = "INSERT INTO smart_home_simulator_db.profiles (Type, Name, Username, Password, Room, `Window`, Lights, Garage, Doors) " +
+                        "VALUES ('CHILD', '"+name+"', '"+username+"', '"+password+"', "+location+ ","
+                        + permission.getWindowsPermission() +"," +
+                        permission.getLightsPermission() + "," +
+                        permission.getGarageDoorPermission() +"," +
+                        permission.getDoorsPermission() +
+                        ")";
                 stmt.executeUpdate(query);
             }
             else if(p instanceof Guest){
                 String username = (((Guest) p).getUserName());
                 String password = (((Guest) p).getPassword());
-                query = "INSERT INTO smart_home_simulator_db.profiles (Type, Name, Username, Password, Room) VALUES ('GUEST', '"+name+"', '"+username+"', '"+password+"', "+location+")";
+                query = "INSERT INTO smart_home_simulator_db.profiles (Type, Name, Username, Password, Room, `Window`, Lights, Garage, Doors) " +
+                        "VALUES ('GUEST', '"+name+"', '"+username+"', '"+password+"', "+location+ ","
+                        + permission.getWindowsPermission() +"," +
+                        permission.getLightsPermission() + "," +
+                        permission.getGarageDoorPermission() +"," +
+                        permission.getDoorsPermission() +
+                        ")";
                 stmt.executeUpdate(query);
             }
             else{
-                query = "INSERT INTO Smart_Home_Simulator_db.profiles (Type, Name, Username, Password, Room) VALUES ('STRANGER', '"+name+"','','', "+location+")";
+                query = "INSERT INTO Smart_Home_Simulator_db.profiles (Type, Name, Username, Password, Room, `Window`, Lights, Garage, Doors)" +
+                        " VALUES ('STRANGER', '"+name+"','','', "+location+ ","
+                        + permission.getWindowsPermission() +"," +
+                        permission.getLightsPermission() + "," +
+                        permission.getGarageDoorPermission() +"," +
+                        permission.getDoorsPermission() +
+                        ")";
                 stmt.executeUpdate(query);
             }
-            con.close();
+           // con.close();
 
             //TODO: location? is 0 equivalent to not being in the home?
             /*
@@ -276,6 +319,30 @@ public class DataBase {
             }
         }
         return false;
+//        System.out.println("you are in the profileExists() method: " +userProfile.getName());
+//        String sql = "SELECT FROM FullProfiles WHERE Type = ? AND Name = \'"+userProfile.getName() +" ";
+//
+//        try{
+//            PreparedStatement pst = con.prepareStatement(sql);
+//
+//            pst.setString(1, userProfile.getClass().getSimpleName().toUpperCase());
+//            //pst.setString(2, userProfile.getName());
+//
+//
+//            try (ResultSet rs = pst.executeQuery()) {
+//                if (rs.next()) {
+//                    int count = rs.getInt(1);
+//                    System.out.println("the user was found and their id is: " + count);
+//                    return count > 0;
+//                }
+//            }
+//
+//        }catch(SQLException e){
+//            System.out.println(e.getMessage());
+//            e.printStackTrace();
+//        }
+//
+//        return false;
     }    
 
     public Profile findProfile(String name) {
@@ -284,7 +351,57 @@ public class DataBase {
                 return profile;
             }
         }
-        return null; // Return null if no matching profile is found
+
+//        String query = "SELECT * FROM profiles WHERE Name = ? ";
+//
+//        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "123");
+//             PreparedStatement pst = con.prepareStatement(query)) {
+//
+//            pst.setString(1, name);
+//
+//            try (ResultSet rs = pst.executeQuery()) {
+//                if (rs.next()) {
+//                    // Retrieve profile attributes from the result set
+//                    String type = rs.getString("Type");
+//                    String username = rs.getString("Username");
+//                    String password = rs.getString("Password");
+//                    int room = rs.getInt("Room");
+//                    boolean lights = rs.getBoolean("Lights");
+//                    boolean garage = rs.getBoolean("Garage");
+//                    boolean doors = rs.getBoolean("Doors");
+//                    boolean windows = rs.getBoolean("Window");
+//
+//                    Permissions p = new Permissions(windows,doors,garage,lights,true);
+//                    // Create and return a Profile object
+//                    switch (type.toUpperCase()) {
+//                        case "PARENT":
+//                            Parent parent =  new Parent(name, username, password, findRoom(room));
+//                            parent.setPermissions(p);
+//                            return parent;
+//
+//                        case "CHILD":
+//                           Child child =  new Child(name, username, password,findRoom(room));
+//                           child.setPermissions(p);
+//                        case "GUEST":
+//                            Guest guest = new Guest(name, username, password, findRoom(room));
+//                            guest.setPermissions(p);
+//                            return guest;
+//                        case "STRANGER":
+//                            Stranger stranger = new Stranger(name, findRoom(room));
+//                            stranger.setPermissions(p);
+//                            return stranger;
+//                        default:
+//                            // Handle unknown profile type
+//                            System.err.println("Unknown profile type: " + type);
+//                            return null;
+//                    }
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+        return null;
     }
     
     public Room findRoom(int identifier) {
@@ -295,7 +412,6 @@ public class DataBase {
         }
         return null; // Return null if no matching room is found
     }
-    
 
     public ArrayList<Profile> getProfiles(){
         return profiles;
