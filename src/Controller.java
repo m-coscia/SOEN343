@@ -293,4 +293,8 @@ public class Controller {
         }
         return roomNames;
     }
+
+    public ArrayList<Zone> getZones() {
+        return simParam.getZones();
+    }
 }

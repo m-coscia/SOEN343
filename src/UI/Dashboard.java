@@ -3,6 +3,7 @@ package src.UI;
 import src.Controller;
 import src.components.Room;
 import src.components.RoomType;
+import src.components.Zone;
 import src.logic.Parent;
 import src.logic.Permissions;
 import src.logic.Profile;
@@ -10,6 +11,7 @@ import src.logic.Profile;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,6 +57,8 @@ public class Dashboard extends JFrame {
     private JLabel locationLabel;
     private JLabel profileLocationLabel;
     private JTextPane consoleOutput;
+    private JPanel SHHPanel;
+    private JTable zoneTable;
     //private JLabel consoleText;
 
     private Profile currentProfile;
@@ -66,6 +70,7 @@ public class Dashboard extends JFrame {
 
         //dateLabel.setText(controller.getDate());
         setUpClockUI();
+        setUpSHHTab();
         //setUpOutputUI();
         profileLocationLabel.setText(profile.getLocation().getType().toString());
 
@@ -80,8 +85,6 @@ public class Dashboard extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
-//        add(panel1);
-//        setVisible(true);
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,8 +92,6 @@ public class Dashboard extends JFrame {
             }
         });
 
-
-        //todo get rooms array form controller
 
         rightMainPanel.setVisible(true);
 
@@ -240,8 +241,6 @@ public class Dashboard extends JFrame {
         outputArea.append(text + "\n"); // Append the text and a newline to make it readable
     }
 
-
-
     // Helper method to update the appearance of the buttons
     private void updateButtonLook(JButton button, boolean isOn) {
         button.setText(isOn ? button.getText().replace("OFF", "ON") : button.getText().replace("ON", "OFF"));
@@ -254,6 +253,34 @@ public class Dashboard extends JFrame {
         userTypeLabel.setText(controller.getType(profile) + ": " + profile.getName());
     }
 
+    private void setUpSHHTab(){
+        ArrayList<Zone> zones = controller.getZones();
+
+        Object[][] data = new Object[zones.size()][2];
+
+        for(int i = 0; i < zones.size(); i++){
+            data[i][0] = "Zone " + i;
+            data[i][1] = new JTextArea("1");
+           // ((JTextArea) data[i][1]).addActionListener();
+
+        }
+
+//        data[1][0] = "Zone 2";
+//        data[1][1] = 30;
+
+        // Create column names (array of strings)
+        String[] columnNames = {"Zone", "Temperature"};
+
+        // Create a table model using DefaultTableModel
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        zoneTable.setModel(model);
+
+        //TODO add cell editor to the table to change the values of temperature and set it in the simulation paramaters
+        zoneTable.setRowHeight(25); // Set row height
+        zoneTable.getColumnModel().getColumn(1).setPreferredWidth(50);
+
+
+    }
     public static void main(String[] args) {
         Profile p = new Profile("Sara", null);
         ArrayList<Profile> pfs = new ArrayList<Profile>();
