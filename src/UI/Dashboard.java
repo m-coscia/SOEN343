@@ -58,9 +58,10 @@ public class Dashboard extends JFrame {
     private JLabel locationLabel;
     private JLabel profileLocationLabel;
     private JTextPane consoleOutput;
-    private JPanel SHHPanel;
     private JTable zoneTable;
     private JPanel SHCmainPanel;
+    private JScrollPane SHHScrollPanel;
+    private JPanel panelForSHH;
     //private JLabel consoleText;
 
     private Profile currentProfile;
@@ -259,30 +260,55 @@ public class Dashboard extends JFrame {
     private void setUpSHHTab(){
         ArrayList<Zone> zones = controller.getZones();
 
-        Object[][] data = new Object[zones.size()][2];
+        zoneTable = new JTable();
+        // Create column names (array of strings)
+        String[] columnNames = {"Zone", "Zone Type","Temperature"};
+
+        // Create a table model using DefaultTableModel
+        DefaultTableModel model = new DefaultTableModel(columnNames,0);
+
+        zoneTable.setModel(model);
+
+        String[][] data = new String[zones.size()][3];
 
         for(int i = 0; i < zones.size(); i++){
             data[i][0] = "Zone " + i;
-            data[i][1] = new JTextArea("1");
-           // ((JTextArea) data[i][1]).addActionListener();
-
+            data[i][1] = zones.get(i).getType();
+            data[i][2] = String.valueOf(zones.get(i).getTemperature());
+            model.addRow(data[i]);
         }
-
-//        data[1][0] = "Zone 2";
-//        data[1][1] = 30;
-
-        // Create column names (array of strings)
-        String[] columnNames = {"Zone", "Temperature"};
-
-        // Create a table model using DefaultTableModel
-        DefaultTableModel model = new DefaultTableModel(data, columnNames);
-        zoneTable.setModel(model);
+        handleTableChanges(model, zones);
+        //zoneTable.setE
+        //zoneTable.getColumnModel().getColumn(2).setCellEditor(new CellEditor(controller));
 
         //TODO add cell editor to the table to change the values of temperature and set it in the simulation paramaters
         zoneTable.setRowHeight(25); // Set row height
         zoneTable.getColumnModel().getColumn(1).setPreferredWidth(50);
 
 
+        panelForSHH.add(zoneTable);
+    }
+
+    private void handleTableChanges(DefaultTableModel model, ArrayList<Zone> zones){
+        model.addTableModelListener( e ->{
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+
+            Zone z = zones.get(row);
+            switch (column) {
+                case 1: // Type column
+                    String newType = (String) model.getValueAt(row, column);
+                    System.out.println(newType);
+                    break;
+                case 2: // Temperature column
+                    String temperature = (String) model.getValueAt(row, column);
+                    Double newTemperature = Double.parseDouble(temperature);
+                    System.out.println(newTemperature);
+                    controller.setZoneTemperature(newTemperature,z);
+                   // obj.setTemperature(newTemperature);
+                    break;
+            }
+        });
     }
 
     private void setUpSHCTab(){
@@ -390,4 +416,6 @@ public class Dashboard extends JFrame {
         d.createHouseLayout(rooms); // Create layout with the array of rooms
 
     }
+
+
 }

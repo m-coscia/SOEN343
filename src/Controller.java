@@ -1,6 +1,7 @@
 package src;
 
 import src.Observer.ActionObserver;
+import src.Observer.TemperatureObserver;
 import src.Observer.TimeObserver;
 import src.components.Clock;
 import src.components.Room;
@@ -183,7 +184,7 @@ public class Controller {
         return HouseLayout.getHouseLayout().getRooms();
     }
 
-    public void setZones(ArrayList<ArrayList<JCheckBox>> checkboxes, ArrayList<JTextField> temperatures){
+    public void setZones(ArrayList<ArrayList<JCheckBox>> checkboxes, ArrayList<JTextField> temperatures, ArrayList<JComboBox<String>> typesOfZonesList){
         ArrayList<Room> rooms = getRooms();
         ArrayList<Zone> zones = new ArrayList<>();
 
@@ -207,13 +208,15 @@ public class Controller {
             //get the temperature that was set for this zone
             double temp = Double.parseDouble(temperatures.get(i).getText());
             avgTemp += temp;
-            if (temp < 0){
-                Zone zone = new Zone(roomsInCurrentZone,temp,"COOLING");
+            //if (temp < 0){
+                String type = typesOfZonesList.get(i).getModel().getSelectedItem().toString();
+                System.out.println("Zone " + i + ": " + type);
+                Zone zone = new Zone(roomsInCurrentZone,temp,type);
                 zones.add(zone);
-            }else{
-                Zone zone = new Zone(roomsInCurrentZone, temp, "HEATING");
-                zones.add(zone);
-            }
+//            }else{
+//                Zone zone = new Zone(roomsInCurrentZone, temp, "HEATING");
+//                zones.add(zone);
+//            }
             System.out.println();
         }
 
@@ -221,6 +224,14 @@ public class Controller {
         avgTemp = avgTemp / temperatures.size();
         //attachObservers(null,null,null,null);
 
+    }
+    public void setZoneTemperature(double temp, Zone z){
+        try{
+            simParam.setZoneTemperature(temp,z);
+        }catch(IOException e){
+            System.out.println("Line: 232" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void setSimulationParams(String temperatureFile, Date date, int hours,int min, double outsideTemp, Profile profile) {
@@ -273,17 +284,15 @@ public class Controller {
         return simParam.getTime();
     }
 
+    //todo fix the observers attached to use all the defined classes in logic
     public void attachObservers(JLabel clockDisplay, JLabel dateDisplay, JLabel tempLabel, JTextPane consoleText) {
 //        TimeObserver to = new TimeObserver(clockDisplay);
 //        simParam.attachTimeObserver(to);
         simParam.attachTimeObserver(new TimeObserver(clockDisplay, dateDisplay, tempLabel));
-
-        ActionObserver ao = new ActionObserver(consoleText);
-        simParam.attachActionObserver(ao);
-
+        simParam.attachActionObserver(new ActionObserver(consoleText));
+        simParam.attachTemperatureObserver(new TemperatureObserver());
 
     }
-
 
     public String[] getExistingLocations(){
         ArrayList<Room> rooms = getRooms();
