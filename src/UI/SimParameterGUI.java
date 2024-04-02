@@ -24,10 +24,6 @@ public class SimParameterGUI extends JFrame{
     JFrame thisFrame = this;
     private JPanel panel1;
     private JPanel mainZonePanel;
-
-    private ArrayList<JCheckBox> zones = new ArrayList<>();
-    private ArrayList<ArrayList<JCheckBox>> listOfZones = new ArrayList<>();
-    private ArrayList<Double> temperatures = new ArrayList<>();
     private JTextField filenameField;
     private JPanel zoneCreationPanel;
     private JPanel buttonsPanel;
@@ -43,6 +39,9 @@ public class SimParameterGUI extends JFrame{
     private JButton doneButton;
     int zoneCount = 1;
     private JDatePickerImpl datePicker;
+    private ArrayList<JCheckBox> zones = new ArrayList<>();
+    private ArrayList<ArrayList<JCheckBox>> listOfZones = new ArrayList<>();
+    private ArrayList<JTextField> temperatures = new ArrayList<>();
 
     private Profile profile;
     public SimParameterGUI(JFrame previousFrame, Profile profile){
@@ -88,6 +87,7 @@ public class SimParameterGUI extends JFrame{
         }
 
         JTextField tempField = new JTextField();
+        temperatures.add(tempField);
         tempField.setHorizontalAlignment(SwingConstants.CENTER);
         zoneCreationPanel.add(tempField);
 
@@ -137,6 +137,7 @@ public class SimParameterGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (zoneCount < controller.getRooms().size()){
+                    //listOfZones.add(zones);
                     addZones();
                 }else{
                     System.out.println("maximum number of zones created");
@@ -149,7 +150,7 @@ public class SimParameterGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 listOfZones.add(zones);
-                controller.setZones(listOfZones);
+                controller.setZones(listOfZones,temperatures);
             }
         });
 
@@ -199,7 +200,7 @@ public class SimParameterGUI extends JFrame{
     private void addZones() {
         zoneCount++;
         listOfZones.add(zones);
-        zones.clear();
+        zones = new ArrayList<>();
 
         JLabel zoneLabel = new JLabel("Zone " + zoneCount);
         zoneLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -212,6 +213,7 @@ public class SimParameterGUI extends JFrame{
             zoneCreationPanel.add(c);
         }
         JTextField tempField = new JTextField();
+        temperatures.add(tempField);
         tempField.setHorizontalAlignment(SwingConstants.CENTER);
         zoneCreationPanel.add(tempField);
 

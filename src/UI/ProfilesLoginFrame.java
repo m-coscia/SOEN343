@@ -43,8 +43,6 @@ public class ProfilesLoginFrame extends JFrame {
         for (Profile p: profiles){
             JPanel cardPanel = new JPanel();
             cardPanel.setLayout(new BorderLayout());
-//            cardPanel.setAlignmentY(CENTER_ALIGNMENT);
-//            cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
 
             JLabel iconLabel = new JLabel(new ImageIcon("src/UI/smallProfile.png"));
             iconLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -69,10 +67,6 @@ public class ProfilesLoginFrame extends JFrame {
             infoPanel.add(locationLabel, BorderLayout.SOUTH);
 
 
-//            usernameLabel.setVisible(false);
-//            passwordLabel.setVisible(false);
-//            textField1.setVisible(false);
-//            passwordField1.setVisible(false);
             //ADD INFO PANEL TO CARD PANEL
             cardPanel.add(infoPanel, BorderLayout.SOUTH);
             // Add card to cards panel
@@ -120,11 +114,6 @@ public class ProfilesLoginFrame extends JFrame {
                         controller.login(profiles.get(currentProfile % profiles.size()));
                         System.out.println(profiles.get(currentProfile % profiles.size()).getName());
 
-                        // DashboardFrame dash = new DashboardFrame(thisFrame);
-//                        Dashboard dash = new Dashboard(null, profiles.get(currentProfile % profiles.size()));
-//                        dash.setLocationRelativeTo(null);
-//                        dash.setVisible(true);
-//                        dispose();
                         SimParameterGUI nextFrame = new SimParameterGUI(thisFrame,profiles.get(currentProfile % profiles.size()));
                         nextFrame.setLocationRelativeTo(null);
                         nextFrame.setVisible(true);
@@ -134,6 +123,14 @@ public class ProfilesLoginFrame extends JFrame {
                 });
                 //Component c = cardsPanel.getComponent(cardsPanel.getComponentCount()-1);
 
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                previousFrame.setVisible(true);
+                dispose();
             }
         });
     }

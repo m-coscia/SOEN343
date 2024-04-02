@@ -126,6 +126,9 @@ public class SimulationParameter {
     public void setWeatherOutside(double temp){
         weatherOutside = temp;
     }
+    public void setWeatherInside(double temp){
+        weatherInside = temp;
+    }
 
     public void login(Profile user){
         login = new Login(user);
@@ -343,7 +346,7 @@ public class SimulationParameter {
                     action += "Temperature of the zone: " + z.getTemperature() +"\n";
                 }
         ActionEvent actionEvent = new ActionEvent("action", action);
-        notifyActionObserver(actionEvent);
+        //notifyActionObserver(actionEvent);
         this.zones = zones;
     }
 
@@ -403,17 +406,17 @@ public class SimulationParameter {
     }
 
     public void changeInWeather(){
-        if(this.getWeatherOutside() < this.getWeatherInside()){
-            Event temp1 = new TempEvent("ShutdownAC", this);
-            Event temp2 = new TempEvent("OpenWindows", this);
-
-            try{
-                notifyTemperatureObserver(temp1);
-                notifyTemperatureObserver(temp2);
-            }
-            catch ( IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if(this.getWeatherOutside() < this.getWeatherInside()){
+//            Event temp1 = new TempEvent("ShutdownAC", this);
+//            Event temp2 = new TempEvent("OpenWindows", this);
+//
+//            try{
+//                notifyTemperatureObserver(temp1);
+//                notifyTemperatureObserver(temp2);
+//            }
+//            catch ( IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 }

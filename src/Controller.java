@@ -4,6 +4,7 @@ import src.Observer.ActionObserver;
 import src.Observer.TimeObserver;
 import src.components.Clock;
 import src.components.Room;
+import src.components.Zone;
 import src.logic.*;
 
 import javax.swing.*;
@@ -21,6 +22,8 @@ public class Controller {
     private String temperatureFile;
     private DataBase database;
     private SimulationParameter simParam = null;
+    private ArrayList<Zone> zones = new ArrayList<>();
+    private double avgTemp = 0;
     private Controller(){
 
     }
@@ -110,6 +113,7 @@ public class Controller {
             if(p != null){
                 p.setPermissions(permission);
                 database.addAccount(p);
+                room.addUserToRoom(p);
                 System.out.println( typeFields.get(i).getSelectedItem()+ " profile with name "+ p.getName()+ " was added to the database.");
             }else {
                 System.out.println("Could not add profile with name " +nameFields.get(i).getText() );
@@ -166,8 +170,6 @@ public class Controller {
     }
 
     public String getLocation(Profile profile){
-       // return simParam.getLoggedIn().getLocation().toString();
-        //TODO this returns null always ? to fix
        // return profile.getLocation().toString();
         if (profile.getLocation() == null){
             return "fix location";
@@ -181,17 +183,59 @@ public class Controller {
         return HouseLayout.getHouseLayout().getRooms();
     }
 
-    public void setZones(ArrayList<ArrayList<JCheckBox>> checkboxes){
-        for (int i = 0; i < checkboxes.size(); i++){
+    public void setZones(ArrayList<ArrayList<JCheckBox>> checkboxes, ArrayList<JTextField> temperatures){
+        ArrayList<Room> rooms = getRooms();
+        ArrayList<Zone> zones = new ArrayList<>();
 
+        //read the inputs from user
+        //for every zone added
+        for (int i = 0; i < checkboxes.size(); i++){
+            ArrayList<Room> roomsInCurrentZone = new ArrayList<>();
+            //get the checkboxes for that zone
+            ArrayList<JCheckBox> jCheckBoxes = checkboxes.get(i);
+            System.out.print("For zone " + i + ": " );
+
+            for (int j = 0; j < jCheckBoxes.size(); j++){
+                //of the checkbox was selected in this zone
+                if(jCheckBoxes.get(j).isSelected()){
+                    //add corresponding room to the zone's list of rooms
+                    roomsInCurrentZone.add(rooms.get(j));
+                    System.out.print( j +",");
+                }
+            }
+
+            //get the temperature that was set for this zone
+            double temp = Double.parseDouble(temperatures.get(i).getText());
+            avgTemp += temp;
+            if (temp < 0){
+                Zone zone = new Zone(roomsInCurrentZone,temp,"COOLING");
+                zones.add(zone);
+            }else{
+                Zone zone = new Zone(roomsInCurrentZone, temp, "HEATING");
+                zones.add(zone);
+            }
+            System.out.println();
         }
+
+        this.zones = zones;
+        avgTemp = avgTemp / temperatures.size();
+        //attachObservers(null,null,null,null);
+
     }
 
     public void setSimulationParams(String temperatureFile, Date date, int hours,int min, double outsideTemp, Profile profile) {
 
         try{
             this.temperatureFile = temperatureFile;
-            simParam = new SimulationParameter(layoutFileName, temperatureFile ,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), 0,outsideTemp, new Login(profile));
+            simParam = new SimulationParameter(layoutFileName, temperatureFile ,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), avgTemp,outsideTemp, new Login(profile));
+
+            try{
+                simParam.setZones(zones);
+            }catch(IOException e){
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+
             //attachObservers(null);
 
         }catch (FileNotFoundException e) {
