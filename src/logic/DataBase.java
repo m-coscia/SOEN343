@@ -172,7 +172,7 @@ public class DataBase {
             else if(p instanceof Child){
                 String username = (((Child) p).getUserName());
                 String password = (((Child) p).getPassword());
-                query = "INSERT INTO smart_home_simulator_db.profiles (Type, Name, Username, Password, Room, `Window`, Lights, Garage, Doors) " +
+                query = "INSERT INTO smart_home_simulator_db.FullProfiles (Type, Name, Username, Password, Room, `Window`, Lights, Garage, Doors) " +
                         "VALUES ('CHILD', '"+name+"', '"+username+"', '"+password+"', "+location+ ","
                         + permission.getWindowsPermission() +"," +
                         permission.getLightsPermission() + "," +
@@ -184,7 +184,7 @@ public class DataBase {
             else if(p instanceof Guest){
                 String username = (((Guest) p).getUserName());
                 String password = (((Guest) p).getPassword());
-                query = "INSERT INTO smart_home_simulator_db.profiles (Type, Name, Username, Password, Room, `Window`, Lights, Garage, Doors) " +
+                query = "INSERT INTO smart_home_simulator_db.FullProfiles (Type, Name, Username, Password, Room, `Window`, Lights, Garage, Doors) " +
                         "VALUES ('GUEST', '"+name+"', '"+username+"', '"+password+"', "+location+ ","
                         + permission.getWindowsPermission() +"," +
                         permission.getLightsPermission() + "," +
@@ -194,7 +194,7 @@ public class DataBase {
                 stmt.executeUpdate(query);
             }
             else{
-                query = "INSERT INTO Smart_Home_Simulator_db.profiles (Type, Name, Username, Password, Room, `Window`, Lights, Garage, Doors)" +
+                query = "INSERT INTO Smart_Home_Simulator_db.FullProfiles (Type, Name, Username, Password, Room, `Window`, Lights, Garage, Doors)" +
                         " VALUES ('STRANGER', '"+name+"','','', "+location+ ","
                         + permission.getWindowsPermission() +"," +
                         permission.getLightsPermission() + "," +
