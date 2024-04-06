@@ -17,7 +17,7 @@ public class LogInOrCreateFrame extends JFrame{
     private JLabel loginLabel;
     private JLabel newAccountLabel;
     private JButton backButton;
-    private Controller controller = new Controller();
+    private Controller controller = Controller.getController();
     private ArrayList<Profile> profiles = controller.getProfiles();
     public LogInOrCreateFrame(JFrame previousFrame){
 

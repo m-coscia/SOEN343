@@ -2,7 +2,6 @@ package src.tests;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import src.Observer.Events.TimeEvent;
 import src.Observer.Events.UserEvent;
 import src.components.Clock;
@@ -23,7 +22,7 @@ import static org.junit.Assert.*;
 public class SimulationParameterTest {
     private SimulationParameter simulationParameter;
     private String layoutFile = "houseLayoutFile.txt";
-    private String tempFile = "july_temp.csv";
+    private String tempFile = "src/UI/july_temp.csv";
     private LocalDate date = LocalDate.of(2024, 3, 28);
     private LocalTime time = LocalTime.of(12, 0);
     private double insideTemp = 25.0;

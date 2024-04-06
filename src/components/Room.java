@@ -121,7 +121,12 @@ public class Room extends Component {
     public ArrayList<Profile> getUsers(){
         return this.users;
     }
-
+    public void addUserToRoom(Profile p){
+        if (users == null){
+            users = new ArrayList<>();
+        }
+        users.add(p);
+    }
     public void setUsers(ArrayList<Profile> p){
         this.users = p;
     }
