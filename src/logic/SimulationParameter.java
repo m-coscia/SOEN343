@@ -3,10 +3,15 @@ package src.logic;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import src.Observer.*;
+import src.Observer.Events.ActionEvent;
+import src.Observer.Events.Event;
+import src.Observer.Events.TimeEvent;
+import src.Observer.Events.UserEvent;
 import src.components.Clock;
 import src.components.Room;
+import src.components.AC;
+import src.components.Heating;
 import src.components.Zone;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -25,7 +30,10 @@ public class SimulationParameter {
     private double weatherOutside;
     private AccountObserver accountObserver;
     private TimeObserver timeObserver;
+    private TemperatureObserver temperatureObserver;
     private ActionObserver actionObserver;
+    private AC cooler;
+    private Heating heater;
     private Clock clock;
     private LocalTime t;
     private Map<String, Double> weatherData = new HashMap<>();
@@ -49,7 +57,7 @@ public class SimulationParameter {
     public Clock getClock(){
         return clock;
     }
-
+    
     public void notifyAccountObserver(Event e) throws IOException {
         accountObserver.update(e);
     }
@@ -58,10 +66,17 @@ public class SimulationParameter {
         timeObserver.update(e);
     }
 
+    public void notifyTemperatureObserver(Event e) throws IOException {
+        temperatureObserver.update(e);
+    }
+
+    public Map getWeatherData(){
+        return weatherData;
+    }
+
     public void notifyActionObserver(Event e) throws IOException {
         actionObserver.update(e);
     }
-
 
     public void attachAccountObserver(AccountObserver o){
         accountObserver=o;
@@ -71,10 +86,13 @@ public class SimulationParameter {
         timeObserver=o;
     }
 
+    public void attachTemperatureObserver(TemperatureObserver o){
+        temperatureObserver=o;
+    }
+
     public void attachActionObserver(ActionObserver o){
         actionObserver=o;
     }
-
 
     public Map getWeatherData(){
         return weatherData;
@@ -302,6 +320,13 @@ public class SimulationParameter {
 
     }
 
+    public Heating getHeater() {
+        return heater;
+    }
+
+    public void setHeater(Heating heater) {
+        this.heater = heater;
+
     public ArrayList<Zone> getZones(){
         return zones;
     }
@@ -371,5 +396,26 @@ public class SimulationParameter {
         return temp;
     }
 
+    public AC getCooler() {
+        return cooler;
+    }
 
+    public void setCooler(AC cooler) {
+        this.cooler = cooler;
+    }
+
+    public void changeInWeather(){
+        if(this.getWeatherOutside() < this.getWeatherInside()){
+            Event temp1 = new TempEvent("ShutdownAC", this);
+            Event temp2 = new TempEvent("OpenWindows", this);
+
+            try{
+                notifyTemperatureObserver(temp1);
+                notifyTemperatureObserver(temp2);
+            }
+            catch ( IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

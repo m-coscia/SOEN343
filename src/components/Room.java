@@ -2,13 +2,10 @@ package src.components;
 
 
 import src.commands.*;
-//import src.commands.Command;
-//import src.commands.TurnOffLightsCommand;
-//import src.commands.TurnOnLightsCommand;
 
 import src.logic.Profile;
 
-import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Room extends Component {
@@ -154,7 +151,7 @@ public class Room extends Component {
     // Method to check and adjust lighting based on autoMode and user presence
     // If user clicks automode on layout, you constantly call this method
     // If user clicks automode off, you don't call this method
-    public static void checkAndSetLighting(Room room, Profile caller) {
+    public static void checkAndSetLighting(Room room, Profile caller) throws IOException {
         if (room.getLights() != null && room.getLights().getIsAutoMode()) {
             if (room.getUsers() != null) {
                 // Assuming switchLightsOn is a command that takes a Lights object and turns it on
@@ -198,7 +195,7 @@ public class Room extends Component {
 
 
     // Toggles the state of lights, doors, and windows
-    public void toggleLights(Profile caller) {
+    public void toggleLights(Profile caller) throws IOException {
         if (lights != null) {
             if (lights.isSwitchedOn()) {
                 this.setCommand(new TurnOffLightsCommand(lights, users, caller));
@@ -210,7 +207,7 @@ public class Room extends Component {
         }
     }
 
-    public void toggleDoors(Profile caller) {
+    public void toggleDoors(Profile caller) throws IOException {
         if (doors != null) {
             if (doors.isOpen()) {
                 this.setCommand(new CloseDoorsCommand(doors, users, caller));
@@ -222,7 +219,7 @@ public class Room extends Component {
         }
     }
 
-    public void toggleWindows(Profile caller) {
+    public void toggleWindows(Profile caller) throws IOException {
         if (windows != null) {
             if (windows.isOpen()) {
                 this.setCommand(new CloseWindowsCommand(windows, users, caller));

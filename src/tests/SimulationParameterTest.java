@@ -2,8 +2,9 @@ package src.tests;
 
 import org.junit.Before;
 import org.junit.Test;
-import src.Observer.TimeEvent;
-import src.Observer.UserEvent;
+
+import src.Observer.Events.TimeEvent;
+import src.Observer.Events.UserEvent;
 import src.components.Clock;
 import src.components.Room;
 import src.components.Zone;
