@@ -5,7 +5,6 @@ import com.opencsv.exceptions.CsvValidationException;
 import src.Observer.*;
 import src.Observer.Events.ActionEvent;
 import src.Observer.Events.Event;
-import src.Observer.Events.TimeEvent;
 import src.Observer.Events.UserEvent;
 import src.components.Clock;
 import src.components.Room;
@@ -94,10 +93,6 @@ public class SimulationParameter {
         actionObserver=o;
     }
 
-    public Map getWeatherData(){
-        return weatherData;
-    }
-
     public HouseLayout getLayout(){
         return layout;
     }
@@ -129,6 +124,11 @@ public class SimulationParameter {
     public void setWeatherOutside(double temp){
         weatherOutside = temp;
     }
+
+    public void setWeatherInside(double temp){
+        weatherInside = temp;
+    }
+
 
     public void login(Profile user){
         login = new Login(user);
@@ -255,6 +255,11 @@ public class SimulationParameter {
         return db.getProfiles();
     }
 
+    public ArrayList<Room> getRooms(){
+        return db.getRooms();
+    }
+
+
     public void uploadTempFile(String csvFilePath){
         try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
             String[] nextLine;
@@ -270,55 +275,56 @@ public class SimulationParameter {
         }
     }
 
-    public void startSimulation() throws IOException {
-        clock.start();
+//    public void startSimulation() throws IOException {
+//        clock.start();
+//
+//        // Run the while loop in a separate thread
+//        new Thread(() -> {
+//            while (clock.isRunning().get()) {
+//                Event tempEvent = new TimeEvent("temperature", this); // Create a new event instance inside the loop
+//                try {
+//                    notifyTimeObserver(tempEvent);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+//
+//        weatherInside = weatherOutside;
+//
+//        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
+//                "Event type: Start Simulation \n" +
+//                "Event description: The Simulation has been started \n" +
+//                "Details: \n" +
+//                "Users: ";
+//
+//        for(Profile p: db.getProfiles()){
+//            action += p.toString() +"\n";
+//        }
+//
+//        action += "Rooms: ";
+//        for(Room r: db.getRooms()){
+//            action += r.toString() +"\n";
+//        }
+//
+//        action += "Temperature outside: " + getWeatherOutside()+ "\n";
+//        action += "Temperature inside: " + getWeatherInside() +"\n";
+//        action += "LoggedIn user" + getLoggedIn() + "\n";
+//
+//        ActionEvent actionEvent = new ActionEvent("SHC", action);
+//        notifyActionObserver(actionEvent);
+//    }
 
-        // Run the while loop in a separate thread
-        new Thread(() -> {
-            while (clock.isRunning().get()) {
-                Event tempEvent = new TimeEvent("temperature", this); // Create a new event instance inside the loop
-                try {
-                    notifyTimeObserver(tempEvent);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-        weatherInside = weatherOutside;
-
-        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
-                "Event type: Start Simulation \n" +
-                "Event description: The Simulation has been started \n" +
-                "Details: \n" +
-                "Users: ";
-
-        for(Profile p: db.getProfiles()){
-            action += p.toString() +"\n";
-        }
-
-        action += "Rooms: ";
-        for(Room r: db.getRooms()){
-            action += r.toString() +"\n";
-        }
-
-        action += "Temperature outside: " + getWeatherOutside()+ "\n";
-        action += "Temperature inside: " + getWeatherInside() +"\n";
-        action += "LoggedIn user" + getLoggedIn() + "\n";
-
-        ActionEvent actionEvent = new ActionEvent("action", action);
-        notifyActionObserver(actionEvent);
-    }
-    public void stopSimulation() throws IOException {
-        clock.pause();
-        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
-                "Event type: Stop Simulation \n" +
-                "Event description: The Simulation has been stopped \n";
-
-        ActionEvent actionEvent = new ActionEvent("action", action);
-        notifyActionObserver(actionEvent);
-
-    }
+//    public void stopSimulation() throws IOException {
+//        clock.pause();
+//        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
+//                "Event type: Stop Simulation \n" +
+//                "Event description: The Simulation has been stopped \n";
+//
+//        ActionEvent actionEvent = new ActionEvent("SHC", action);
+//        notifyActionObserver(actionEvent);
+//
+//    }
 
     public Heating getHeater() {
         return heater;
@@ -326,6 +332,7 @@ public class SimulationParameter {
 
     public void setHeater(Heating heater) {
         this.heater = heater;
+    }
 
     public ArrayList<Zone> getZones(){
         return zones;
@@ -344,7 +351,7 @@ public class SimulationParameter {
                     }
                     action += "Temperature of the zone: " + z.getTemperature() +"\n";
                 }
-        ActionEvent actionEvent = new ActionEvent("action", action);
+        ActionEvent actionEvent = new ActionEvent("SHH", action);
         notifyActionObserver(actionEvent);
         this.zones = zones;
     }
@@ -352,7 +359,8 @@ public class SimulationParameter {
     public void addZone(Zone z) throws IOException {
         zones.add(z);
         String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
-                "Event type: Add Zone for SHH \n" +
+                "Event type: Add Zone \n" +
+                "Module: SHH \n" +
                 "Event description: A zone has been added \n" +
                 "Details: \n";
             action += "Zone " + zones.indexOf(z) + ": ";
@@ -360,7 +368,7 @@ public class SimulationParameter {
                 action += r.toString() + "\n";
             }
             action += "Temperature of the zone: " + z.getTemperature() +"\n";
-        ActionEvent actionEvent = new ActionEvent("action", action);
+        ActionEvent actionEvent = new ActionEvent("SHH", action);
         notifyActionObserver(actionEvent);
     }
 
@@ -368,7 +376,8 @@ public class SimulationParameter {
     public void setZoneTemperature(double temp, Zone z) throws IOException {
         int index = zones.indexOf(z);
         String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
-                "Event type: Change Zone Temperature \n";
+                "Event type: Change Zone Temperature \n"+
+                "Module: SHH \n" ;
 
         if(temp > z.getTemperature()){
             action += "Event description: The temperature of the Zone has increased \n";
@@ -382,7 +391,7 @@ public class SimulationParameter {
         action += "Previous temperature: " + z.getTemperature()+"\n";
         zones.get(index).setTemperature(temp);
         action += "New temperature: " + z.getTemperature()+"\n";
-        ActionEvent actionEvent = new ActionEvent("action", action);
+        ActionEvent actionEvent = new ActionEvent("SHH", action);
         notifyActionObserver(actionEvent);
     }
 
@@ -405,17 +414,17 @@ public class SimulationParameter {
     }
 
     public void changeInWeather(){
-        if(this.getWeatherOutside() < this.getWeatherInside()){
-            Event temp1 = new TempEvent("ShutdownAC", this);
-            Event temp2 = new TempEvent("OpenWindows", this);
-
-            try{
-                notifyTemperatureObserver(temp1);
-                notifyTemperatureObserver(temp2);
-            }
-            catch ( IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if(this.getWeatherOutside() < this.getWeatherInside()){
+//            Event temp1 = new TempEvent("ShutdownAC", this);
+//            Event temp2 = new TempEvent("OpenWindows", this);
+//
+//            try{
+//                notifyTemperatureObserver(temp1);
+//                notifyTemperatureObserver(temp2);
+//            }
+//            catch ( IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 }

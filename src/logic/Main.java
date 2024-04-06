@@ -96,7 +96,7 @@ public class Main {
 
         param.setZoneTemperature(15.0, zone1);
 
-        Thread.sleep(10);
+        Thread.sleep(10000);
         param.stopSimulation();
 
 
