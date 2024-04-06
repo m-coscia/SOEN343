@@ -1,11 +1,15 @@
 package src.Observer;
 
-import src.components.*;
-import src.logic.*;
+import src.Observer.Events.Event;
+import src.components.AC;
+import src.components.Room;
+import src.components.Windows;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class TemperatureObserver implements Observer {
+
 
     @Override
     public void update(Event event) throws IOException {
@@ -37,4 +41,6 @@ public class TemperatureObserver implements Observer {
             }
         }
     }
+
+
 }

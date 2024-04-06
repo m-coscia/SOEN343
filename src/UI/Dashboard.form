@@ -75,15 +75,15 @@
                         <properties>
                           <font size="12" style="1"/>
                           <inverted value="false"/>
-                          <majorTickSpacing value="2"/>
-                          <maximum value="50"/>
-                          <minorTickSpacing value="1"/>
+                          <majorTickSpacing value="100"/>
+                          <maximum value="2000"/>
+                          <minorTickSpacing value="50"/>
                           <opaque value="false"/>
                           <orientation value="0"/>
                           <paintLabels value="false"/>
                           <paintTicks value="true"/>
                           <snapToTicks value="true"/>
-                          <value value="10"/>
+                          <value value="50"/>
                           <valueIsAdjusting value="false"/>
                         </properties>
                       </component>
@@ -137,7 +137,7 @@
                         <properties>
                           <background color="-986115"/>
                           <focusPainted value="false"/>
-                          <icon value="src/UI/4472997_edit_edit icon_pen edit_pencil_icon.png"/>
+                          <icon value="src/UI/Icons/edit_icon.png"/>
                           <inheritsPopupMenu value="false"/>
                           <opaque value="false"/>
                           <text value=""/>
@@ -259,7 +259,7 @@
                                 <properties>
                                   <font size="14" style="1"/>
                                   <horizontalAlignment value="0"/>
-                                  <icon value="src/UI/smallProfile.png"/>
+                                  <icon value="src/UI/Icons/smallProfile.png"/>
                                   <text value=""/>
                                 </properties>
                               </component>
@@ -294,7 +294,7 @@
                                   <text value="Parent"/>
                                 </properties>
                               </component>
-                              <component id="294e" class="javax.swing.JLabel">
+                              <component id="294e" class="javax.swing.JLabel" binding="profileLocationLabel">
                                 <constraints>
                                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                                 </constraints>
@@ -326,7 +326,7 @@
                       <splitpane position="left"/>
                     </constraints>
                     <properties>
-                      <dividerLocation value="173"/>
+                      <dividerLocation value="314"/>
                       <opaque value="true"/>
                     </properties>
                     <border type="none"/>
@@ -349,24 +349,23 @@
                             <border type="none"/>
                             <children/>
                           </grid>
-                          <grid id="2eb37" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                          <grid id="2eb37" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                             <margin top="0" left="0" bottom="0" right="0"/>
                             <constraints>
                               <tabbedpane title="SHC"/>
                             </constraints>
-                            <properties/>
+                            <properties>
+                              <opaque value="false"/>
+                            </properties>
                             <border type="none"/>
                             <children>
-                              <hspacer id="fa79d">
-                                <constraints>
-                                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                              </hspacer>
                               <grid id="657ab" layout-manager="BorderLayout" hgap="0" vgap="0">
                                 <constraints>
                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                 </constraints>
-                                <properties/>
+                                <properties>
+                                  <opaque value="false"/>
+                                </properties>
                                 <border type="none"/>
                                 <children>
                                   <grid id="d75e6" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -385,45 +384,26 @@
                                   </grid>
                                   <scrollpane id="f567d">
                                     <constraints border-constraint="Center"/>
-                                    <properties/>
+                                    <properties>
+                                      <autoscrolls value="true"/>
+                                      <horizontalScrollBarPolicy value="31"/>
+                                      <opaque value="false"/>
+                                      <verticalScrollBarPolicy value="22"/>
+                                    </properties>
                                     <border type="none"/>
                                     <children>
-                                      <component id="e77a8" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
+                                      <grid id="d1933" binding="SHCmainPanel" layout-manager="GridBagLayout">
                                         <constraints/>
                                         <properties>
+                                          <autoscrolls value="false"/>
+                                          <maximumSize width="100" height="600"/>
                                           <opaque value="false"/>
-                                          <text value=""/>
                                         </properties>
-                                      </component>
+                                        <border type="none"/>
+                                        <children/>
+                                      </grid>
                                     </children>
                                   </scrollpane>
-                                </children>
-                              </grid>
-                              <grid id="a2bd3" layout-manager="BorderLayout" hgap="0" vgap="0">
-                                <constraints>
-                                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties/>
-                                <border type="none"/>
-                                <children>
-                                  <grid id="730a6" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                                    <margin top="0" left="0" bottom="0" right="0"/>
-                                    <constraints border-constraint="West"/>
-                                    <properties/>
-                                    <border type="none"/>
-                                    <children/>
-                                  </grid>
-                                  <grid id="565b8" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                                    <margin top="0" left="0" bottom="0" right="0"/>
-                                    <constraints border-constraint="East"/>
-                                    <properties/>
-                                    <border type="none"/>
-                                    <children/>
-                                  </grid>
-                                  <component id="57657" class="javax.swing.JList" binding="list1" default-binding="true">
-                                    <constraints border-constraint="Center"/>
-                                    <properties/>
-                                  </component>
                                 </children>
                               </grid>
                             </children>
@@ -442,9 +422,27 @@
                             <constraints>
                               <tabbedpane title="SHH"/>
                             </constraints>
-                            <properties/>
+                            <properties>
+                              <opaque value="false"/>
+                            </properties>
                             <border type="none"/>
-                            <children/>
+                            <children>
+                              <scrollpane id="12630" binding="SHHScrollPanel">
+                                <constraints>
+                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                </constraints>
+                                <properties/>
+                                <border type="none"/>
+                                <children>
+                                  <grid id="a5022" binding="panelForSHH" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                                    <constraints/>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children/>
+                                  </grid>
+                                </children>
+                              </scrollpane>
+                            </children>
                           </grid>
                         </children>
                       </tabbedpane>
@@ -476,19 +474,15 @@
                         </constraints>
                         <properties>
                           <foreground color="-10320921"/>
-                          <horizontalScrollBarPolicy value="31"/>
+                          <horizontalScrollBarPolicy value="30"/>
                           <opaque value="false"/>
                           <verticalScrollBarPolicy value="20"/>
                         </properties>
                         <border type="none"/>
                         <children>
-                          <component id="c64f5" class="javax.swing.JTextArea" binding="outputArea">
+                          <component id="19565" class="javax.swing.JTextPane" binding="consoleOutput">
                             <constraints/>
-                            <properties>
-                              <lineWrap value="true"/>
-                              <opaque value="false"/>
-                              <wrapStyleWord value="true"/>
-                            </properties>
+                            <properties/>
                           </component>
                         </children>
                       </scrollpane>

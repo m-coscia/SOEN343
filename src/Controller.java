@@ -1,21 +1,55 @@
 package src;
+
+import src.Observer.ActionObserver;
+import src.Observer.TemperatureObserver;
+import src.Observer.TimeObserver;
+import src.components.Clock;
 import src.components.Room;
-import src.components.RoomType;
+import src.components.Zone;
 import src.logic.*;
+
 import javax.swing.*;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.io.IOException;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Controller {
 
+    private static Controller controller = null;
+    private String layoutFileName;
+    private String temperatureFile;
     private DataBase database;
-    public Controller(){
-        database = DataBase.getDataBase();
+    private SimulationParameter simParam = null;
+    private ArrayList<Zone> zones = new ArrayList<>();
+    private double avgTemp = 0;
+    private Controller(){
+
+    }
+
+    public static Controller getController() {
+        if (controller == null) {
+            controller = new Controller();
+        }
+        return controller;
+
     }
 
     public void layoutSetUp(String filename) throws FileNotFoundException {
-        HouseLayout.getHouseLayout().setHouseLayout(filename);
+        try{
+            HouseLayout.getHouseLayout().setHouseLayout(filename);
+            database = DataBase.getDataBase();
+        }catch(FileNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println(filename);
+        layoutFileName = filename;
+
     }
+
 
     public void saveProfiles(ArrayList<JTextField> nameFields, ArrayList<JTextField> usernameFields,
                              ArrayList<JPasswordField> passwordFields, ArrayList<JComboBox<String>> typeFields, ArrayList<JCheckBox> windowsCheckboxes,
@@ -80,6 +114,7 @@ public class Controller {
             if(p != null){
                 p.setPermissions(permission);
                 database.addAccount(p);
+                room.addUserToRoom(p);
                 System.out.println( typeFields.get(i).getSelectedItem()+ " profile with name "+ p.getName()+ " was added to the database.");
             }else {
                 System.out.println("Could not add profile with name " +nameFields.get(i).getText() );
@@ -94,9 +129,16 @@ public class Controller {
     }
 
     public double getTemperature(){
-        return 14.3;
+        if(simParam == null){
+           return 0;
+        }else{
+           return simParam.getWeatherOutside();
+        }
     }
 
+    public String getDate(){
+        return String.valueOf(simParam.getDate());
+    }
     public void login(Profile p){
         Login l = new Login(p);
 //        if(p instanceof Parent){
@@ -129,14 +171,143 @@ public class Controller {
     }
 
     public String getLocation(Profile profile){
+       // return profile.getLocation().toString();
+        if (profile.getLocation() == null){
+            return "fix location";
+        }else{
+            return profile.getLocation().getType().toString();
+        }
 
-//        Room r = profile.getLocation();
-//        return String.valueOf(r.getType());
-        return "FIX LOCATION";
     }
-//    public String[] getExistingLocations(){
-//        String[] rooms = new String[]{String.valueOf(RoomType.BEDROOM)};
-//
-//        return rooms;
-//    }
+
+    public ArrayList<Room> getRooms() {
+        return HouseLayout.getHouseLayout().getRooms();
+    }
+
+    public void setZones(ArrayList<ArrayList<JCheckBox>> checkboxes, ArrayList<JTextField> temperatures, ArrayList<JComboBox<String>> typesOfZonesList){
+        ArrayList<Room> rooms = getRooms();
+        ArrayList<Zone> zones = new ArrayList<>();
+
+        //read the inputs from user
+        //for every zone added
+        for (int i = 0; i < checkboxes.size(); i++){
+            ArrayList<Room> roomsInCurrentZone = new ArrayList<>();
+            //get the checkboxes for that zone
+            ArrayList<JCheckBox> jCheckBoxes = checkboxes.get(i);
+            System.out.print("For zone " + i + ": " );
+
+            for (int j = 0; j < jCheckBoxes.size(); j++){
+                //of the checkbox was selected in this zone
+                if(jCheckBoxes.get(j).isSelected()){
+                    //add corresponding room to the zone's list of rooms
+                    roomsInCurrentZone.add(rooms.get(j));
+                    System.out.print( j +",");
+                }
+            }
+
+            //get the temperature that was set for this zone
+            double temp = Double.parseDouble(temperatures.get(i).getText());
+            avgTemp += temp;
+            //if (temp < 0){
+                String type = typesOfZonesList.get(i).getModel().getSelectedItem().toString();
+                System.out.println("Zone " + i + ": " + type);
+                Zone zone = new Zone(roomsInCurrentZone,temp,type);
+                zones.add(zone);
+//            }else{
+//                Zone zone = new Zone(roomsInCurrentZone, temp, "HEATING");
+//                zones.add(zone);
+//            }
+            System.out.println();
+        }
+
+        this.zones = zones;
+        avgTemp = avgTemp / temperatures.size();
+        //attachObservers(null,null,null,null);
+
+    }
+    public void setZoneTemperature(double temp, Zone z){
+        try{
+            simParam.setZoneTemperature(temp,z);
+        }catch(IOException e){
+            System.out.println("Line: 232" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void setZoneType(Zone zone, String type){
+        simParam.setZoneType(zone,type);
+    }
+
+    public void setSimulationParams(String temperatureFile, Date date, int hours,int min, double outsideTemp, Profile profile) {
+
+        try{
+            this.temperatureFile = temperatureFile;
+            simParam = new SimulationParameter(layoutFileName, temperatureFile ,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), avgTemp,outsideTemp, new Login(profile));
+
+            try{
+                simParam.setZones(zones);
+            }catch(IOException e){
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+
+            //attachObservers(null);
+
+        }catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Clock getClock() {
+        return simParam.getClock();
+    }
+
+    public void startSimulation() {
+        try{
+            simParam.startSimulation();
+        }catch (IOException e){
+            System.out.println("ERROR: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void stopSimulation() {
+        try{
+            simParam.stopSimulation();
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+    public void changeSpeed(double multiplier){
+        simParam.getClock().changeSpeed(multiplier);
+    }
+
+    public LocalTime getTime() {
+        return simParam.getTime();
+    }
+
+    //todo fix the observers attached to use all the defined classes in logic
+    public void attachObservers(JLabel clockDisplay, JLabel dateDisplay, JLabel tempLabel, JTextPane consoleText) {
+//        TimeObserver to = new TimeObserver(clockDisplay);
+//        simParam.attachTimeObserver(to);
+        simParam.attachTimeObserver(new TimeObserver(clockDisplay, dateDisplay, tempLabel));
+        simParam.attachActionObserver(new ActionObserver(consoleText));
+        simParam.attachTemperatureObserver(new TemperatureObserver());
+
+    }
+
+    public String[] getExistingLocations(){
+        ArrayList<Room> rooms = getRooms();
+        String[] roomNames = new String[rooms.size()];
+        for (int i = 0; i < rooms.size(); i++){
+            roomNames[i] = rooms.get(i).getType().toString();
+        }
+        return roomNames;
+    }
+
+    public ArrayList<Zone> getZones() {
+        return simParam.getZones();
+    }
 }

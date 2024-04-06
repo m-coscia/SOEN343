@@ -1,25 +1,29 @@
 package src.UI;
 
 import src.Controller;
-import src.components.Clock;
 import src.components.Room;
 import src.components.RoomType;
+import src.components.Zone;
 import src.logic.Parent;
 import src.logic.Permissions;
 import src.logic.Profile;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class Dashboard extends JFrame {
 
-    Controller controller = new Controller();
+    Controller controller = Controller.getController();
     private JPanel panel1;
     private JPanel dashboardPanel;
     private JPanel toggleButtonPanel;
@@ -52,76 +56,104 @@ public class Dashboard extends JFrame {
     private JLabel start_stop_label;
     private JLabel userTypeLabel;
     private JLabel locationLabel;
-    private JTextArea consoleText;
+    private JLabel profileLocationLabel;
+    private JTextPane consoleOutput;
+    private JTable zoneTable;
+    private JPanel SHCmainPanel;
+    private JScrollPane SHHScrollPanel;
+    private JPanel panelForSHH;
+    //private JLabel consoleText;
 
-    private Clock  clock = new Clock();
     private Profile currentProfile;
 
-    public Dashboard(Profile loggedIn, Profile profile){
-
+    public Dashboard(Profile profile) {
         setProfileInfo(profile);
+        tempLabel.setVerticalAlignment(SwingConstants.TOP);
+        tempLabel.setPreferredSize(new Dimension(300, 200));
 
-        tempLabel.setText("Oustide Temp. " + controller.getTemperature() + "ºC");
-        ToggleButton toggle = new ToggleButton();
-        toggle.setSize(10,10);
+        //dateLabel.setText(controller.getDate());
+        setUpClockUI();
+        setUpSHHTab();
+        setUpSHCTab();
+        //setUpOutputUI();
+        profileLocationLabel.setText(profile.getLocation().getType().toString());
 
+        //outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+        //textArea1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+        //list1.setListData(new String[]{"idk", "idk", "idk"});
+        add(panel1);
 
-        try{
-            toggleButtonPanel.add(toggle, BorderLayout.CENTER);
+        setSize(1000, 500);
+        // Center frame on screen
 
-            toggle.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    super.mouseReleased(e);
-                    if(!clock.isRunning().get()){
-                        clock.start();
-                        start_stop_label.setText("Running");
-                    }else {
-                        clock.pause();
-                        start_stop_label.setText("Paused");
-                    }
-                }
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
 
-            });
-
-
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }finally {
-
-            System.out.println(timeSlider.getMinimum()+" " + timeSlider.getMaximum() +" " + timeSlider.getExtent());
-            timeSlider.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    System.out.println("Current value" + timeSlider.getValue());
-                    clock.changeSpeed((double) timeSlider.getValue() / 10);
-                }
-            });
-            clock.start();
-            clock.pause();
-            Timer timer = new Timer(1000, e -> {
-                // Update the clock label with the current time
-                clockDisplay.setText(clock.getTime().toString());
-            });
-            timer.start();
-            outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-            textArea1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-            list1.setListData(new String[] {"idk", "idk", "idk"});
-            add(panel1);
-            setSize(1000, 500);
-            // Center frame on screen
-
-            setDefaultCloseOperation(EXIT_ON_CLOSE);
-            setVisible(true);
-        }
-//        add(panel1);
-//        setVisible(true);
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //todo: should be able to edit the simulation context --> maybe switch labels to JTextArea and then when button is clicked make them editable
             }
         });
+
+
+        rightMainPanel.setVisible(true);
+
+        ArrayList<Room> ar = controller.getRooms();
+        Room[] rooms = ar.toArray(new Room[ar.size()]);
+        createHouseLayout(rooms);
+
+        //fullMainPanel.add(new SimParameterGUI(), BorderLayout.CENTER);
+    }
+
+    private void setUpClockUI() {
+        ToggleButton toggle = new ToggleButton();
+        toggle.setSize(10, 10);
+        try {
+            toggleButtonPanel.add(toggle, BorderLayout.CENTER);
+
+            toggle.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    super.mouseReleased(e);
+                    if (!controller.getClock().isRunning().get()) {
+                        controller.startSimulation();
+                        start_stop_label.setText("Running");
+                    } else {
+                        controller.stopSimulation();
+                        start_stop_label.setText("Paused");
+                    }
+                }
+
+            });
+
+            controller.attachObservers(clockDisplay, dateLabel,tempLabel,consoleOutput);
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            System.out.println(timeSlider.getMinimum() + " " + timeSlider.getMaximum() + " " + timeSlider.getExtent());
+            timeSlider.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    //System.out.println("Current value" + timeSlider.getValue());
+                    controller.changeSpeed((double) timeSlider.getValue() / 100);
+                }
+            });
+            controller.startSimulation();
+            controller.stopSimulation();
+            //controller.attachObservers(clockDisplay);
+
+            Timer timer = new Timer(1000, e -> {
+                // Update the clock label with the current time
+                clockDisplay.setText(controller.getTime().toString());
+                tempLabel.setText("Oustide Temp. " + controller.getTemperature() + "ºC");
+                //dateLabel.setText((controller.getDate()));
+            });
+            timer.start();
+        }
+
     }
 
     public void createHouseLayout(Room[] rooms) {
@@ -191,10 +223,10 @@ public class Dashboard extends JFrame {
             }
 
             // Add components to the room panel with GridBagConstraints
-            roomPanel.add(roomTypeLabel, gbc);
-            roomPanel.add(lightsButton, gbc);
-            roomPanel.add(doorsButton, gbc);
-            roomPanel.add(windowsButton, gbc);
+              roomPanel.add(roomTypeLabel, gbc);
+//            roomPanel.add(lightsButton, gbc);
+//            roomPanel.add(doorsButton, gbc);
+//            roomPanel.add(windowsButton, gbc);
 
             houseLayout.add(roomPanel); // Adding the room to the house layout
         }
@@ -220,9 +252,136 @@ public class Dashboard extends JFrame {
         button.setForeground(isOn ? Color.GREEN : Color.RED);
     }
 
-    private void setProfileInfo(Profile profile){
+    private void setProfileInfo(Profile profile) {
         currentProfile = profile;
         userTypeLabel.setText(controller.getType(profile) + ": " + profile.getName());
+    }
+
+    private void setUpSHHTab(){
+        ArrayList<Zone> zones = controller.getZones();
+
+        zoneTable = new JTable();
+        // Create column names (array of strings)
+        String[] columnNames = {"Zone", "Zone Type","Temperature"};
+
+        // Create a table model using DefaultTableModel
+        DefaultTableModel model = new DefaultTableModel(columnNames,0);
+
+        zoneTable.setModel(model);
+
+        String[][] data = new String[zones.size()][3];
+
+        for(int i = 0; i < zones.size(); i++){
+            data[i][0] = "Zone " + i;
+            data[i][1] = zones.get(i).getType();
+            data[i][2] = String.valueOf(zones.get(i).getTemperature());
+            model.addRow(data[i]);
+        }
+        handleTableChanges(model, zones);
+        //zoneTable.setE
+        //zoneTable.getColumnModel().getColumn(2).setCellEditor(new CellEditor(controller));
+
+        //TODO add cell editor to the table to change the values of temperature and set it in the simulation paramaters
+        zoneTable.setRowHeight(25); // Set row height
+        zoneTable.getColumnModel().getColumn(1).setPreferredWidth(50);
+
+
+        panelForSHH.add(zoneTable);
+    }
+
+    private void handleTableChanges(DefaultTableModel model, ArrayList<Zone> zones){
+        model.addTableModelListener( e ->{
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+
+            Zone z = zones.get(row);
+            switch (column) {
+                case 1: // Type column
+                    String newType = (String) model.getValueAt(row, column);
+                    System.out.println(newType);
+                    controller.setZoneType(z, newType);
+                    break;
+                case 2: // Temperature column
+                    String temperature = (String) model.getValueAt(row, column);
+                    Double newTemperature = Double.parseDouble(temperature);
+                    System.out.println(newTemperature);
+                    controller.setZoneTemperature(newTemperature,z);
+                   // obj.setTemperature(newTemperature);
+                    break;
+            }
+        });
+    }
+
+    private void setUpSHCTab(){
+        ArrayList<Room> rooms = controller.getRooms();
+        SHCmainPanel.setLayout(new GridLayout(rooms.size(),1));
+        for(Room r: rooms){
+            JPanel roomPanel = new JPanel();
+            TitledBorder titledBorder = BorderFactory.createTitledBorder(r.getType().toString() + " " + r.getId());
+
+            titledBorder.setTitleJustification(TitledBorder.CENTER); // Title alignment
+            titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 14)); // Title font
+            roomPanel.setBorder(titledBorder);
+            roomPanel.setLayout(new GridLayout(3,1));
+
+            JButton lightsButton = new JButton(r.getLightsStatus());
+            JButton doorsButton = new JButton(r.getDoorsStatus());
+            JButton windowsButton = new JButton(r.getWindowsStatus());
+
+            roomPanel.add(lightsButton);
+            roomPanel.add(doorsButton);
+            roomPanel.add(windowsButton);
+
+            if (r.getNumLights() > 0) {
+                updateButtonLook(lightsButton, r.getLights().isSwitchedOn());
+                lightsButton.addActionListener(e -> {
+                    try {
+                        r.toggleLights(currentProfile);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    updateButtonLook(lightsButton, r.getLights().isSwitchedOn());
+                });
+            } else {
+                lightsButton.setEnabled(false); // Disable the button if there are no lights
+                lightsButton.setText("Lights (0): N/A");
+            }
+
+            if (r.getNumDoors() > 0) {
+                updateButtonLook(doorsButton, r.getDoors().isOpen());
+                doorsButton.addActionListener(e -> {
+                    try {
+                        r.toggleDoors(currentProfile);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    updateButtonLook(doorsButton, r.getDoors().isOpen());
+                });
+            } else {
+                doorsButton.setEnabled(false); // Disable the button if there are no doors
+                doorsButton.setText("Doors (0): N/A");
+            }
+
+            if (r.getNumWindows() > 0) {
+                updateButtonLook(windowsButton, r.getWindows().isOpen());
+                windowsButton.addActionListener(e -> {
+                    try {
+                        r.toggleWindows(currentProfile);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    updateButtonLook(windowsButton, r.getWindows().isOpen());
+                });
+            } else {
+                windowsButton.setEnabled(false); // Disable the button if there are no windows
+                windowsButton.setText("Windows (0): N/A");
+            }
+
+            SHCmainPanel.add(roomPanel);
+        }
     }
     public static void main(String[] args) {
         Profile p = new Profile("Sara", null);
@@ -235,7 +394,7 @@ public class Dashboard extends JFrame {
         Room r4 = new Room(RoomType.KITCHEN, 1, 2, 1, pfs);
         Room r5 = new Room(RoomType.GARAGE, 2, 5, 3, pfs);
 
-        Room[] rooms = new Room[] {r1, r2, r3, r4, r5};
+        Room[] rooms = new Room[]{r1, r2, r3, r4, r5};
 
         System.out.println("Test from Dashboard class Main method:");
 
@@ -245,17 +404,19 @@ public class Dashboard extends JFrame {
 
         p.setRoom(r1);
 
-        Dashboard d = new Dashboard(null, p1);
-      
+        Dashboard d = new Dashboard(p1);
+
 //         ArrayList<Profile> profiles = new ArrayList<Profile>();
 //         profiles.add(p);
 //         Room r = new Room(RoomType.BEDROOM,2,3,4,profiles);
 //         p.setRoom(r);
 //         Dashboard d = new Dashboard(null, p);
-      
+
         d.setLocationRelativeTo(null);
 
         d.createHouseLayout(rooms); // Create layout with the array of rooms
 
     }
+
+
 }

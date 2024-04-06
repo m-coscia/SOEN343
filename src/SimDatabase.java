@@ -32,29 +32,33 @@ public class SimDatabase {
         Statement stmt=null;
         String databaseName="Smart_Home_Simulator_DB";
         try{
-            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "soen343", "SOEN343&Pr0ject");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "123");
             stmt = con.createStatement();
             String sql1="CREATE DATABASE "+databaseName;
             String sql2="USE "+databaseName;
-            String sql3="CREATE TABLE smart_home_simulator_db.profiles (" +
+            String sql3="CREATE TABLE smart_home_simulator_db.FullProfiles (" +
                     "ProfileID INT NOT NULL AUTO_INCREMENT, " +
                     "Type TEXT, " +
                     "Name TEXT, " +
                     "Username TEXT, " +
                     "Password TEXT, " +
                     "Room INT, " +
+                    "`Window` TINYINT(1),"+
+                    "Lights TINYINT(1)," +
+                    "Garage TINYINT(1)," +
+                    "Doors TINYINT(1),"+
                     "PRIMARY KEY(ProfileID))";
-            String sql4 = "INSERT INTO Profiles (Type, Name, Username, Password, Room) VALUES " +
-                    "('PARENT', 'Naika', 'naikiki', 'kiki2002', 0),"+
-                    "('PARENT', 'Naika', 'naikiki', 'kiki2002', 3),"+
-                    "('CHILD', 'Yasmine', 'yaya', 'yaya2002', 0),"+
-                    "('CHILD', 'Yasmine', 'yaya', 'yaya2002', 4),"+
-                    "('GUEST', 'Asmae', 'asmama', 'asmou2002', 0),"+
-                    "('GUEST', 'Asmae', 'asmama', 'asmou2002', 3),"+
-                    "('STRANGER', 'Jay', '', '', 0),"+
-                    "('STRANGER', 'Jay', '', '', 3)";
+            String sql4 = "INSERT INTO FullProfiles (Type, Name, Username, Password, Room, `Window`, Lights, Garage, Doors) VALUES " +
+                    "('PARENT', 'Naika', 'naikiki', 'kiki2002', 3, 1, 1,1,1),"+
+                    "('CHILD', 'Yasmine', 'yaya', 'yaya2002', 4,1,0,1,0),"+
+                    "('GUEST', 'Asmae', 'asmama', 'asmou2002', 3,1,0,0,0),"+
+                    "('STRANGER', 'Jay', '', '', 3, 0,1,0,0)";
 
             stmt.addBatch(sql1);
+//            stmt.executeBatch();
+//
+//            stmt.executeUpdate("USE " +databaseName);
+
             stmt.addBatch(sql2);
             stmt.addBatch(sql3);
             stmt.addBatch(sql4);
