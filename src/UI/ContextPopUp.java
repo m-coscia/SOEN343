@@ -48,6 +48,7 @@ public class ContextPopUp{
         popUpPanel.add(titlePanel);
         setProfilePanel();
         setUpCheckboxes();
+        setUpTempSpinner();
        // setUpTimeEdit();
 //        setUpDateEdit();
         setUpSave();
@@ -181,8 +182,10 @@ public class ContextPopUp{
             if(profiles.get(i).getLocation().getId() != Integer.parseInt(updatedLocations[i])){
                 controller.changeUserLocation(profiles.get(i),Integer.parseInt(updatedLocations[i]));
 
-                System.out.println("location of profile " + profiles.get(i).getName() + " was changed from " +
-                        profiles.get(i).getLocation().toString() + "to room with id " + updatedLocations[i] );
+                if(Integer.parseInt(updatedLocations[i] )!= -1) {
+                    System.out.println("location of profile " + profiles.get(i).getName() + " was changed from " +
+                            profiles.get(i).getLocation().toString() + "to room with id " + updatedLocations[i]);
+                }
             }
         }
     }
@@ -204,6 +207,10 @@ public class ContextPopUp{
             int temp = (int) tempSpinner.getModel().getValue();
             controller.setWeather(Double.valueOf(temp));
         }
+    }
+
+    private void setUpTempSpinner(){
+        tempSpinner.getModel().setValue(controller.getTemperature());
     }
     public static void main(String[] args) {
 
