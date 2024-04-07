@@ -65,13 +65,14 @@ public class Dashboard extends JFrame {
     //private JLabel consoleText;
 
     private Profile currentProfile;
+    private JFrame thisFrame;
 
     public Dashboard(Profile profile) {
+        thisFrame = this;
         setProfileInfo(profile);
         tempLabel.setVerticalAlignment(SwingConstants.TOP);
         tempLabel.setPreferredSize(new Dimension(300, 200));
 
-        //dateLabel.setText(controller.getDate());
         setUpClockUI();
         setUpSHHTab();
         setUpSHCTab();
@@ -93,6 +94,21 @@ public class Dashboard extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //todo: should be able to edit the simulation context --> maybe switch labels to JTextArea and then when button is clicked make them editable
+                //As the user edits --> stop the time + todo: stop simulation?
+
+                JDialog popup = new JDialog(thisFrame, "Edit Context of Simulation", true);
+                popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                popup.setLayout(new BorderLayout());
+
+                ContextPopUp c = new ContextPopUp(profile);
+                JPanel popupPanel = c.getPopupContent();
+                popup.add(popupPanel, BorderLayout.CENTER);
+
+                popup.setSize(300, 200);
+                popup.setLocationRelativeTo(thisFrame);
+                popup.setVisible(true); // Display the popup
+
+                popup.pack();
             }
         });
 
@@ -103,6 +119,7 @@ public class Dashboard extends JFrame {
         Room[] rooms = ar.toArray(new Room[ar.size()]);
         createHouseLayout(rooms);
 
+        setLocationRelativeTo(null);
         //fullMainPanel.add(new SimParameterGUI(), BorderLayout.CENTER);
     }
 
