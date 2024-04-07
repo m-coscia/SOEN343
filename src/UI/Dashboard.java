@@ -78,10 +78,6 @@ public class Dashboard extends JFrame {
         setUpSHCTab();
         //setUpOutputUI();
         profileLocationLabel.setText(profile.getLocation().getType().toString());
-
-        //outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        //textArea1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        //list1.setListData(new String[]{"idk", "idk", "idk"});
         add(panel1);
 
         setSize(1000, 500);
@@ -100,11 +96,11 @@ public class Dashboard extends JFrame {
                 popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 popup.setLayout(new BorderLayout());
 
-                ContextPopUp c = new ContextPopUp(profile);
+                ContextPopUp c = new ContextPopUp(profile, thisFrame);
                 JPanel popupPanel = c.getPopupContent();
                 popup.add(popupPanel, BorderLayout.CENTER);
 
-                popup.setSize(300, 200);
+                popup.setSize(650, 350);
                 popup.setLocationRelativeTo(thisFrame);
                 popup.setVisible(true); // Display the popup
 
@@ -400,6 +396,7 @@ public class Dashboard extends JFrame {
             SHCmainPanel.add(roomPanel);
         }
     }
+
     public static void main(String[] args) {
         Profile p = new Profile("Sara", null);
         ArrayList<Profile> pfs = new ArrayList<Profile>();

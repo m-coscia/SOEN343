@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
 public class ContextPopUp{
 
     private JPanel popUpPanel;
-    private Controller controller = Controller.getController();
+    private final Controller controller = Controller.getController();
     private JPanel titlePanel;
     private JButton saveChangesButton;
     private JPanel profilesPanel;
@@ -48,7 +48,7 @@ public class ContextPopUp{
         popUpPanel.add(titlePanel);
         setProfilePanel();
         setUpCheckboxes();
-//        setUpTimeEdit();
+       // setUpTimeEdit();
 //        setUpDateEdit();
         setUpSave();
 
@@ -164,7 +164,12 @@ public class ContextPopUp{
             @Override
             public void actionPerformed(ActionEvent e) {
                 changeProfileLocations();
-                changeLoggedInUser();
+                Profile p = changeLoggedInUser();
+                changeTemperature();
+
+                dashboard.dispose();
+                dashboard = new Dashboard(p);
+                dashboard.setVisible(true);
             }
         });
     }
@@ -182,16 +187,22 @@ public class ContextPopUp{
         }
     }
 
-    private void changeLoggedInUser(){
+    private Profile changeLoggedInUser(){
 
         for(int i = 0; i < checkBoxes.size(); i++){
             if(checkBoxes.get(i).isSelected()){
                 controller.login(profiles.get(i));
-                dashboard.dispose();
-                dashboard = new Dashboard(profiles.get(i));
-                dashboard.setVisible(true);
-                break;
+                return profiles.get(i);
             }
+        }
+
+        return null;
+    }
+
+    private void changeTemperature(){
+        if(!String.valueOf(controller.getTemperature()).equals(tempSpinner.getModel().getValue())){
+            int temp = (int) tempSpinner.getModel().getValue();
+            controller.setWeather(Double.valueOf(temp));
         }
     }
     public static void main(String[] args) {

@@ -52,34 +52,27 @@
       <grid id="c3bf4" binding="profilesPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties>
+          <background color="-3157294"/>
           <opaque value="false"/>
           <preferredSize width="400" height="300"/>
         </properties>
-        <border type="none"/>
+        <border type="etched"/>
         <children>
           <grid id="4baa0" binding="profilesMainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
             <constraints border-constraint="West"/>
-            <properties/>
+            <properties>
+              <opaque value="false"/>
+            </properties>
             <border type="none"/>
             <children/>
           </grid>
           <grid id="8f33f" binding="bottomPanel" layout-manager="GridBagLayout">
             <constraints border-constraint="South"/>
-            <properties/>
-            <border type="bevel-lowered"/>
+            <properties>
+              <background color="-3157294"/>
+            </properties>
+            <border type="bevel-raised"/>
             <children>
-              <hspacer id="258b0">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-              </hspacer>
-              <hspacer id="96639">
-                <constraints>
-                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-              </hspacer>
               <component id="ea84" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
                 <constraints>
                   <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
@@ -101,7 +94,10 @@
                   <grid row="0" column="4" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <background color="-6052186"/>
+                  <opaque value="false"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="b1d49" class="javax.swing.JLabel">
@@ -117,7 +113,10 @@
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <background color="-6052186"/>
+                  <opaque value="false"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="5929a" class="javax.swing.JLabel">
@@ -133,12 +132,16 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <background color="-6052186"/>
+                  <opaque value="false"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="40318" class="javax.swing.JLabel">
                     <constraints/>
                     <properties>
+                      <background color="-6052186"/>
                       <text value="Outside Temp."/>
                     </properties>
                   </component>
@@ -173,6 +176,24 @@
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties/>
+              </component>
+              <component id="d31d8" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value="  "/>
+                </properties>
+              </component>
+              <component id="431d8" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties>
+                  <text value=" "/>
+                </properties>
               </component>
             </children>
           </grid>
