@@ -37,10 +37,13 @@ public class ContextPopUp{
     private JPanel profileMainPanel;
     private ArrayList<JCheckBox> checkBoxes = new ArrayList<>();
     private String[] updatedLocations;
+    private ArrayList<Profile> profiles;
+    private JFrame dashboard;
 
     public ContextPopUp(Profile currentProfile){
         popUpPanel.add(titlePanel);
         setProfilePanel();
+        setUpCheckboxes();
 //        setUpTimeEdit();
 //        setUpDateEdit();
         setUpSave();
@@ -52,7 +55,6 @@ public class ContextPopUp{
     }
 
     private void setProfilePanel(){
-        ArrayList<Profile> profiles = controller.getProfiles();
         updatedLocations = new String[profiles.size()];
 
         profilesPanel = new JPanel(new GridLayout(profiles.size() + 1, 3));
@@ -105,8 +107,6 @@ public class ContextPopUp{
             count++;
         }
 
-        setUpCheckboxes();
-
         popUpPanel.add(titlePanel,BorderLayout.CENTER);
         popUpPanel.add(profilesPanel);
     }
@@ -151,6 +151,7 @@ public class ContextPopUp{
             }
         });
     }
+
     private void setUpSave(){
         saveChangesButton.addActionListener(new ActionListener() {
             @Override
@@ -162,7 +163,6 @@ public class ContextPopUp{
     }
 
     private void changeProfileLocations(){
-        ArrayList<Profile> profiles = controller.getProfiles();
 
         //check the locations to see which were updated
         for(int i = 0; i < updatedLocations.length; i++){
@@ -177,6 +177,15 @@ public class ContextPopUp{
 
     private void changeLoggedInUser(){
 
+        for(int i = 0; i < checkBoxes.size(); i++){
+            if(checkBoxes.get(i).isSelected()){
+                controller.login(profiles.get(i));
+                dashboard.dispose();
+                dashboard = new Dashboard(profiles.get(i));
+                dashboard.setVisible(true);
+                break;
+            }
+        }
     }
     public static void main(String[] args) {
 
