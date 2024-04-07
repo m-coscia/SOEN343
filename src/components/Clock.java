@@ -13,6 +13,7 @@ public class Clock {
     private ScheduledExecutorService executor;
     private final AtomicBoolean running;
     private volatile double speedMultiplier;
+    private boolean dateChange = false;
 
     public Clock() {
         this.date = LocalDate.now();
@@ -38,6 +39,11 @@ public class Clock {
         date = d;
     }
 
+    public boolean dateHasChanged(){
+        return dateChange;
+    }
+
+
     public void start() {
         running.set(true);
         scheduleClockTask();
@@ -48,7 +54,9 @@ public class Clock {
         executor.scheduleAtFixedRate(() -> {
             if (running.get()) {
                 time = time.plusSeconds(1);
+                dateChange = false;
                 if (time.equals(LocalTime.MIN)) { // Check if time is midnight
+                    dateChange = true;
                     date = date.plusDays(1); // Increment date
                     System.out.println("Date changed to: " + date);
                 }

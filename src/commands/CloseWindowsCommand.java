@@ -32,7 +32,6 @@ public record CloseWindowsCommand(Windows windows, ArrayList<Profile> users, Pro
             System.out.println(event);
             windowEvent = new WindowEvent("windowEvent", event);
             notifyConsoleOutputObserver(windowEvent);
-            
             return;
         } else {
             // verify caller is part of the users that are in the room calling the command

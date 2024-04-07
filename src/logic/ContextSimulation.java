@@ -4,6 +4,7 @@ import src.Observer.Events.ActionEvent;
 import src.Observer.Events.Event;
 import src.Observer.Events.TimeEvent;
 import src.components.Room;
+import src.components.Zone;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -75,6 +76,12 @@ public class ContextSimulation {
 
         ActionEvent actionEvent = new ActionEvent(module, action);
         parameter.notifyActionObserver(actionEvent);
+
+        if(parameter.getClock().dateHasChanged()){
+            for(Zone z: parameter.getZones()){
+                z.resetTemperatureChange();
+            }
+        }
 
     }
 
