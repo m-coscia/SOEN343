@@ -30,17 +30,21 @@ public class ContextPopUp{
     private JPanel titlePanel;
     private JButton saveChangesButton;
     private JPanel profilesPanel;
+    private JPanel bottomPanel;
     private JComboBox comboBox1;
     private JSpinner tempSpinner;
     private JSpinner spinner2;
     private JSpinner spinner3;
+    private JPanel profilesMainPanel;
     private JPanel profileMainPanel;
     private ArrayList<JCheckBox> checkBoxes = new ArrayList<>();
     private String[] updatedLocations;
     private ArrayList<Profile> profiles;
     private JFrame dashboard;
 
-    public ContextPopUp(Profile currentProfile){
+    public ContextPopUp(Profile currentProfile, JFrame dashboard){
+        this.dashboard = dashboard;
+        profiles = controller.getProfiles();
         popUpPanel.add(titlePanel);
         setProfilePanel();
         setUpCheckboxes();
@@ -57,20 +61,20 @@ public class ContextPopUp{
     private void setProfilePanel(){
         updatedLocations = new String[profiles.size()];
 
-        profilesPanel = new JPanel(new GridLayout(profiles.size() + 1, 3));
+        profilesMainPanel = new JPanel(new GridLayout(profiles.size() + 1, 3));
 
         JLabel profileLabel = new JLabel("Profile");
 
         profileLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        profilesPanel.add(profileLabel);
+        profilesMainPanel.add(profileLabel);
 
         JLabel locationLabel = new JLabel("Location");
         locationLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        profilesPanel.add(locationLabel);
+        profilesMainPanel.add(locationLabel);
 
         JLabel loggedLabel = new JLabel("Logged In");
         loggedLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        profilesPanel.add(loggedLabel);
+        profilesMainPanel.add(loggedLabel);
 
         int count =0;
         for (Profile p : profiles){
@@ -78,7 +82,7 @@ public class ContextPopUp{
             System.out.println("setting up profile " + p.getName());
             JLabel name = new JLabel(p.getName());
             name.setHorizontalAlignment(SwingConstants.CENTER);
-            profilesPanel.add(name);
+            profilesMainPanel.add(name);
 
 
             JComboBox<String> location = setComboBoxLocations();
@@ -95,7 +99,7 @@ public class ContextPopUp{
                 }
             }
             setUpLocationChange(location, count);
-            profilesPanel.add(location);
+            profilesMainPanel.add(location);
 
             JCheckBox loggedInCheck = new JCheckBox();
             checkBoxes.add(loggedInCheck);
@@ -103,11 +107,14 @@ public class ContextPopUp{
             if(controller.getCurrentLoggedInUser() == p){
                 loggedInCheck.setSelected(true);
             }
-            profilesPanel.add(loggedInCheck);
+            profilesMainPanel.add(loggedInCheck);
             count++;
         }
 
         popUpPanel.add(titlePanel,BorderLayout.CENTER);
+        //popUpPanel.add(profilesMainPanel);
+        profilesPanel.add(profilesMainPanel);
+        profilesPanel.add(bottomPanel, BorderLayout.SOUTH);
         popUpPanel.add(profilesPanel);
     }
 
