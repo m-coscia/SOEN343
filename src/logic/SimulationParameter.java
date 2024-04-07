@@ -5,7 +5,6 @@ import com.opencsv.exceptions.CsvValidationException;
 import src.Observer.*;
 import src.Observer.Events.ActionEvent;
 import src.Observer.Events.Event;
-import src.Observer.Events.TimeEvent;
 import src.Observer.Events.UserEvent;
 import src.components.Clock;
 import src.components.Room;
@@ -32,6 +31,7 @@ public class SimulationParameter {
     private TimeObserver timeObserver;
     private TemperatureObserver temperatureObserver;
     private ActionObserver actionObserver;
+    private ConsoleOutputObserver consoleOutputObserver;
     private AC cooler;
     private Heating heater;
     private Clock clock;
@@ -46,7 +46,7 @@ public class SimulationParameter {
         clock = new Clock();
         clock.setTime(t);
         clock.setDate(d);
-        weatherInside = inside;
+        weatherInside = outside;
         weatherOutside = outside;
         login = loggedIn;
         db.setRooms(layout.getRooms());
@@ -57,7 +57,7 @@ public class SimulationParameter {
     public Clock getClock(){
         return clock;
     }
-    
+
     public void notifyAccountObserver(Event e) throws IOException {
         accountObserver.update(e);
     }
@@ -75,10 +75,15 @@ public class SimulationParameter {
         actionObserver.update(e);
     }
 
+    public void notifyConsoleOutputObserver(Event e) throws IOException {
+        consoleOutputObserver.update(e);
+    }
+
+
     public void attachAccountObserver(AccountObserver o){
         accountObserver=o;
     }
-  
+
     public void attachTimeObserver(TimeObserver o){
         timeObserver=o;
     }
@@ -91,8 +96,8 @@ public class SimulationParameter {
         actionObserver=o;
     }
 
-    public Map getWeatherData(){
-        return weatherData;
+    public void attachConsoleOutputObserver(ConsoleOutputObserver o){
+        consoleOutputObserver=o;
     }
 
     public HouseLayout getLayout(){
@@ -129,6 +134,11 @@ public class SimulationParameter {
     public void setWeatherInside(double temp){
         weatherInside = temp;
     }
+
+    public void setWeatherInside(double temp){
+        weatherInside = temp;
+    }
+
 
     public void login(Profile user){
         login = new Login(user);
@@ -200,7 +210,7 @@ public class SimulationParameter {
             System.out.println("ERROR: The user does not exist");
         }
     }
-    
+
 
     public void editName(String name){
         login.getCurrentUser().setName(name);
@@ -255,6 +265,11 @@ public class SimulationParameter {
         return db.getProfiles();
     }
 
+    public ArrayList<Room> getRooms(){
+        return db.getRooms();
+    }
+
+
     public void uploadTempFile(String csvFilePath){
         try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
             String[] nextLine;
@@ -270,56 +285,6 @@ public class SimulationParameter {
         }
     }
 
-    public void startSimulation() throws IOException {
-        clock.start();
-
-        // Run the while loop in a separate thread
-        new Thread(() -> {
-            while (clock.isRunning().get()) {
-                Event tempEvent = new TimeEvent("temperature", this); // Create a new event instance inside the loop
-                try {
-                    notifyTimeObserver(tempEvent);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-        weatherInside = weatherOutside;
-
-        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
-                "Event type: Start Simulation \n" +
-                "Event description: The Simulation has been started \n" +
-                "Details: \n" +
-                "Users: ";
-
-        for(Profile p: db.getProfiles()){
-            action += p.toString() +"\n";
-        }
-
-        action += "Rooms: ";
-        for(Room r: db.getRooms()){
-            action += r.toString() +"\n";
-        }
-
-        action += "Temperature outside: " + getWeatherOutside()+ "\n";
-        action += "Temperature inside: " + getWeatherInside() +"\n";
-        action += "LoggedIn user" + getLoggedIn() + "\n";
-
-        ActionEvent actionEvent = new ActionEvent("action", action);
-        notifyActionObserver(actionEvent);
-    }
-    public void stopSimulation() throws IOException {
-        clock.pause();
-        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
-                "Event type: Stop Simulation \n" +
-                "Event description: The Simulation has been stopped \n";
-
-        ActionEvent actionEvent = new ActionEvent("action", action);
-        notifyActionObserver(actionEvent);
-
-    }
-
     public Heating getHeater() {
         return heater;
     }
@@ -333,7 +298,9 @@ public class SimulationParameter {
     }
 
     public void setZones(ArrayList<Zone> zones) throws IOException {
-
+        for(Zone z:zones){
+            z.setTemperature(weatherOutside);
+        }
         String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
                 "Event type: Set Zones for SHH \n" +
                 "Event description: " + zones.size() + " zones have been created \n" +
@@ -345,15 +312,17 @@ public class SimulationParameter {
                     }
                     action += "Temperature of the zone: " + z.getTemperature() +"\n";
                 }
-        ActionEvent actionEvent = new ActionEvent("action", action);
-        //notifyActionObserver(actionEvent);
+        ActionEvent actionEvent = new ActionEvent("SHH", action);
+        notifyActionObserver(actionEvent);
         this.zones = zones;
     }
 
     public void addZone(Zone z) throws IOException {
+        z.setTemperature(weatherOutside);
         zones.add(z);
         String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
-                "Event type: Add Zone for SHH \n" +
+                "Event type: Add Zone \n" +
+                "Module: SHH \n" +
                 "Event description: A zone has been added \n" +
                 "Details: \n";
             action += "Zone " + zones.indexOf(z) + ": ";
@@ -361,29 +330,44 @@ public class SimulationParameter {
                 action += r.toString() + "\n";
             }
             action += "Temperature of the zone: " + z.getTemperature() +"\n";
-        ActionEvent actionEvent = new ActionEvent("action", action);
+        ActionEvent actionEvent = new ActionEvent("SHH", action);
         notifyActionObserver(actionEvent);
     }
 
     public void setZoneTemperature(double temp, Zone z) throws IOException {
         int index = zones.indexOf(z);
-        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
-                "Event type: Change Zone Temperature \n";
+        if(zones.get(index).getTemperatureChange()<3){
+            String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
+                    "Event type: Change Zone Temperature \n"+
+                    "Module: SHH \n" ;
 
-        if(temp > z.getTemperature()){
-            action += "Event description: The temperature of the Zone has increased \n";
+            if(temp > z.getTemperature()){
+                action += "Event description: The temperature of the Zone has increased \n";
+            }else{
+                action += "Event description: The temperature of the Zone has decreased \n";
+            }
+
+            action += "Details: \n";
+
+            action += "Zone " + zones.indexOf(z) + "\n";
+            action += "Previous temperature: " + z.getTemperature()+"\n";
+
+            zones.get(index).setDesiredTemperature(temp);
+            zones.get(index).incrementTemperatureChange();
+
+            action += "New Desired temperature: " + temp + "\n";
+            ActionEvent actionEvent = new ActionEvent("SHH", action);
+            notifyActionObserver(actionEvent);
         }else{
-            action += "Event description: The temperature of the Zone has decreased \n";
+            String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
+                    "Event type: Change Zone Temperature \n"+
+                    "Module: SHH \n" ;
+            action += "Details: \n";
+            action += "Cannot change the temperature of the zone since it has already been updated 3 times today. \n";
+            ActionEvent actionEvent = new ActionEvent("SHH", action);
+            notifyConsoleOutputObserver(actionEvent);
         }
 
-        action += "Details: \n";
-
-        action += "Zone " + zones.indexOf(z) + "\n";
-        action += "Previous temperature: " + z.getTemperature()+"\n";
-        zones.get(index).setTemperature(temp);
-        action += "New temperature: " + z.getTemperature()+"\n";
-        ActionEvent actionEvent = new ActionEvent("action", action);
-        notifyActionObserver(actionEvent);
     }
 
     public double getRoomTemp(Room r){
@@ -405,18 +389,18 @@ public class SimulationParameter {
     }
 
     public void changeInWeather(){
-        if(this.getWeatherOutside() < this.getWeatherInside()){
-            Event temp1 = new TempEvent("ShutdownAC", this);
-            Event temp2 = new TempEvent("OpenWindows", this);
-
-            try{
-                notifyTemperatureObserver(temp1);
-                notifyTemperatureObserver(temp2);
-            }
-            catch ( IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if(this.getWeatherOutside() < this.getWeatherInside()){
+//            Event temp1 = new TempEvent("ShutdownAC", this);
+//            Event temp2 = new TempEvent("OpenWindows", this);
+//
+//            try{
+//                notifyTemperatureObserver(temp1);
+//                notifyTemperatureObserver(temp2);
+//            }
+//            catch ( IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public void setZoneType(Zone zone, String type) {

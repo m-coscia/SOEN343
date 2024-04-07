@@ -5,7 +5,9 @@ import java.util.ArrayList;
 public class Zone {
     private ArrayList<Room> rooms;
     private double temperature;
+    private double desiredTemperature;
     private String type;
+    private int temperatureChange = 0;
 
     public Zone(ArrayList<Room> r, double temp, String t) {
         if (!t.equals("HEATING") && !t.equals("COOLING")) {
@@ -20,8 +22,29 @@ public class Zone {
         this.temperature = temperature;
     }
 
+
     public double getTemperature(){
         return temperature;
+    }
+
+    public int getTemperatureChange(){
+        return temperatureChange;
+    }
+
+    public void resetTemperatureChange(){
+        temperatureChange = 0;
+    }
+
+    public void setDesiredTemperature(double temp){
+        desiredTemperature = temp;
+    }
+
+    public double getDesiredTemperature(){
+        return desiredTemperature;
+    }
+
+    public void incrementTemperatureChange(){
+        temperatureChange++;
     }
 
     public void setRooms(ArrayList<Room> rooms) {
