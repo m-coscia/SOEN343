@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 public class NoProfilesLoginFrame extends JFrame{
 
-    private Controller controller = new Controller();
+    private Controller controller =Controller.getController();
     private JFrame previousFrame;
     private JPanel framePanel;
     private JButton backButton;

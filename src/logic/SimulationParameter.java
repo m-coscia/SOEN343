@@ -42,7 +42,7 @@ public class SimulationParameter {
 
     //is not supposed to take any weather, the weather outside is the same as the weather inside when starting the simulation
     public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
-        layout.setHouseLayout(layoutFile);
+        //layout.setHouseLayout(layoutFile);
         clock = new Clock();
         clock.setTime(t);
         clock.setDate(d);
@@ -70,9 +70,6 @@ public class SimulationParameter {
         temperatureObserver.update(e);
     }
 
-    public Map getWeatherData(){
-        return weatherData;
-    }
 
     public void notifyActionObserver(Event e) throws IOException {
         actionObserver.update(e);
@@ -133,6 +130,9 @@ public class SimulationParameter {
 
     public void setWeatherOutside(double temp){
         weatherOutside = temp;
+    }
+    public void setWeatherInside(double temp){
+        weatherInside = temp;
     }
 
     public void setWeatherInside(double temp){
@@ -281,7 +281,7 @@ public class SimulationParameter {
                 weatherData.put(timestamp, weather);
             }
         } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -333,7 +333,6 @@ public class SimulationParameter {
         ActionEvent actionEvent = new ActionEvent("SHH", action);
         notifyActionObserver(actionEvent);
     }
-
 
     public void setZoneTemperature(double temp, Zone z) throws IOException {
         int index = zones.indexOf(z);
@@ -402,5 +401,9 @@ public class SimulationParameter {
 //                e.printStackTrace();
 //            }
 //        }
+    }
+
+    public void setZoneType(Zone zone, String type) {
+        zone.setType(type);
     }
 }
