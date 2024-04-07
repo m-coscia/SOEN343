@@ -158,6 +158,13 @@ public class Controller {
 //        }
     }
 
+    public Profile getCurrentLoggedInUser(){
+        return simParam.getLoggedIn();
+    }
+
+    public void setCurrentLoggedInUser(Profile p){
+        simParam.login(p);
+    }
     public String getType(Profile profile) {
         if( profile instanceof Parent){
             return "Parent";
@@ -212,6 +219,7 @@ public class Controller {
                 String type = typesOfZonesList.get(i).getModel().getSelectedItem().toString();
                 System.out.println("Zone " + i + ": " + type);
                 Zone zone = new Zone(roomsInCurrentZone,temp,type);
+                //TODO: set desired temp  and change the temp param above to the outside temp
                 zones.add(zone);
 //            }else{
 //                Zone zone = new Zone(roomsInCurrentZone, temp, "HEATING");
@@ -225,6 +233,8 @@ public class Controller {
         //attachObservers(null,null,null,null);
 
     }
+
+    //TODO chnage zone setting to setting the desired temperature bcz temp of zones is set to outside temp at first
     public void setZoneTemperature(double temp, Zone z){
         try{
             simParam.setZoneTemperature(temp,z);
@@ -309,5 +319,25 @@ public class Controller {
 
     public ArrayList<Zone> getZones() {
         return simParam.getZones();
+    }
+
+    public DataBase getDB() {
+        return database;
+    }
+
+    public void changeUserLocation(Profile p, int location){
+        if (location != -1){
+            getRooms().get(location).addUserToRoom(p);
+            p.setRoom(getRooms().get(location));
+
+            System.out.println(p.getLocation().getType().toString() + " " + p.getLocation().getId());
+
+           // System.out.println(getRooms().get(location).getUsers().toString());
+        }else{
+            System.out.println("no info changed for profile " + p.getName());
+        }
+
+
+
     }
 }

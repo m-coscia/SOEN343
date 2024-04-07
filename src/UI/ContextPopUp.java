@@ -30,11 +30,20 @@ public class ContextPopUp{
     private JPanel titlePanel;
     private JButton saveChangesButton;
     private JPanel profilesPanel;
+    private JComboBox comboBox1;
+    private JSpinner tempSpinner;
+    private JSpinner spinner2;
+    private JSpinner spinner3;
     private JPanel profileMainPanel;
+    private ArrayList<JCheckBox> checkBoxes = new ArrayList<>();
+    private String[] updatedLocations;
 
     public ContextPopUp(Profile currentProfile){
         popUpPanel.add(titlePanel);
         setProfilePanel();
+//        setUpTimeEdit();
+//        setUpDateEdit();
+        setUpSave();
 
     }
 
@@ -44,6 +53,8 @@ public class ContextPopUp{
 
     private void setProfilePanel(){
         ArrayList<Profile> profiles = controller.getProfiles();
+        updatedLocations = new String[profiles.size()];
+
         profilesPanel = new JPanel(new GridLayout(profiles.size() + 1, 3));
 
         JLabel profileLabel = new JLabel("Profile");
@@ -59,19 +70,16 @@ public class ContextPopUp{
         loggedLabel.setHorizontalAlignment(SwingConstants.CENTER);
         profilesPanel.add(loggedLabel);
 
+        int count =0;
         for (Profile p : profiles){
+            updatedLocations[count] = "-1";
             System.out.println("setting up profile " + p.getName());
             JLabel name = new JLabel(p.getName());
             name.setHorizontalAlignment(SwingConstants.CENTER);
             profilesPanel.add(name);
 
-//            JLabel test = new JLabel(" ");
-//            test.setHorizontalAlignment(SwingConstants.CENTER);
-//            profilesPanel.add(test);
-
 
             JComboBox<String> location = setComboBoxLocations();
-
             for (int i = 0; i <location.getItemCount(); i++) {
                 StringTokenizer st = new StringTokenizer(location.getItemAt(i), " ");
                 System.out.print(st.nextToken() + " ");
@@ -84,14 +92,20 @@ public class ContextPopUp{
                     break;
                 }
             }
-
-
+            setUpLocationChange(location, count);
             profilesPanel.add(location);
 
-            JLabel test1 = new JLabel(" ");
-            test1.setHorizontalAlignment(SwingConstants.CENTER);
-            profilesPanel.add(test1);
+            JCheckBox loggedInCheck = new JCheckBox();
+            checkBoxes.add(loggedInCheck);
+            loggedInCheck.setHorizontalAlignment(SwingConstants.CENTER);
+            if(controller.getCurrentLoggedInUser() == p){
+                loggedInCheck.setSelected(true);
+            }
+            profilesPanel.add(loggedInCheck);
+            count++;
         }
+
+        setUpCheckboxes();
 
         popUpPanel.add(titlePanel,BorderLayout.CENTER);
         popUpPanel.add(profilesPanel);
@@ -107,6 +121,62 @@ public class ContextPopUp{
         }
 
         return new JComboBox<>(roomArray);
+    }
+
+    private void setUpCheckboxes(){
+        //for every checkbox in the list
+        for(JCheckBox c: checkBoxes) {
+            //add action listener
+            c.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //uncheck any checkbox that was previously check bcz only one must be logged in at a time
+                    for (JCheckBox c2: checkBoxes){
+                        if(c2 != c){
+                            c2.setSelected(false);
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+
+    private void setUpLocationChange(JComboBox locationBox, int index){
+        locationBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updatedLocations[index] = String.valueOf(locationBox.getSelectedIndex());
+                System.out.println(locationBox.getModel().getSelectedItem());
+            }
+        });
+    }
+    private void setUpSave(){
+        saveChangesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeProfileLocations();
+                changeLoggedInUser();
+            }
+        });
+    }
+
+    private void changeProfileLocations(){
+        ArrayList<Profile> profiles = controller.getProfiles();
+
+        //check the locations to see which were updated
+        for(int i = 0; i < updatedLocations.length; i++){
+            if(profiles.get(i).getLocation().getId() != Integer.parseInt(updatedLocations[i])){
+                controller.changeUserLocation(profiles.get(i),Integer.parseInt(updatedLocations[i]));
+
+                System.out.println("location of profile " + profiles.get(i).getName() + " was changed from " +
+                        profiles.get(i).getLocation().toString() + "to room with id " + updatedLocations[i] );
+            }
+        }
+    }
+
+    private void changeLoggedInUser(){
+
     }
     public static void main(String[] args) {
 
