@@ -66,6 +66,7 @@ public class Dashboard extends JFrame {
 
     private Profile currentProfile;
     private JFrame thisFrame;
+    private ToggleButton toggle;
 
     public Dashboard(Profile profile) {
         thisFrame = this;
@@ -91,6 +92,8 @@ public class Dashboard extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //todo: should be able to edit the simulation context --> maybe switch labels to JTextArea and then when button is clicked make them editable
                 //As the user edits --> stop the time + todo: stop simulation?
+                toggle.setSelected(false);
+                controller.stopSimulation();
 
                 JDialog popup = new JDialog(thisFrame, "Edit Context of Simulation", true);
                 popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -120,7 +123,7 @@ public class Dashboard extends JFrame {
     }
 
     private void setUpClockUI() {
-        ToggleButton toggle = new ToggleButton();
+        toggle = new ToggleButton();
         toggle.setSize(10, 10);
         try {
             toggleButtonPanel.add(toggle, BorderLayout.CENTER);

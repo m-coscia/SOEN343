@@ -1,5 +1,8 @@
 package src.UI;
 
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 import src.Controller;
 import src.components.Room;
 import src.components.RoomType;
@@ -11,7 +14,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 /**
@@ -31,11 +36,14 @@ public class ContextPopUp{
     private JButton saveChangesButton;
     private JPanel profilesPanel;
     private JPanel bottomPanel;
-    private JComboBox comboBox1;
     private JSpinner tempSpinner;
+    private JSpinner hourSpinner;
+    private JSpinner minutesSpinner;
+    private JPanel profilesMainPanel;
+    private JPanel datePanel;
+    private JSpinner spinner1;
     private JSpinner spinner2;
     private JSpinner spinner3;
-    private JPanel profilesMainPanel;
     private JPanel profileMainPanel;
     private ArrayList<JCheckBox> checkBoxes = new ArrayList<>();
     private String[] updatedLocations;
@@ -49,8 +57,8 @@ public class ContextPopUp{
         setProfilePanel();
         setUpCheckboxes();
         setUpTempSpinner();
-       // setUpTimeEdit();
-//        setUpDateEdit();
+        setUpTimeEdit();
+        setUpDateEdit();
         setUpSave();
 
     }
@@ -167,7 +175,7 @@ public class ContextPopUp{
                 changeProfileLocations();
                 Profile p = changeLoggedInUser();
                 changeTemperature();
-
+                changeTime();
                 dashboard.dispose();
                 dashboard = new Dashboard(p);
                 dashboard.setVisible(true);
@@ -203,15 +211,53 @@ public class ContextPopUp{
     }
 
     private void changeTemperature(){
-        if(!String.valueOf(controller.getTemperature()).equals(tempSpinner.getModel().getValue())){
-            int temp = (int) tempSpinner.getModel().getValue();
-            controller.setWeather(Double.valueOf(temp));
+
+        if(!String.valueOf(controller.getTemperature()).equals(tempSpinner.getValue())){
+           // int temp =  Integer.parseInt((String) tempSpinner.getValue());
+            controller.setWeather((Double) tempSpinner.getModel().getValue());
         }
     }
 
     private void setUpTempSpinner(){
-        tempSpinner.getModel().setValue(controller.getTemperature());
+        SpinnerNumberModel tempModel = new SpinnerNumberModel(controller.getTemperature(),-100,200,1);
+        tempSpinner.setModel(tempModel);
     }
+
+    private void changeTime(){
+        controller.changeTime((int) hourSpinner.getModel().getValue(), (int) minutesSpinner.getModel().getValue());
+    }
+    private void setUpTimeEdit(){
+        LocalTime time = controller.getTime();
+        StringTokenizer st = new StringTokenizer(String.valueOf(time), ":");
+        SpinnerNumberModel hourModel = new SpinnerNumberModel(Integer.parseInt(st.nextToken()),0,23,1);
+        hourSpinner.setModel(hourModel);
+
+        SpinnerNumberModel minModel = new SpinnerNumberModel(Integer.parseInt(st.nextToken()),0,59,1);
+        minutesSpinner.setModel(minModel);
+        System.out.println(time);
+    }
+
+    private void setUpDateEdit(){
+        JPanel panel = new JPanel();
+        UtilDateModel model = new UtilDateModel();
+        model.setDate(2022,12,30);
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+
+        //JLabel l22=new JLabel("DATE :");
+
+        JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
+        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+
+        datePicker.setBounds(datePanel.getX(),datePanel.getY(),datePanel.getWidth(),datePanel.getHeight());
+
+        //panel.add(l22);
+        panel.add(datePicker);
+        datePanel.add(panel);
+    }
+
     public static void main(String[] args) {
 
         ArrayList<Profile> pfs = new ArrayList<Profile>();

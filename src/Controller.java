@@ -339,13 +339,16 @@ public class Controller {
         }else{
             System.out.println("no info changed for profile " + p.getName());
         }
-
-
-
     }
 
     public void setWeather(double v) {
         simParam.setWeatherOutside(v);
         to.update(new TimeEvent("user changed temperature in context of simulation", simParam));
+    }
+
+    public void changeTime(int hour, int min){
+        LocalTime t = LocalTime.of(hour,min);
+        simParam.setTime(t);
+        to.update(new TimeEvent("user changed time in context of simulation", simParam));
     }
 }

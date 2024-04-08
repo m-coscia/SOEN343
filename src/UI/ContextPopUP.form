@@ -73,13 +73,6 @@
             </properties>
             <border type="bevel-raised"/>
             <children>
-              <component id="ea84" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
-                <constraints>
-                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties/>
-              </component>
               <component id="26df3" class="javax.swing.JLabel">
                 <constraints>
                   <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -110,7 +103,7 @@
               </grid>
               <grid id="ebda7" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
                 <constraints>
-                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
@@ -122,28 +115,48 @@
                   <component id="5929a" class="javax.swing.JLabel">
                     <constraints/>
                     <properties>
+                      <horizontalAlignment value="11"/>
                       <text value="Date"/>
                     </properties>
                   </component>
                 </children>
               </grid>
-              <grid id="db165" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+              <component id="dcd05" class="javax.swing.JSpinner" binding="hourSpinner">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="59374" class="javax.swing.JSpinner" binding="minutesSpinner">
+                <constraints>
+                  <grid row="1" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <gridbag weightx="0.0" weighty="0.0"/>
+                </constraints>
+                <properties/>
+              </component>
+              <grid id="ec0" binding="datePanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <background color="-6052186"/>
+                  <minimumSize width="0" height="0"/>
                   <opaque value="false"/>
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="40318" class="javax.swing.JLabel">
+                  <component id="7ce3" class="javax.swing.JSpinner" binding="spinner1" default-binding="true">
                     <constraints/>
-                    <properties>
-                      <background color="-6052186"/>
-                      <text value="Outside Temp."/>
-                    </properties>
+                    <properties/>
+                  </component>
+                  <component id="c0721" class="javax.swing.JSpinner" binding="spinner2" default-binding="true">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                  <component id="674e9" class="javax.swing.JSpinner" binding="spinner3" default-binding="true">
+                    <constraints/>
+                    <properties/>
                   </component>
                 </children>
               </grid>
@@ -163,36 +176,14 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="dcd05" class="javax.swing.JSpinner" binding="spinner2" default-binding="true">
+              <component id="40318" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="59374" class="javax.swing.JSpinner" binding="spinner3" default-binding="true">
-                <constraints>
-                  <grid row="1" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="d31d8" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                   <gridbag weightx="0.0" weighty="0.0"/>
                 </constraints>
                 <properties>
-                  <text value="  "/>
-                </properties>
-              </component>
-              <component id="431d8" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                  <gridbag weightx="0.0" weighty="0.0"/>
-                </constraints>
-                <properties>
-                  <text value=" "/>
+                  <background color="-6052186"/>
+                  <text value="Outside Temp."/>
                 </properties>
               </component>
             </children>
