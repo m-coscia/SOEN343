@@ -8,9 +8,12 @@ import src.logic.Permissions;
 import src.logic.Profile;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -45,6 +48,7 @@ public class ContextPopUp{
     private String[] updatedLocations;
     private ArrayList<Profile> profiles;
     private JFrame dashboard;
+    boolean dateChanged = false;
 
     public ContextPopUp(Profile currentProfile, JFrame dashboard){
         this.dashboard = dashboard;
@@ -109,6 +113,7 @@ public class ContextPopUp{
             JCheckBox loggedInCheck = new JCheckBox();
             checkBoxes.add(loggedInCheck);
             loggedInCheck.setHorizontalAlignment(SwingConstants.CENTER);
+            System.out.println("Current user is: " + controller.getCurrentLoggedInUser().getName());
             if(controller.getCurrentLoggedInUser() == p){
                 loggedInCheck.setSelected(true);
             }
@@ -200,7 +205,7 @@ public class ContextPopUp{
 
         for(int i = 0; i < checkBoxes.size(); i++){
             if(checkBoxes.get(i).isSelected()){
-                controller.login(profiles.get(i));
+                controller.loginOtherUser(profiles.get(i));
                 return profiles.get(i);
             }
         }
@@ -240,13 +245,30 @@ public class ContextPopUp{
 
         SpinnerNumberModel yearModel = new SpinnerNumberModel(Integer.parseInt(date.nextToken()), 1900,3000, 1);
         yearSpinner.setModel(yearModel);
+        yearModel.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                dateChanged = true;
+            }
+        });
 
         monthComboBox = new JComboBox<>(new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"});
         monthComboBox.setSelectedIndex(Integer.parseInt(date.nextToken())-1);
-
+        monthComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dateChanged = true;
+            }
+        });
 
         SpinnerNumberModel dateModel = new SpinnerNumberModel(Integer.parseInt(date.nextToken()), 1,31, 1);
         daySpinner.setModel(dateModel);
+        daySpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                dateChanged = true;
+            }
+        });
         datePanel.add(daySpinner);
         datePanel.add(monthComboBox);
         datePanel.add(yearSpinner);
@@ -273,6 +295,18 @@ public class ContextPopUp{
     }
 
     private void changeDate(){
+
+        if(dateChanged){
+            int day, month, year;
+
+            day = (int) daySpinner.getModel().getValue();
+            month = monthComboBox.getSelectedIndex() + 1;
+            year = (int) yearSpinner.getModel().getValue();
+
+            LocalDate date = LocalDate.of(year,month,day);
+            controller.setDate(date);
+            System.out.println(day + " " + month + " " + year);
+        }
 
     }
 

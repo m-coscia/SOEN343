@@ -12,6 +12,7 @@ import src.logic.*;
 import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -161,6 +162,9 @@ public class Controller {
 //        }
     }
 
+    public void loginOtherUser(Profile p){
+        simParam.login(p);
+    }
     public Profile getCurrentLoggedInUser(){
         return simParam.getLoggedIn();
     }
@@ -350,5 +354,10 @@ public class Controller {
         LocalTime t = LocalTime.of(hour,min);
         simParam.setTime(t);
         to.update(new TimeEvent("user changed time in context of simulation", simParam));
+    }
+
+    public void setDate(LocalDate date) {
+        simParam.setDate(date);
+        to.update(new TimeEvent("date changed", simParam));
     }
 }
