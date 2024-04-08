@@ -146,15 +146,15 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="7ce3" class="javax.swing.JSpinner" binding="spinner1" default-binding="true">
+                  <component id="d199b" class="javax.swing.JSpinner" binding="daySpinner">
                     <constraints/>
                     <properties/>
                   </component>
-                  <component id="c0721" class="javax.swing.JSpinner" binding="spinner2" default-binding="true">
+                  <component id="432bd" class="javax.swing.JComboBox" binding="monthComboBox">
                     <constraints/>
                     <properties/>
                   </component>
-                  <component id="674e9" class="javax.swing.JSpinner" binding="spinner3" default-binding="true">
+                  <component id="7ce3" class="javax.swing.JSpinner" binding="yearSpinner">
                     <constraints/>
                     <properties/>
                   </component>

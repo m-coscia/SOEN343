@@ -1,8 +1,5 @@
 package src.UI;
 
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
 import src.Controller;
 import src.components.Room;
 import src.components.RoomType;
@@ -16,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.StringTokenizer;
 
 /**
@@ -41,9 +37,9 @@ public class ContextPopUp{
     private JSpinner minutesSpinner;
     private JPanel profilesMainPanel;
     private JPanel datePanel;
-    private JSpinner spinner1;
-    private JSpinner spinner2;
-    private JSpinner spinner3;
+    private JSpinner yearSpinner;
+    private JComboBox monthComboBox;
+    private JSpinner daySpinner;
     private JPanel profileMainPanel;
     private ArrayList<JCheckBox> checkBoxes = new ArrayList<>();
     private String[] updatedLocations;
@@ -176,6 +172,8 @@ public class ContextPopUp{
                 Profile p = changeLoggedInUser();
                 changeTemperature();
                 changeTime();
+                changeDate();
+
                 dashboard.dispose();
                 dashboard = new Dashboard(p);
                 dashboard.setVisible(true);
@@ -238,24 +236,44 @@ public class ContextPopUp{
     }
 
     private void setUpDateEdit(){
-        JPanel panel = new JPanel();
-        UtilDateModel model = new UtilDateModel();
-        model.setDate(2022,12,30);
-        Properties p = new Properties();
-        p.put("text.today", "Today");
-        p.put("text.month", "Month");
-        p.put("text.year", "Year");
+        StringTokenizer date = new StringTokenizer(controller.getDate(), "-");
 
-        //JLabel l22=new JLabel("DATE :");
+        SpinnerNumberModel yearModel = new SpinnerNumberModel(Integer.parseInt(date.nextToken()), 1900,3000, 1);
+        yearSpinner.setModel(yearModel);
 
-        JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
-        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        monthComboBox = new JComboBox<>(new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"});
+        monthComboBox.setSelectedIndex(Integer.parseInt(date.nextToken())-1);
 
-        datePicker.setBounds(datePanel.getX(),datePanel.getY(),datePanel.getWidth(),datePanel.getHeight());
 
-        //panel.add(l22);
-        panel.add(datePicker);
-        datePanel.add(panel);
+        SpinnerNumberModel dateModel = new SpinnerNumberModel(Integer.parseInt(date.nextToken()), 1,31, 1);
+        daySpinner.setModel(dateModel);
+        datePanel.add(daySpinner);
+        datePanel.add(monthComboBox);
+        datePanel.add(yearSpinner);
+
+        //SpinnerNumberModel days = new SpinnerNumberModel()
+//        JPanel panel = new JPanel();
+//        UtilDateModel model = new UtilDateModel();
+//        model.setDate(2022,12,30);
+//        Properties p = new Properties();
+//        p.put("text.today", "Today");
+//        p.put("text.month", "Month");
+//        p.put("text.year", "Year");
+//
+//        //JLabel l22=new JLabel("DATE :");
+//
+//        JDatePanelImpl datePanel = new JDatePanelImpl(model,p);
+//        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+//
+//        datePicker.setBounds(datePanel.getX(),datePanel.getY(),datePanel.getWidth(),datePanel.getHeight());
+//
+//        //panel.add(l22);
+//        panel.add(datePicker);
+//        datePanel.add(panel);
+    }
+
+    private void changeDate(){
+
     }
 
     public static void main(String[] args) {
