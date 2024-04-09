@@ -204,6 +204,7 @@ public class Dashboard extends JFrame {
 
             JLabel emptyLabel = new JLabel("Label for format");
             panel.add(emptyLabel);
+            emptyLabel.setVisible(false);
 
             JButton lightsButt = new JButton("Lights");
             if(p.getPermissions().getLightsPermission()){
@@ -216,6 +217,7 @@ public class Dashboard extends JFrame {
 
             JLabel emptyLabel1 = new JLabel("Label for format");
             panel.add(emptyLabel1);
+            emptyLabel1.setVisible(false);
 
             JButton doorsButt = new JButton("Doors");
             if(p.getPermissions().getDoorsPermission()){
@@ -228,6 +230,7 @@ public class Dashboard extends JFrame {
 
             JLabel emptyLabel2 = new JLabel("Label for format");
             panel.add(emptyLabel2);
+            emptyLabel2.setVisible(false);
 
             JButton garageButt = new JButton("Garage");
             if(p.getPermissions().getGarageDoorPermission()){
@@ -334,9 +337,7 @@ public class Dashboard extends JFrame {
             SHSmainPanel.add(panel);
         }
 
-
         //accountPanel.add(deleteButton);
-
 
     }
 
