@@ -17,6 +17,12 @@ BEDROOM
 1
 }
 {
+BEDROOM
+2
+2
+3
+}
+{
 KITCHEN
 4
 2
