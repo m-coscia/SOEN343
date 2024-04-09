@@ -132,17 +132,17 @@ public class Dashboard extends JFrame {
 
     private void setUpSHSTab() {
         ArrayList<Profile> profiles = controller.getProfiles();
-        SHSmainPanel.setLayout(new GridLayout(profiles.size(),1));
+        SHSmainPanel.setLayout(new GridLayout(profiles.size(), 1));
 
-        for(Profile p: profiles){
+        for (Profile p : profiles) {
             JPanel panel = new JPanel(new FlowLayout());
 
-            TitledBorder titledBorder = BorderFactory.createTitledBorder(p.getName() );
+            TitledBorder titledBorder = BorderFactory.createTitledBorder(p.getName());
 
             titledBorder.setTitleJustification(TitledBorder.CENTER); // Title alignment
             titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 14)); // Title font
             panel.setBorder(titledBorder);
-            panel.setLayout(new GridLayout(4,2));
+            panel.setLayout(new GridLayout(8, 2));
 
             JLabel nameLabel = new JLabel("Name: ");
             JTextField name = new JTextField(p.getName());
@@ -150,59 +150,153 @@ public class Dashboard extends JFrame {
             panel.add(nameLabel);
             panel.add(name);
 
-            JTextField username = null,password = null;
-            if (p instanceof Parent){
+            JTextField username = null, password = null;
+            if (p instanceof Parent) {
                 JLabel usernameLabel = new JLabel("Username");
-                username = new JTextField(((Parent)p).getUserName());
+                username = new JTextField(((Parent) p).getUserName());
                 username.setEditable(false);
                 panel.add(usernameLabel);
                 panel.add(username);
 
                 JLabel passwordLabel = new JLabel("password");
-                password = new JTextField(((Parent)p).getPassword());
+                password = new JTextField(((Parent) p).getPassword());
                 password.setEditable(false);
                 panel.add(passwordLabel);
                 panel.add(password);
 
-            }else if(p instanceof Child){
+            } else if (p instanceof Child) {
                 JLabel usernameLabel = new JLabel("Username");
-                username = new JTextField(((Child)p).getUserName());
+                username = new JTextField(((Child) p).getUserName());
                 username.setEditable(false);
                 panel.add(usernameLabel);
                 panel.add(username);
 
                 JLabel passwordLabel = new JLabel("password");
-                password = new JTextField(((Child)p).getPassword());
+                password = new JTextField(((Child) p).getPassword());
                 password.setEditable(false);
                 panel.add(passwordLabel);
                 panel.add(password);
 
-            } else if ( p instanceof Guest) {
+            } else if (p instanceof Guest) {
                 JLabel usernameLabel = new JLabel("Username");
-                username = new JTextField(((Guest)p).getUserName());
+                username = new JTextField(((Guest) p).getUserName());
                 username.setEditable(false);
                 panel.add(usernameLabel);
                 panel.add(username);
 
                 JLabel passwordLabel = new JLabel("password");
-                password = new JTextField(((Guest)p).getPassword());
+                password = new JTextField(((Guest) p).getPassword());
                 password.setEditable(false);
                 panel.add(passwordLabel);
                 panel.add(password);
             }
 
+            JLabel permissionsLabel = new JLabel("Permissions");
+            JButton windowButt = new JButton("windows");
+            if(p.getPermissions().getWindowsPermission()){
+                windowButt.setForeground(Color.GREEN);
+            }
+            windowButt.setFocusable(false);
+            panel.add(permissionsLabel);
+            panel.add(windowButt);
+
+            JLabel emptyLabel = new JLabel("Label for format");
+            panel.add(emptyLabel);
+
+            JButton lightsButt = new JButton("Lights");
+            if(p.getPermissions().getLightsPermission()){
+                lightsButt.setForeground(Color.GREEN);
+            }
+            lightsButt.setFocusable(false);
+            panel.add(lightsButt);
+
+            JLabel emptyLabel1 = new JLabel("Label for format");
+            panel.add(emptyLabel1);
+
+            JButton doorsButt = new JButton("Doors");
+            if(p.getPermissions().getDoorsPermission()){
+                doorsButt.setForeground(Color.GREEN);
+            }
+            doorsButt.setFocusable(false);
+            panel.add(doorsButt);
+
+            JLabel emptyLabel2 = new JLabel("Label for format");
+            panel.add(emptyLabel2);
+
+            JButton garageButt = new JButton("Garage");
+            if(p.getPermissions().getGarageDoorPermission()){
+                garageButt.setForeground(Color.GREEN);
+            }
+            garageButt.setFocusable(false);
+            panel.add(garageButt);
+
+
+
+
             JButton editButton = new JButton("Edit");
-           // JTextField finalUsername = username;
+            // JTextField finalUsername = username;
             JTextField finalUsername = username;
             JTextField finalPassword = password;
             editButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    windowButt.setFocusable(true);
+                    lightsButt.setFocusable(true);
+                    doorsButt.setFocusable(true);
+                    garageButt.setFocusable(true);
+
                     name.setEditable(true);
-                    if(finalUsername != null && finalPassword !=null){
+                    if (finalUsername != null && finalPassword != null) {
                         finalUsername.setEditable(true);
                         finalPassword.setEditable(true);
+
+                        finalPassword.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                controller.changeUserPassword(p,finalPassword.getText());
+                                consoleOutput.setText(consoleOutput.getText() + "\n[ " +  controller.getTime() + "] : " +
+                                        "Passowrd changed for profile " + p.getName());
+
+                                finalPassword.setEditable(false);
+                                name.setEditable(false);
+                                finalUsername.setEditable(false);
+                            }
+                        });
+
+                        finalUsername.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                consoleOutput.setText(consoleOutput.getText() + "\n[ " +  controller.getTime() + "] : " +
+                                        "Username name of profile " + p.getName() + " changed to " + finalUsername.getText());
+                                finalPassword.setEditable(false);
+                                name.setEditable(false);
+                                finalUsername.setEditable(false);
+
+                            }
+                        });
                     }
+
+
+                    name.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            consoleOutput.setText(consoleOutput.getText() + "\n[ " +  controller.getTime() + "] : " +
+                                    "Profile w/ name \' " + p.getName() + "\' changed to named to \'" + name.getText() + "\'");
+                            controller.changeProfileName(p, name.getText());
+                            titledBorder.setTitle(p.getName());
+
+                            panel.revalidate();
+                            panel.repaint();
+
+                            if(finalPassword !=null && finalUsername != null){
+                                finalPassword.setEditable(false);
+                                finalUsername.setEditable(false);
+                            }
+
+                            name.setEditable(false);
+                        }
+                    });
+
 
                 }
             });
@@ -212,17 +306,14 @@ public class Dashboard extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
 
-                    if(controller.getCurrentLoggedInUser() == p){
-                        consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() +"]: Cannot delete" +
-                                " profile that is currently logged in. " +
-                                "Try again after logging out.");
-                    }else{
+                    if (controller.getCurrentLoggedInUser() == p) {
+                        consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Cannot delete" + " profile that is currently logged in. " + "Try again after logging out.");
+                    } else {
                         SHSmainPanel.remove(panel);
                         SHSmainPanel.revalidate();
                         SHSmainPanel.repaint();
 
-                        consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() +"]: Profile" +
-                                " for " + p.getName() + " was successfully deleted.");
+                        consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Profile" + " for " + p.getName() + " was successfully deleted.");
                         controller.deleteProfile(p);
                     }
 
@@ -261,7 +352,7 @@ public class Dashboard extends JFrame {
 
             });
 
-            controller.attachObservers(clockDisplay, dateLabel,tempLabel,consoleOutput);
+            controller.attachObservers(clockDisplay, dateLabel, tempLabel, consoleOutput);
 
 
         } catch (Exception e) {
@@ -357,7 +448,7 @@ public class Dashboard extends JFrame {
             }
 
             // Add components to the room panel with GridBagConstraints
-              roomPanel.add(roomTypeLabel, gbc);
+            roomPanel.add(roomTypeLabel, gbc);
 //            roomPanel.add(lightsButton, gbc);
 //            roomPanel.add(doorsButton, gbc);
 //            roomPanel.add(windowsButton, gbc);
@@ -391,21 +482,21 @@ public class Dashboard extends JFrame {
         userTypeLabel.setText(controller.getType(profile) + ": " + profile.getName());
     }
 
-    private void setUpSHHTab(){
+    private void setUpSHHTab() {
         ArrayList<Zone> zones = controller.getZones();
 
         zoneTable = new JTable();
         // Create column names (array of strings)
-        String[] columnNames = {"Zone", "Zone Type","Temperature"};
+        String[] columnNames = {"Zone", "Zone Type", "Temperature"};
 
         // Create a table model using DefaultTableModel
-        DefaultTableModel model = new DefaultTableModel(columnNames,0);
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
         zoneTable.setModel(model);
 
         String[][] data = new String[zones.size()][3];
 
-        for(int i = 0; i < zones.size(); i++){
+        for (int i = 0; i < zones.size(); i++) {
             data[i][0] = "Zone " + i;
             data[i][1] = zones.get(i).getType();
             data[i][2] = String.valueOf(zones.get(i).getTemperature());
@@ -423,8 +514,8 @@ public class Dashboard extends JFrame {
         panelForSHH.add(zoneTable);
     }
 
-    private void handleTableChanges(DefaultTableModel model, ArrayList<Zone> zones){
-        model.addTableModelListener( e ->{
+    private void handleTableChanges(DefaultTableModel model, ArrayList<Zone> zones) {
+        model.addTableModelListener(e -> {
             int row = e.getFirstRow();
             int column = e.getColumn();
 
@@ -439,24 +530,24 @@ public class Dashboard extends JFrame {
                     String temperature = (String) model.getValueAt(row, column);
                     Double newTemperature = Double.parseDouble(temperature);
                     System.out.println(newTemperature);
-                    controller.setZoneTemperature(newTemperature,z);
-                   // obj.setTemperature(newTemperature);
+                    controller.setZoneTemperature(newTemperature, z);
+                    // obj.setTemperature(newTemperature);
                     break;
             }
         });
     }
 
-    private void setUpSHCTab(){
+    private void setUpSHCTab() {
         ArrayList<Room> rooms = controller.getRooms();
-        SHCmainPanel.setLayout(new GridLayout(rooms.size(),1));
-        for(Room r: rooms){
+        SHCmainPanel.setLayout(new GridLayout(rooms.size(), 1));
+        for (Room r : rooms) {
             JPanel roomPanel = new JPanel();
             TitledBorder titledBorder = BorderFactory.createTitledBorder(r.getType().toString() + " " + r.getId());
 
             titledBorder.setTitleJustification(TitledBorder.CENTER); // Title alignment
             titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 14)); // Title font
             roomPanel.setBorder(titledBorder);
-            roomPanel.setLayout(new GridLayout(3,1));
+            roomPanel.setLayout(new GridLayout(3, 1));
 
             JButton lightsButton = new JButton(r.getLightsStatus());
             JButton doorsButton = new JButton(r.getDoorsStatus());

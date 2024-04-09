@@ -364,4 +364,19 @@ public class Controller {
     public void deleteProfile(Profile p){
         database.deleteAccount(p);
     }
+
+    public void changeUserPassword(Profile p, String text) {
+        if (p instanceof Parent){
+            ((Parent)p).setUserName(text);
+        }else if (p instanceof Child){
+            ((Child)p).setUserName(text);
+        }else if(p instanceof Guest){
+            ((Guest)p).setUserName(text);
+        }
+
+    }
+
+    public void changeProfileName(Profile p, String name) {
+        p.setName(name);
+    }
 }
