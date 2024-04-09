@@ -360,4 +360,8 @@ public class Controller {
         simParam.setDate(date);
         to.update(new TimeEvent("date changed", simParam));
     }
+
+    public void deleteProfile(Profile p){
+        database.deleteAccount(p);
+    }
 }

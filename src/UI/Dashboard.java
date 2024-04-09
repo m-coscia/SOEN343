@@ -4,9 +4,7 @@ import src.Controller;
 import src.components.Room;
 import src.components.RoomType;
 import src.components.Zone;
-import src.logic.Parent;
-import src.logic.Permissions;
-import src.logic.Profile;
+import src.logic.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -62,6 +60,15 @@ public class Dashboard extends JFrame {
     private JPanel SHCmainPanel;
     private JScrollPane SHHScrollPanel;
     private JPanel panelForSHH;
+    private JPanel SHSmainPanel;
+    private JPanel leftFiller;
+    private JPanel rightFiller;
+    private JPanel SHSPanel;
+    private JPanel SHSpanel;
+    private JPanel accountPanel;
+    private JPanel test;
+    private JPanel test2;
+
     //private JLabel consoleText;
 
     private Profile currentProfile;
@@ -77,6 +84,7 @@ public class Dashboard extends JFrame {
         setUpClockUI();
         setUpSHHTab();
         setUpSHCTab();
+        setUpSHSTab();
         //setUpOutputUI();
         profileLocationLabel.setText(profile.getLocation().getType().toString());
         add(panel1);
@@ -120,6 +128,116 @@ public class Dashboard extends JFrame {
 
         setLocationRelativeTo(null);
         //fullMainPanel.add(new SimParameterGUI(), BorderLayout.CENTER);
+    }
+
+    private void setUpSHSTab() {
+        ArrayList<Profile> profiles = controller.getProfiles();
+        SHSmainPanel.setLayout(new GridLayout(profiles.size(),1));
+
+        for(Profile p: profiles){
+            JPanel panel = new JPanel(new FlowLayout());
+
+            TitledBorder titledBorder = BorderFactory.createTitledBorder(p.getName() );
+
+            titledBorder.setTitleJustification(TitledBorder.CENTER); // Title alignment
+            titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 14)); // Title font
+            panel.setBorder(titledBorder);
+            panel.setLayout(new GridLayout(4,2));
+
+            JLabel nameLabel = new JLabel("Name: ");
+            JTextField name = new JTextField(p.getName());
+            name.setEditable(false);
+            panel.add(nameLabel);
+            panel.add(name);
+
+            JTextField username = null,password = null;
+            if (p instanceof Parent){
+                JLabel usernameLabel = new JLabel("Username");
+                username = new JTextField(((Parent)p).getUserName());
+                username.setEditable(false);
+                panel.add(usernameLabel);
+                panel.add(username);
+
+                JLabel passwordLabel = new JLabel("password");
+                password = new JTextField(((Parent)p).getPassword());
+                password.setEditable(false);
+                panel.add(passwordLabel);
+                panel.add(password);
+
+            }else if(p instanceof Child){
+                JLabel usernameLabel = new JLabel("Username");
+                username = new JTextField(((Child)p).getUserName());
+                username.setEditable(false);
+                panel.add(usernameLabel);
+                panel.add(username);
+
+                JLabel passwordLabel = new JLabel("password");
+                password = new JTextField(((Child)p).getPassword());
+                password.setEditable(false);
+                panel.add(passwordLabel);
+                panel.add(password);
+
+            } else if ( p instanceof Guest) {
+                JLabel usernameLabel = new JLabel("Username");
+                username = new JTextField(((Guest)p).getUserName());
+                username.setEditable(false);
+                panel.add(usernameLabel);
+                panel.add(username);
+
+                JLabel passwordLabel = new JLabel("password");
+                password = new JTextField(((Guest)p).getPassword());
+                password.setEditable(false);
+                panel.add(passwordLabel);
+                panel.add(password);
+            }
+
+            JButton editButton = new JButton("Edit");
+           // JTextField finalUsername = username;
+            JTextField finalUsername = username;
+            JTextField finalPassword = password;
+            editButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    name.setEditable(true);
+                    if(finalUsername != null && finalPassword !=null){
+                        finalUsername.setEditable(true);
+                        finalPassword.setEditable(true);
+                    }
+
+                }
+            });
+
+            JButton deleteButton = new JButton("Delete");
+            deleteButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    if(controller.getCurrentLoggedInUser() == p){
+                        consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() +"]: Cannot delete" +
+                                " profile that is currently logged in. " +
+                                "Try again after logging out.");
+                    }else{
+                        SHSmainPanel.remove(panel);
+                        SHSmainPanel.revalidate();
+                        SHSmainPanel.repaint();
+
+                        consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() +"]: Profile" +
+                                " for " + p.getName() + " was successfully deleted.");
+                        controller.deleteProfile(p);
+                    }
+
+
+                }
+            });
+            panel.add(editButton);
+            panel.add(deleteButton);
+            SHSmainPanel.add(panel);
+        }
+
+
+        //accountPanel.add(deleteButton);
+
+
     }
 
     private void setUpClockUI() {
