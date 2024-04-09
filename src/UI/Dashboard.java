@@ -195,8 +195,10 @@ public class Dashboard extends JFrame {
             JButton windowButt = new JButton("windows");
             if(p.getPermissions().getWindowsPermission()){
                 windowButt.setForeground(Color.GREEN);
+            }else{
+                windowButt.setForeground(Color.RED);
             }
-            windowButt.setFocusable(false);
+            windowButt.setEnabled(false);
             panel.add(permissionsLabel);
             panel.add(windowButt);
 
@@ -206,8 +208,10 @@ public class Dashboard extends JFrame {
             JButton lightsButt = new JButton("Lights");
             if(p.getPermissions().getLightsPermission()){
                 lightsButt.setForeground(Color.GREEN);
+            }else{
+                lightsButt.setForeground(Color.RED);
             }
-            lightsButt.setFocusable(false);
+            lightsButt.setEnabled(false);
             panel.add(lightsButt);
 
             JLabel emptyLabel1 = new JLabel("Label for format");
@@ -216,8 +220,10 @@ public class Dashboard extends JFrame {
             JButton doorsButt = new JButton("Doors");
             if(p.getPermissions().getDoorsPermission()){
                 doorsButt.setForeground(Color.GREEN);
+            }else{
+                doorsButt.setForeground(Color.RED);
             }
-            doorsButt.setFocusable(false);
+            doorsButt.setEnabled(false);
             panel.add(doorsButt);
 
             JLabel emptyLabel2 = new JLabel("Label for format");
@@ -226,11 +232,11 @@ public class Dashboard extends JFrame {
             JButton garageButt = new JButton("Garage");
             if(p.getPermissions().getGarageDoorPermission()){
                 garageButt.setForeground(Color.GREEN);
+            }else{
+                garageButt.setForeground(Color.RED);
             }
-            garageButt.setFocusable(false);
+            garageButt.setEnabled(false);
             panel.add(garageButt);
-
-
 
 
             JButton editButton = new JButton("Edit");
@@ -240,10 +246,10 @@ public class Dashboard extends JFrame {
             editButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    windowButt.setFocusable(true);
-                    lightsButt.setFocusable(true);
-                    doorsButt.setFocusable(true);
-                    garageButt.setFocusable(true);
+                    windowButt.setEnabled(true);
+                    lightsButt.setEnabled(true);
+                    doorsButt.setEnabled(true);
+                    garageButt.setEnabled(true);
 
                     name.setEditable(true);
                     if (finalUsername != null && finalPassword != null) {
@@ -276,7 +282,6 @@ public class Dashboard extends JFrame {
                         });
                     }
 
-
                     name.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -294,10 +299,14 @@ public class Dashboard extends JFrame {
                             }
 
                             name.setEditable(false);
+                            windowButt.setEnabled(false);
+                            lightsButt.setEnabled(false);
+                            doorsButt.setEnabled(false);
+                            garageButt.setEnabled(false);
                         }
                     });
 
-
+                    changePermissions(windowButt,lightsButt,doorsButt,garageButt,p);
                 }
             });
 
@@ -329,6 +338,91 @@ public class Dashboard extends JFrame {
         //accountPanel.add(deleteButton);
 
 
+    }
+
+    private void changePermissions(JButton windowButt, JButton lightsButt, JButton doorsButt, JButton garageButt, Profile p) {
+        windowButt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(windowButt.getForeground() == Color.GREEN){
+                    controller.changePermission("Window", p, false);
+                    windowButt.setForeground(Color.RED);
+                }else{
+                    controller.changePermission("Window", p, true);
+                    windowButt.setForeground(Color.RED);
+                }
+                windowButt.setEnabled(false);
+                lightsButt.setEnabled(false);
+                doorsButt.setEnabled(false);
+                garageButt.setEnabled(false);
+
+                consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Window permission changed " +
+                        "for profile " + p.getName());
+            }
+        });
+
+        lightsButt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(windowButt.getForeground() == Color.GREEN){
+                    controller.changePermission("Lights", p, false);
+                    windowButt.setForeground(Color.RED);
+                }else{
+                    controller.changePermission("Lights", p, true);
+                    windowButt.setForeground(Color.GREEN);
+                }
+
+                windowButt.setEnabled(false);
+                lightsButt.setEnabled(false);
+                doorsButt.setEnabled(false);
+                garageButt.setEnabled(false);
+
+                consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Light permission changed " +
+                        "for profile " + p.getName());
+            }
+        });
+
+        doorsButt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(doorsButt.getForeground() == Color.GREEN){
+                    controller.changePermission("Doors", p, false);
+                    doorsButt.setForeground(Color.RED);
+                }else{
+                    controller.changePermission("Doors", p, true);
+                    doorsButt.setForeground(Color.GREEN);
+                }
+
+                windowButt.setEnabled(false);
+                lightsButt.setEnabled(false);
+                doorsButt.setEnabled(false);
+                garageButt.setEnabled(false);
+
+                consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Doors permission changed " +
+                        "for profile " + p.getName());
+            }
+
+        });
+
+        garageButt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(garageButt.getForeground() == Color.GREEN){
+                    controller.changePermission("Garage", p, false);
+                    garageButt.setForeground(Color.RED);
+                }else{
+                    controller.changePermission("Garage", p, true);
+                    garageButt.setForeground(Color.GREEN);
+                }
+                windowButt.setEnabled(false);
+                lightsButt.setEnabled(false);
+                doorsButt.setEnabled(false);
+                garageButt.setEnabled(false);
+
+                consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Garage permission changed " +
+                        "for profile " + p.getName());
+            }
+        });
     }
 
     private void setUpClockUI() {

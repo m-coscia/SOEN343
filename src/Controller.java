@@ -379,4 +379,21 @@ public class Controller {
     public void changeProfileName(Profile p, String name) {
         p.setName(name);
     }
+
+    public void changePermission(String permission, Profile p, boolean value) {
+        switch (permission){
+            case "Window":
+                p.getPermissions().setWindowsPermission(value);
+                break;
+            case "Lights":
+                p.getPermissions().setLightsPermission(value);
+                break;
+            case "Doors":
+                p.getPermissions().setDoorsPermission(value);
+                break;
+            case "Garage":
+                p.getPermissions().setGarageDoorPermission(value);
+                break;
+        }
+    }
 }
