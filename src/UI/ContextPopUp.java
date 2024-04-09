@@ -49,8 +49,12 @@ public class ContextPopUp{
     private ArrayList<Profile> profiles;
     private JFrame dashboard;
     boolean dateChanged = false;
+    private JTextPane consoleOutput;
 
-    public ContextPopUp(Profile currentProfile, JFrame dashboard){
+    private String outputMessage = "";
+
+
+    public ContextPopUp(Profile currentProfile, JFrame dashboard, JTextPane consoleOutput){
         this.dashboard = dashboard;
         profiles = controller.getProfiles();
         popUpPanel.add(titlePanel);
@@ -60,6 +64,7 @@ public class ContextPopUp{
         setUpTimeEdit();
         setUpDateEdit();
         setUpSave();
+        this.consoleOutput = consoleOutput;
 
     }
 
@@ -180,7 +185,7 @@ public class ContextPopUp{
                 changeDate();
 
                 dashboard.dispose();
-                dashboard = new Dashboard(p);
+                dashboard = new Dashboard(p, outputMessage);
                 dashboard.setVisible(true);
             }
         });
@@ -194,8 +199,10 @@ public class ContextPopUp{
                 controller.changeUserLocation(profiles.get(i),Integer.parseInt(updatedLocations[i]));
 
                 if(Integer.parseInt(updatedLocations[i] )!= -1) {
-                    System.out.println("location of profile " + profiles.get(i).getName() + " was changed from " +
-                            profiles.get(i).getLocation().toString() + "to room with id " + updatedLocations[i]);
+                    //code below doesnt get dislayed since dashboard gets replaced
+                    outputMessage += "\n["+ controller.getTime() + "]: "
+                            + "location of profile " + profiles.get(i).getName() + " was changed from " +
+                            profiles.get(i).getLocation().toString() + "to room with id " + updatedLocations[i];
                 }
             }
         }
@@ -203,8 +210,11 @@ public class ContextPopUp{
 
     private Profile changeLoggedInUser(){
 
+
         for(int i = 0; i < checkBoxes.size(); i++){
             if(checkBoxes.get(i).isSelected()){
+                outputMessage += "\n[" + controller.getTime() + "]: Logged in profile changed from "
+                        + controller.getCurrentLoggedInUser().getName() + " to " + profiles.get(i).getName();
                 controller.loginOtherUser(profiles.get(i));
                 return profiles.get(i);
             }
@@ -227,7 +237,13 @@ public class ContextPopUp{
     }
 
     private void changeTime(){
-        controller.changeTime((int) hourSpinner.getModel().getValue(), (int) minutesSpinner.getModel().getValue());
+
+        if((int)hourSpinner.getModel().getValue() != controller.getTime().getHour() && (int)minutesSpinner.getModel().getValue() != controller.getTime().getMinute()){
+            outputMessage +=  "\n[ " + controller.getTime() + "]: Time of simulation changed from "
+                    + controller.getTime() + " to " + hourSpinner.getModel().getValue() + ":" + minutesSpinner.getModel().getValue();
+            controller.changeTime((int) hourSpinner.getModel().getValue(), (int) minutesSpinner.getModel().getValue());
+        }
+
     }
     private void setUpTimeEdit(){
         LocalTime time = controller.getTime();
@@ -303,9 +319,13 @@ public class ContextPopUp{
             month = monthComboBox.getSelectedIndex() + 1;
             year = (int) yearSpinner.getModel().getValue();
 
+
             LocalDate date = LocalDate.of(year,month,day);
+            outputMessage += "\n[" + controller.getTime() + "]: "
+                    + "Time changed from " + controller.getDate() + " to " + date;
             controller.setDate(date);
             System.out.println(day + " " + month + " " + year);
+
         }
 
     }

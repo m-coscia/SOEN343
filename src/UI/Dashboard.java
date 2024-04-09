@@ -77,6 +77,7 @@ public class Dashboard extends JFrame {
 
     public Dashboard(Profile profile) {
         thisFrame = this;
+       // consoleOutput.setText(consoleOutput.getText() + "\n["+ controller.getTime() + "]: Logged in as " + profile.getName() + ".");
         setProfileInfo(profile);
         tempLabel.setVerticalAlignment(SwingConstants.TOP);
         tempLabel.setPreferredSize(new Dimension(300, 200));
@@ -107,7 +108,7 @@ public class Dashboard extends JFrame {
                 popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                 popup.setLayout(new BorderLayout());
 
-                ContextPopUp c = new ContextPopUp(profile, thisFrame);
+                ContextPopUp c = new ContextPopUp(profile,thisFrame,consoleOutput);
                 JPanel popupPanel = c.getPopupContent();
                 popup.add(popupPanel, BorderLayout.CENTER);
 
@@ -130,6 +131,10 @@ public class Dashboard extends JFrame {
         //fullMainPanel.add(new SimParameterGUI(), BorderLayout.CENTER);
     }
 
+    public Dashboard(Profile p, String outputMessage){
+        this(p);
+        consoleOutput.setText(consoleOutput.getText() + outputMessage);
+    }
     private void setUpSHSTab() {
         ArrayList<Profile> profiles = controller.getProfiles();
         SHSmainPanel.setLayout(new GridLayout(profiles.size(), 1));
