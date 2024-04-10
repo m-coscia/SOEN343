@@ -121,9 +121,6 @@ public class SimulationParameter {
     public void setWeatherOutside(double temp){
         weatherOutside = temp;
     }
-    public void setWeatherInside(double temp){
-        weatherInside = temp;
-    }
 
 
     public void login(Profile user){
@@ -270,57 +267,6 @@ public class SimulationParameter {
             System.out.println(e.getMessage());
         }
     }
-
-//    public void startSimulation() throws IOException {
-//        clock.start();
-//
-//        // Run the while loop in a separate thread
-//        new Thread(() -> {
-//            while (clock.isRunning().get()) {
-//                Event tempEvent = new TimeEvent("temperature", this); // Create a new event instance inside the loop
-//                try {
-//                    notifyTimeObserver(tempEvent);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
-//
-//        weatherInside = weatherOutside;
-//
-//        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
-//                "Event type: Start Simulation \n" +
-//                "Event description: The Simulation has been started \n" +
-//                "Details: \n" +
-//                "Users: ";
-//
-//        for(Profile p: db.getProfiles()){
-//            action += p.toString() +"\n";
-//        }
-//
-//        action += "Rooms: ";
-//        for(Room r: db.getRooms()){
-//            action += r.toString() +"\n";
-//        }
-//
-//        action += "Temperature outside: " + getWeatherOutside()+ "\n";
-//        action += "Temperature inside: " + getWeatherInside() +"\n";
-//        action += "LoggedIn user" + getLoggedIn() + "\n";
-//
-//        ActionEvent actionEvent = new ActionEvent("SHC", action);
-//        notifyActionObserver(actionEvent);
-//    }
-
-//    public void stopSimulation() throws IOException {
-//        clock.pause();
-//        String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
-//                "Event type: Stop Simulation \n" +
-//                "Event description: The Simulation has been stopped \n";
-//
-//        ActionEvent actionEvent = new ActionEvent("SHC", action);
-//        notifyActionObserver(actionEvent);
-//
-//    }
 
     public Heating getHeater() {
         return heater;
