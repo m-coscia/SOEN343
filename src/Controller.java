@@ -25,6 +25,8 @@ public class Controller {
     private SimulationParameter simParam = null;
     private ArrayList<Zone> zones = new ArrayList<>();
     private double avgTemp = 0;
+    private ContextSimulation context = null;
+
     private Controller(){
 
     }
@@ -243,6 +245,7 @@ public class Controller {
         try{
             this.temperatureFile = temperatureFile;
             simParam = new SimulationParameter(layoutFileName, temperatureFile ,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), avgTemp,outsideTemp, new Login(profile));
+            context = new ContextSimulation(simParam);
 
             try{
                 simParam.setZones(zones);
@@ -264,7 +267,7 @@ public class Controller {
 
     public void startSimulation() {
         try{
-            simParam.startSimulation();
+            context.startSimulation();
         }catch (IOException e){
             System.out.println("ERROR: " + e.getMessage());
             e.printStackTrace();
@@ -273,7 +276,7 @@ public class Controller {
 
     public void stopSimulation() {
         try{
-            simParam.stopSimulation();
+            context.stopSimulation();
         }catch (IOException e){
             System.out.println(e.getMessage());
             e.printStackTrace();
