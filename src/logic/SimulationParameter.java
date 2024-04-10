@@ -117,7 +117,9 @@ public class SimulationParameter {
     public double getWeatherOutside(){
         return weatherOutside;
     }
-
+    public void setWeatherInside(double temp){
+        weatherInside = temp;
+    }
     public void setWeatherOutside(double temp){
         weatherOutside = temp;
     }
