@@ -32,7 +32,7 @@ public class SimDatabase {
         Statement stmt=null;
         String databaseName="Smart_Home_Simulator_DB";
         try{
-            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "123");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "root");
             stmt = con.createStatement();
             String sql1="CREATE DATABASE "+databaseName;
             String sql2="USE "+databaseName;

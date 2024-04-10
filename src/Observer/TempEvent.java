@@ -1,10 +1,12 @@
 package src.Observer;
 
+import src.Observer.Events.Event;
 import src.logic.SimulationParameter;
 import java.time.LocalDate;
 
-public class TempEvent extends Event{
-    private double indoorTemp, outdoorTemp;
+public class TempEvent extends Event {
+    private final double indoorTemp;
+    private double outdoorTemp;
     private boolean isSummer;
 
     private SimulationParameter simulationParameter;

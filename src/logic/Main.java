@@ -75,7 +75,7 @@ public class Main {
         ActionObserver actionObserver = new ActionObserver();
         param.attachActionObserver(actionObserver);
 
-        param.startSimulation();
+        //param.startSimulation();
 
         ArrayList<Room> rooms1 = new ArrayList<Room>();
         rooms1.add(layout.getRooms().get(0));
@@ -97,7 +97,7 @@ public class Main {
         param.setZoneTemperature(15.0, zone1);
 
         Thread.sleep(10000);
-        param.stopSimulation();
+       // param.stopSimulation();
 
 
     }

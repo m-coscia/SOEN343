@@ -125,10 +125,6 @@ public class SimulationParameter {
         weatherInside = temp;
     }
 
-    public void setWeatherInside(double temp){
-        weatherInside = temp;
-    }
-
 
     public void login(Profile user){
         login = new Login(user);
