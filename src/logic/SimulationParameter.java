@@ -41,7 +41,7 @@ public class SimulationParameter {
     private SHP shpContext;
 
     //is not supposed to take any weather, the weather outside is the same as the weather inside when starting the simulation
-    public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn, SHP shp) throws FileNotFoundException {
+    public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
         //layout.setHouseLayout(layoutFile);
         clock = new Clock();
         clock.setTime(t);
@@ -51,9 +51,11 @@ public class SimulationParameter {
         login = loggedIn;
         db.setRooms(layout.getRooms());
         uploadTempFile(tempFile);
-        this.shpContext = shp;
     }
 
+    public void setShpContext(SHP shpContext) {
+        this.shpContext = shpContext;
+    }
 
     public Clock getClock(){
         return clock;
@@ -377,5 +379,9 @@ public class SimulationParameter {
 
     public void setZoneType(Zone zone, String type) {
         zone.setType(type);
+    }
+
+    public SHP getSHP() {
+        return this.shpContext;
     }
 }

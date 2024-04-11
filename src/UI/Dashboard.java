@@ -62,6 +62,8 @@ public class Dashboard extends JFrame {
     private JPanel SHCmainPanel;
     private JScrollPane SHHScrollPanel;
     private JPanel panelForSHH;
+    private JPanel AwayModeButtonPanel;
+    private JLabel AwayModeLabel;
     //private JLabel consoleText;
 
     private Profile currentProfile;
@@ -104,6 +106,31 @@ public class Dashboard extends JFrame {
         createHouseLayout(rooms);
 
         //fullMainPanel.add(new SimParameterGUI(), BorderLayout.CENTER);
+    }
+
+    private void setUpAwayMode(){
+        ToggleButton toggle = new ToggleButton();
+        toggle.setSize(10, 10);
+        try {
+            AwayModeButtonPanel.add(toggle, BorderLayout.CENTER);
+            toggle.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    super.mouseReleased(e);
+                    if (controller.getSHP().getState().getClass().getName().equals("AwayModeOn")) {
+                        controller.getSHP().setState(controller.getSHP().getAwayModeOnState());
+                        AwayModeLabel.setText("Away Mode On");
+                    } else {
+                        controller.getSHP().setState(controller.getSHP().getAwayModeOffState());
+                        AwayModeLabel.setText("Away Mode Off");
+                    }
+                }
+
+            });
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void setUpClockUI() {

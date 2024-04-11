@@ -1,12 +1,17 @@
 package src;
 
 import src.Observer.ActionObserver;
+import src.Observer.ConsoleOutputObserver;
+import src.Observer.Events.DoorEvent;
+import src.Observer.Events.WindowEvent;
 import src.Observer.TemperatureObserver;
 import src.Observer.TimeObserver;
 import src.components.Clock;
 import src.components.Room;
 import src.components.Zone;
 import src.logic.*;
+import src.state.AwayModeOff;
+import src.state.SHP;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
@@ -26,6 +31,7 @@ public class Controller {
     private ArrayList<Zone> zones = new ArrayList<>();
     private double avgTemp = 0;
     private ContextSimulation context = null;
+
 
     private Controller(){
 
@@ -240,15 +246,25 @@ public class Controller {
         simParam.setZoneType(zone,type);
     }
 
-    public void setSimulationParams(String temperatureFile, Date date, int hours,int min, double outsideTemp, Profile profile) {
+    public void setSimulationParams(String temperatureFile, Date date, int hours,int min, double outsideTemp, Profile profile, SHP shp) {
 
         try{
+
             this.temperatureFile = temperatureFile;
             simParam = new SimulationParameter(layoutFileName, temperatureFile ,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), avgTemp,outsideTemp, new Login(profile));
             context = new ContextSimulation(simParam);
+            //initializing SHP into dashboard
+            SHP shpClient = new SHP(new DoorEvent("door", "state"),
+                    new WindowEvent("window", "state"),
+                    new ConsoleOutputObserver(),
+                    5,
+                    simParam.getSHP().getAwayModeOffState());
 
             try{
                 simParam.setZones(zones);
+                //setting SHP
+                simParam.setShpContext(shpClient);
+
             }catch(IOException e){
                 System.out.println(e.getMessage());
                 e.printStackTrace();
@@ -312,5 +328,9 @@ public class Controller {
 
     public ArrayList<Zone> getZones() {
         return simParam.getZones();
+    }
+
+    public SHP getSHP() {
+        return simParam.getSHP();
     }
 }
