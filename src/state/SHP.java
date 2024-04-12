@@ -2,9 +2,12 @@ package src.state;
 
 import src.Observer.ConsoleOutputObserver;
 import src.Observer.Events.DoorEvent;
+import src.Observer.Events.Event;
 import src.Observer.Events.WindowEvent;
 import src.components.*;
 import src.logic.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SHP {
@@ -41,7 +44,7 @@ public class SHP {
     // setState()
     public void setState(State state) {
         this.state = state;
-        state.closeUp(this.getRooms, this.getProfile);
+        closeUp(this.rooms, this.currentUser);
     }
 
     public void closeUp(ArrayList<Room> rooms, Profile profile) {
@@ -68,6 +71,10 @@ public class SHP {
 
     public ConsoleOutputObserver getConsoleObserver() {
         return consoleObserver;
+    }
+
+    public void notifyConsoleOutputObserver(Event e) throws IOException {
+        consoleObserver.update(e);
     }
 
     public void setConsoleObserver(ConsoleOutputObserver consoleObserver) {
