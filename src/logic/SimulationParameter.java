@@ -386,7 +386,7 @@ public class SimulationParameter {
         return shpContext;
     }
 
-    public void setShpContextFromScratch(SHP shpContext) {
+    public void setShpContext(SHP shpContext) {
         this.shpContext = shpContext;
     }
 }
