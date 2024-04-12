@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String args[]) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         //new firstFrame();
         HouseLayout layout = HouseLayout.getHouseLayout();
@@ -75,6 +75,7 @@ public class Main {
         ActionObserver actionObserver = new ActionObserver();
         param.attachActionObserver(actionObserver);
 
+        /*
         param.startSimulation();
 
         ArrayList<Room> rooms1 = new ArrayList<Room>();
@@ -98,7 +99,7 @@ public class Main {
 
         Thread.sleep(10000);
         param.stopSimulation();
-
+        */
 
     }
 }

@@ -384,4 +384,8 @@ public class SimulationParameter {
     public SHP getSHP() {
         return this.shpContext;
     }
+
+    public Map<String, Double> getWeatherData() {
+        return this.weatherData;
+    }
 }

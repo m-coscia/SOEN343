@@ -17,7 +17,7 @@ public class SHP {
     AwayModeOff awayModeOff;
 
     // constructor
-    public SHP(DoorEvent doorEvent, WindowEvent windowEvent, ConsoleOutputObserver consoleObserver, int alertResponseTime, State state){
+    public SHP(DoorEvent doorEvent, WindowEvent windowEvent, ConsoleOutputObserver consoleObserver, int alertResponseTime){
         this.doorEvent = doorEvent;
         this.windowEvent = windowEvent;
         this.consoleObserver = consoleObserver;

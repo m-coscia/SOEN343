@@ -31,6 +31,8 @@ public class Controller {
     private ArrayList<Zone> zones = new ArrayList<>();
     private double avgTemp = 0;
     private ContextSimulation context = null;
+    private SHP shpContext;
+
 
 
     private Controller(){
@@ -246,24 +248,24 @@ public class Controller {
         simParam.setZoneType(zone,type);
     }
 
-    public void setSimulationParams(String temperatureFile, Date date, int hours,int min, double outsideTemp, Profile profile, SHP shp) {
+    public void setSimulationParams(String temperatureFile, Date date, int hours,int min,
+                                    double outsideTemp, Profile profile) {
 
         try{
 
             this.temperatureFile = temperatureFile;
             simParam = new SimulationParameter(layoutFileName, temperatureFile ,date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalTime.of(hours,min), avgTemp,outsideTemp, new Login(profile));
             context = new ContextSimulation(simParam);
-            //initializing SHP into dashboard
+            /*initializing SHP into dashboard
             SHP shpClient = new SHP(new DoorEvent("door", "state"),
                     new WindowEvent("window", "state"),
                     new ConsoleOutputObserver(),
-                    5,
-                    simParam.getSHP().getAwayModeOffState());
+                    5);*/
 
             try{
                 simParam.setZones(zones);
                 //setting SHP
-                simParam.setShpContext(shpClient);
+                //simParam.setShpContext(shpClient);
 
             }catch(IOException e){
                 System.out.println(e.getMessage());

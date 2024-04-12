@@ -18,7 +18,7 @@ public class DataBase {
         Statement stmt=null;
         try{
             //connecting to database
-            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "root", "123");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/mysql", "soen343", "SOEN343&Pr0ject");
             //required for running SQL commands in Java
             stmt = con.createStatement();
             String query = "SELECT * FROM smart_home_simulator_db.FullProfiles";
