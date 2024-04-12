@@ -40,9 +40,10 @@ public class DataBase {
                 garage = rs.getBoolean("Garage");
                 doors = rs.getBoolean("Doors");
                 Profile profile = null;
-                Permissions permissions = new Permissions(window, doors, garage, lights, true);
-                // I THINK THE ISSUE IS BCZ THIS IS DONE BEFORE THE HOUSE LAYOUT IS SET SO THE
-                // FINDROOM() ALWAYS IS NULL
+
+                Permissions permissions = new Permissions(window,doors,garage,lights,true, false);
+                // I THINK THE ISSUE IS BCZ THIS IS DONE BEFORE THE HOUSE LAYOUT IS SET SO THE FINDROOM() ALWAYS IS NULL
+
                 Room location = findRoom(locationId);
                 ;
                 switch (type) {
@@ -50,6 +51,7 @@ public class DataBase {
                         profile = new Parent(name, userName, password, location);
                         profile.setPermissions(permissions);
                         location.addUserToRoom(profile);
+                        permissions.setShpPermission(true);
                         break;
                     case "CHILD":
                         profile = new Child(name, userName, password, location);

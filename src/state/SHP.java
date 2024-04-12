@@ -17,6 +17,7 @@ public class SHP {
     ConsoleOutputObserver consoleObserver;
     int alertResponseTime;
     State state;
+
     State awayModeOnState;
     State awayModeOffState;
 
@@ -24,11 +25,13 @@ public class SHP {
     Profile currentUser;
     private ScheduledExecutorService scheduler;
 
+
     // constructor
     public SHP(ConsoleOutputObserver consoleObserver,
             int alertResponseTime, HouseLayout layout, Profile caller) {
         this.consoleObserver = consoleObserver;
         this.alertResponseTime = alertResponseTime;
+
         awayModeOnState = new AwayModeOn(this);
         awayModeOffState = new AwayModeOff(this);
         state = awayModeOffState;
@@ -39,7 +42,6 @@ public class SHP {
             rooms.add(room);
         }
         scheduler = Executors.newScheduledThreadPool(1);
-
     }
 
     // setState()

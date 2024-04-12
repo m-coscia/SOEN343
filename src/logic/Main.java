@@ -1,5 +1,6 @@
 package src.logic;
 
+import src.Controller;
 import src.Observer.AccountObserver;
 import src.Observer.ActionObserver;
 import src.Observer.Observer;
@@ -79,6 +80,7 @@ public class Main {
 
         context.startSimulation();
 
+
         ArrayList<Room> rooms1 = new ArrayList<Room>();
         rooms1.add(layout.getRooms().get(0));
         ArrayList<Room> rooms2 = new ArrayList<Room>();
@@ -99,6 +101,7 @@ public class Main {
         param.setZoneTemperature(15.0, zone1);
 
         Thread.sleep(10000);
+
         context.stopSimulation();
 
 

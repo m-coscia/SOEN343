@@ -18,6 +18,10 @@ public record OpenDoorsCommand(Doors doors, ArrayList<Profile> users, Profile ca
                 System.out.println("Doors cannot be controlled by you!!");
                 return;
             }
+            else if(!caller.getPermissions().getShpPermission() && caller.getLocation().getId()!=0){ //Verify if the user has permission to SHP module
+                System.out.println("Doors cannot be controlled by you!!");
+                return;
+            }
             else {
                 // Open the garage doors
                 System.out.println("Opening Garage Doors");
