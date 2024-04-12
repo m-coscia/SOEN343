@@ -3,9 +3,7 @@ package src.logic;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import src.Observer.*;
-import src.Observer.Events.ActionEvent;
-import src.Observer.Events.Event;
-import src.Observer.Events.UserEvent;
+import src.Observer.Events.*;
 import src.components.Clock;
 import src.components.Room;
 import src.components.AC;
@@ -41,7 +39,7 @@ public class SimulationParameter {
     private SHP shpContext;
 
     //is not supposed to take any weather, the weather outside is the same as the weather inside when starting the simulation
-    public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn, SHP shp) throws FileNotFoundException {
+    public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
         //layout.setHouseLayout(layoutFile);
         clock = new Clock();
         clock.setTime(t);
@@ -51,7 +49,7 @@ public class SimulationParameter {
         login = loggedIn;
         db.setRooms(layout.getRooms());
         uploadTempFile(tempFile);
-        this.shpContext = shp;
+        this.shpContext = new SHP(new DoorEvent("door", "shp"), new WindowEvent("window", "shp"), new ConsoleOutputObserver(), 10);
     }
 
 
@@ -377,5 +375,9 @@ public class SimulationParameter {
 
     public void setZoneType(Zone zone, String type) {
         zone.setType(type);
+    }
+
+    public Map<String, Double> getWeatherData() {
+        return weatherData;
     }
 }
