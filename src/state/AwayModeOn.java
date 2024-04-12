@@ -2,6 +2,7 @@ package src.state;
 
 import src.Observer.Events.DoorEvent;
 import src.Observer.Events.WindowEvent;
+import src.Observer.Events.Event;
 import src.commands.CloseDoorsCommand;
 import src.commands.CloseWindowsCommand;
 import src.components.Room;
@@ -36,13 +37,13 @@ public class AwayModeOn implements State {
         }
 
         // create doorEvent
-        String event = "Away Mode - All doors are closed";
-        System.out.println(event);
-        shp.setDoorEvent(new DoorEvent("doorEvent", event));
+        String eventString = "Away Mode - All doors are closed";
+        System.out.println(eventString);
+        Event event = new DoorEvent("doorEvent", eventString);
 
         // notify observers
         try {
-            shp.notifyConsoleOutputObserver(shp.getDoorEvent());
+            shp.notifyConsoleOutputObserver(event);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,13 +62,13 @@ public class AwayModeOn implements State {
         }
 
         // create windowEvent
-        String event = "Away Mode - All windows are closed";
-        System.out.println(event);
-        shp.setWindowEvent(new WindowEvent("doorEvent", event));
+        String eventString = "Away Mode - All windows are closed";
+        System.out.println(eventString);
 
         // notify observers
         try {
-            shp.notifyConsoleOutputObserver(shp.getWindowEvent());
+            Event event = new WindowEvent("windowEvent", eventString);
+            shp.notifyConsoleOutputObserver(event);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,5 +77,36 @@ public class AwayModeOn implements State {
     @Override
     public void closeWindows(ArrayList<Room> rooms, Profile profile) {
 
+    }
+
+    @Override
+    public void checkIsOpen(ArrayList<Room> rooms, Profile profile) {
+        // check if any doors is open
+        for (Room room : rooms) {
+            if (room.getDoors().isOpen()) {
+                // if any door is open, notify user with door event
+                String eventString = "Away Mode - A door is open";
+                System.out.println(eventString);
+                Event event = new DoorEvent("doorEvent", eventString);
+
+                try {
+                    shp.notifyConsoleOutputObserver(event);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (room.getWindows().isOpen()) {
+                // if any window is open, notify user with window event
+                String eventString = "Away Mode - A window is open";
+                System.out.println(eventString);
+                Event event = new WindowEvent("windowEvent", eventString);
+
+                try {
+                    shp.notifyConsoleOutputObserver(event);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

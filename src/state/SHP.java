@@ -9,10 +9,11 @@ import src.logic.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SHP {
-    DoorEvent doorEvent;
-    WindowEvent windowEvent;
     ConsoleOutputObserver consoleObserver;
     int alertResponseTime;
     State state;
@@ -21,12 +22,11 @@ public class SHP {
 
     ArrayList<Room> rooms;
     Profile currentUser;
+    private ScheduledExecutorService scheduler;
 
     // constructor
-    public SHP(DoorEvent doorEvent, WindowEvent windowEvent, ConsoleOutputObserver consoleObserver,
+    public SHP(ConsoleOutputObserver consoleObserver,
             int alertResponseTime, HouseLayout layout, Profile caller) {
-        this.doorEvent = doorEvent;
-        this.windowEvent = windowEvent;
         this.consoleObserver = consoleObserver;
         this.alertResponseTime = alertResponseTime;
         awayModeOnState = new AwayModeOn(this);
@@ -38,6 +38,7 @@ public class SHP {
         for (Room room : layout.getRooms()) {
             rooms.add(room);
         }
+        scheduler = Executors.newScheduledThreadPool(1);
 
     }
 
@@ -45,28 +46,37 @@ public class SHP {
     public void setState(State state) {
         this.state = state;
         closeUp(this.rooms, this.currentUser);
+        checkIsOpen(this.rooms, this.currentUser);
+        if (state instanceof AwayModeOn) {
+            startMonitoring();
+        } else {
+            stopMonitoring();
+        }
+    }
+
+    private void startMonitoring() {
+        scheduler.scheduleAtFixedRate(() -> {
+            state.checkIsOpen(rooms, currentUser);
+        }, 0, 5, TimeUnit.MINUTES); // Checks every 5 minutes
+    }
+
+    private void stopMonitoring() {
+        scheduler.shutdownNow();
+        try {
+            scheduler.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public void checkIsOpen(ArrayList<Room> rooms, Profile profile) {
+        // check if any doors or windows are open
+
     }
 
     public void closeUp(ArrayList<Room> rooms, Profile profile) {
         state.closeDoors(rooms, profile);
         state.closeWindows(rooms, profile);
-    }
-
-    // getters and setters
-    public DoorEvent getDoorEvent() {
-        return doorEvent;
-    }
-
-    public void setDoorEvent(DoorEvent doorEvent) {
-        this.doorEvent = doorEvent;
-    }
-
-    public WindowEvent getWindowEvent() {
-        return windowEvent;
-    }
-
-    public void setWindowEvent(WindowEvent windowEvent) {
-        this.windowEvent = windowEvent;
     }
 
     public ConsoleOutputObserver getConsoleObserver() {
@@ -87,15 +97,5 @@ public class SHP {
 
     public void setAlertResponseTime(int alertResponseTime) {
         this.alertResponseTime = alertResponseTime;
-    }
-
-    public void openDoors(ArrayList<Room> rooms, Profile profile) {
-        // call state implementation
-        state.openDoors(rooms, profile);
-    }
-
-    public void openWindows(ArrayList<Room> rooms, Profile profile) {
-        // call state implementation
-        state.openWindows(rooms, profile);
     }
 }

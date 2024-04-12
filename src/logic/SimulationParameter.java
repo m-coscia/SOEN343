@@ -51,8 +51,7 @@ public class SimulationParameter {
         login = loggedIn;
         db.setRooms(layout.getRooms());
         uploadTempFile(tempFile);
-        this.shpContext = new SHP(new DoorEvent("door", "shp"), new WindowEvent("window", "shp"),
-                new ConsoleOutputObserver(), 10, layout, login.getCurrentUser());
+        this.shpContext = new SHP(new ConsoleOutputObserver(), 10, layout, login.getCurrentUser());
     }
 
     public Clock getClock() {
