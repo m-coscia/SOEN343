@@ -36,4 +36,8 @@ public class AwayModeOff implements State {
     @Override
     public void checkIsOpen(ArrayList<Room> rooms, Profile profile) {
     }
+
+    @Override
+    public void checkTemp(ArrayList<Room> rooms, Profile profile) {
+    }
 }

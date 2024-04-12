@@ -3,6 +3,7 @@ package src.state;
 import src.Observer.Events.DoorEvent;
 import src.Observer.Events.WindowEvent;
 import src.Observer.Events.Event;
+import src.Observer.Events.TemperatureEvent;
 import src.commands.CloseDoorsCommand;
 import src.commands.CloseWindowsCommand;
 import src.components.Room;
@@ -19,6 +20,25 @@ public class AwayModeOn implements State {
     }
 
     // TO BE IMPLEMENTED
+    @Override
+    public void checkTemp(ArrayList<Room> rooms, Profile profile) {
+        // check if any room is above 135C degrees
+        for (Room room : rooms) {
+            if (room.getTemperature() > 135) {
+                // if any room is above 135C degrees, notify user with temp event
+                String eventString = "Away Mode - A room is above 135C degrees";
+                System.out.println(eventString);
+                Event event = new TemperatureEvent("tempEvent", eventString);
+
+                try {
+                    shp.notifyConsoleOutputObserver(event);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     @Override
     public void openDoors(ArrayList<Room> rooms, Profile profile) {
 
