@@ -6,6 +6,7 @@ public class Permissions {
     private boolean garageDoor;
     private boolean lights;
     private boolean temperature;
+    private boolean shp;
 
     public Permissions(boolean w, boolean d, boolean g, boolean l, boolean t){
         windows = w;
@@ -13,6 +14,15 @@ public class Permissions {
         garageDoor = g;
         lights = l;
         temperature = t;
+    }
+
+    public Permissions(boolean w, boolean d, boolean g, boolean l, boolean t, boolean s){
+        windows = w;
+        doors = d;
+        garageDoor = g;
+        lights = l;
+        temperature = t;
+        shp = s;
     }
 
     public void setWindowsPermission(boolean permission){
@@ -54,4 +64,12 @@ public class Permissions {
     public boolean getTemperaturePermission(){
         return temperature;
      }
+
+    public boolean getShpPermission() {
+        return shp;
+    }
+
+    public void setShpPermission(boolean shp) {
+        this.shp = shp;
+    }
 }

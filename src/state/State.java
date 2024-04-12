@@ -16,5 +16,8 @@ public interface State {
 
     void checkIsOpen(ArrayList<Room> rooms, Profile profile);
 
+
     void checkTemp(ArrayList<Room> rooms, Profile profile);
+
+    void checkForMotion(ArrayList<Room> rooms, Profile profile);
 }

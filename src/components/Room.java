@@ -21,10 +21,21 @@ public class Room extends Component {
     private static int idCounter = 0;
     private final int identifier;
     private boolean isInZone = false;
+    private boolean motionDetected = false;
 
-    public Room(RoomType t, int windows, int lights, int doors, ArrayList<Profile> occupied) {
+
+    private void isMotionDetected(){
+        if (!this.users.isEmpty()) {
+            this.motionDetected = true;
+        } else {
+            this.motionDetected = false;
+        }
+    }
+
+    public Room(RoomType t, int windows, int lights, int doors, ArrayList<Profile> occupied){
         this.type = t;
         this.users = occupied;
+        this.isMotionDetected();
         this.identifier = generateUniqueId();
 
         this.numWindows = windows;
@@ -129,10 +140,12 @@ public class Room extends Component {
             users = new ArrayList<>();
         }
         users.add(p);
+        this.isMotionDetected();
     }
 
     public void setUsers(ArrayList<Profile> p) {
         this.users = p;
+        this.isMotionDetected();
     }
 
     public boolean isOccupied() {
@@ -143,7 +156,12 @@ public class Room extends Component {
         }
     }
 
-    // users is an array!!!!
+
+    public boolean getMotionDetected() {
+        return this.motionDetected;
+    }
+
+    //users is an array!!!!
     @Override
     public String toString() {
         return "Room{" +

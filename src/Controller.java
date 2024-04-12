@@ -93,11 +93,13 @@ public class Controller {
             boolean lights = lightsCheckboxes.get(i).isSelected();
 
             Profile p = null;
+            boolean shpPermission = false;
             if (typeFields.get(i).getSelectedItem().equals("Parent")){
 
                 p = new Parent(nameFields.get(i).getText(),
                         usernameFields.get(i).getText(),
                         passwordFields.get(i).getText(), room);
+                shpPermission = true;
 
             }else if (typeFields.get(i).getSelectedItem().equals("Child")){
 
@@ -115,7 +117,7 @@ public class Controller {
 
                 p = new Stranger(nameFields.get(i).getText(), room);
             }
-            Permissions permission = new Permissions(window,door,garage,lights, false);
+            Permissions permission = new Permissions(window,door,garage,lights, false, shpPermission);
 
             if(p != null){
                 p.setPermissions(permission);
