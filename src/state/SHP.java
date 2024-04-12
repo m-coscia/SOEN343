@@ -1,9 +1,7 @@
 package src.state;
 
 import src.Observer.ConsoleOutputObserver;
-import src.Observer.Events.DoorEvent;
 import src.Observer.Events.Event;
-import src.Observer.Events.WindowEvent;
 import src.components.*;
 import src.logic.*;
 
@@ -57,6 +55,7 @@ public class SHP {
     private void startMonitoring() {
         scheduler.scheduleAtFixedRate(() -> {
             state.checkIsOpen(rooms, currentUser);
+            state.checkTemp(rooms, currentUser);
         }, 0, 5, TimeUnit.MINUTES); // Checks every 5 minutes
     }
 
