@@ -109,4 +109,24 @@ public class AwayModeOn implements State {
             }
         }
     }
+    @Override
+    public void checkForMotion(ArrayList<Room> rooms, Profile profile){
+        for (Room room : rooms) {
+            if (room.getMotionDetected()) {
+                // if motion detected in any room
+                String eventString = "Away Mode - Motion Detected";
+                System.out.println(eventString);
+                
+//                Event event = new DoorEvent("doorEvent", eventString);
+//
+//                try {
+//                    shp.notifyConsoleOutputObserver(event);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+            }
+
+        }
+
+    }
 }
