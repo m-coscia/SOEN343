@@ -13,6 +13,8 @@ public class SHP {
     ConsoleOutputObserver consoleObserver;
     int alertResponseTime;
     State state;
+    AwayModeOn awayModeOnState;
+    AwayModeOff awayModeOffState;
 
     // constructor
     public SHP(DoorEvent doorEvent, WindowEvent windowEvent, ConsoleOutputObserver consoleObserver, int alertResponseTime, State state){
@@ -20,6 +22,9 @@ public class SHP {
         this.windowEvent = windowEvent;
         this.consoleObserver = consoleObserver;
         this.alertResponseTime = alertResponseTime;
+        this.awayModeOnState = new AwayModeOn(this);
+        this.awayModeOffState = new AwayModeOff(this);
+        this.state = awayModeOffState;
     }
     // setState()
     public void setState(State state){

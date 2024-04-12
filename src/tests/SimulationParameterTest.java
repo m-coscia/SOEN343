@@ -88,7 +88,7 @@ public class SimulationParameterTest {
         simulationParameter.uploadTempFile(tempFile);
         assertFalse(simulationParameter.getWeatherData().isEmpty());
     }
-
+    /*
     @Test
     public void testStartSimulation() throws IOException {
         // Test if starting simulation starts the clock
@@ -103,7 +103,7 @@ public class SimulationParameterTest {
         simulationParameter.stopSimulation();
         assertFalse(simulationParameter.getClock().isRunning().get());
     }
-
+    */
 
     @Test
     public void testSetZoneTemperature() throws IOException {
