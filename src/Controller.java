@@ -1,6 +1,7 @@
 package src;
 
 import src.Observer.ActionObserver;
+import src.Observer.Events.TimeEvent;
 import src.Observer.TemperatureObserver;
 import src.Observer.TimeObserver;
 import src.components.Clock;
@@ -11,6 +12,7 @@ import src.logic.*;
 import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import java.util.Date;
 public class Controller {
 
     private static Controller controller = null;
+    private TimeObserver to;
+
     private String layoutFileName;
     private String temperatureFile;
     private DataBase database;
@@ -160,6 +164,16 @@ public class Controller {
 //        }
     }
 
+    public void loginOtherUser(Profile p){
+        simParam.login(p);
+    }
+    public Profile getCurrentLoggedInUser(){
+        return simParam.getLoggedIn();
+    }
+
+    public void setCurrentLoggedInUser(Profile p){
+        simParam.login(p);
+    }
     public String getType(Profile profile) {
         if( profile instanceof Parent){
             return "Parent";
@@ -214,6 +228,7 @@ public class Controller {
                 String type = typesOfZonesList.get(i).getModel().getSelectedItem().toString();
                 System.out.println("Zone " + i + ": " + type);
                 Zone zone = new Zone(roomsInCurrentZone,temp,type);
+                //TODO: set desired temp  and change the temp param above to the outside temp
                 zones.add(zone);
 //            }else{
 //                Zone zone = new Zone(roomsInCurrentZone, temp, "HEATING");
@@ -227,6 +242,8 @@ public class Controller {
         //attachObservers(null,null,null,null);
 
     }
+
+    //TODO chnage zone setting to setting the desired temperature bcz temp of zones is set to outside temp at first
     public void setZoneTemperature(double temp, Zone z){
         try{
             simParam.setZoneTemperature(temp,z);
@@ -293,9 +310,9 @@ public class Controller {
 
     //todo fix the observers attached to use all the defined classes in logic
     public void attachObservers(JLabel clockDisplay, JLabel dateDisplay, JLabel tempLabel, JTextPane consoleText) {
-//        TimeObserver to = new TimeObserver(clockDisplay);
+        to = new TimeObserver(clockDisplay,dateDisplay,tempLabel);
 //        simParam.attachTimeObserver(to);
-        simParam.attachTimeObserver(new TimeObserver(clockDisplay, dateDisplay, tempLabel));
+        simParam.attachTimeObserver(to);
         simParam.attachActionObserver(new ActionObserver(consoleText));
         simParam.attachTemperatureObserver(new TemperatureObserver());
 
@@ -312,5 +329,74 @@ public class Controller {
 
     public ArrayList<Zone> getZones() {
         return simParam.getZones();
+    }
+
+    public DataBase getDB() {
+        return database;
+    }
+
+    public void changeUserLocation(Profile p, int location){
+        if (location != -1){
+            getRooms().get(location).addUserToRoom(p);
+            p.setRoom(getRooms().get(location));
+
+            System.out.println(p.getLocation().getType().toString() + " " + p.getLocation().getId());
+
+           // System.out.println(getRooms().get(location).getUsers().toString());
+        }else{
+            System.out.println("no info changed for profile " + p.getName());
+        }
+    }
+
+    public void setWeather(double v) {
+        simParam.setWeatherOutside(v);
+        to.update(new TimeEvent("user changed temperature in context of simulation", simParam));
+    }
+
+    public void changeTime(int hour, int min){
+        LocalTime t = LocalTime.of(hour,min);
+        simParam.setTime(t);
+        to.update(new TimeEvent("user changed time in context of simulation", simParam));
+    }
+
+    public void setDate(LocalDate date) {
+        simParam.setDate(date);
+        to.update(new TimeEvent("date changed", simParam));
+    }
+
+    public void deleteProfile(Profile p){
+        database.deleteAccount(p);
+    }
+
+    public void changeUserPassword(Profile p, String text) {
+        if (p instanceof Parent){
+            ((Parent)p).setUserName(text);
+        }else if (p instanceof Child){
+            ((Child)p).setUserName(text);
+        }else if(p instanceof Guest){
+            ((Guest)p).setUserName(text);
+        }
+
+    }
+
+    public void changeProfileName(Profile p, String name) {
+        p.setName(name);
+    }
+
+    public void changePermission(String permission, Profile p, boolean value) {
+        switch (permission){
+            case "Window":
+                p.getPermissions().setWindowsPermission(value);
+                break;
+            case "Lights":
+                p.getPermissions().setLightsPermission(value);
+                break;
+            case "Doors":
+                p.getPermissions().setDoorsPermission(value);
+                break;
+            case "Garage":
+                p.getPermissions().setGarageDoorPermission(value);
+                break;
+        }
     }
 }

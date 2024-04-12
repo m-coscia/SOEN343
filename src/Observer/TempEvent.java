@@ -4,9 +4,8 @@ import src.Observer.Events.Event;
 import src.logic.SimulationParameter;
 import java.time.LocalDate;
 
-public class TempEvent extends Event {
-    private final double indoorTemp;
-    private double outdoorTemp;
+public class TempEvent extends Event{
+    private double indoorTemp, outdoorTemp;
     private boolean isSummer;
 
     private SimulationParameter simulationParameter;
