@@ -340,14 +340,56 @@
                         </properties>
                         <border type="etched"/>
                         <children>
-                          <grid id="6767b" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                            <margin top="0" left="0" bottom="0" right="0"/>
+                          <grid id="6767b" layout-manager="BorderLayout" hgap="0" vgap="0">
                             <constraints>
                               <tabbedpane title="SHS"/>
                             </constraints>
                             <properties/>
                             <border type="none"/>
-                            <children/>
+                            <children>
+                              <grid id="f4184" binding="SHSPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                                <constraints border-constraint="Center"/>
+                                <properties>
+                                  <opaque value="false"/>
+                                </properties>
+                                <border type="none"/>
+                                <children>
+                                  <grid id="cf607" binding="leftFiller" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                    <margin top="0" left="0" bottom="0" right="0"/>
+                                    <constraints border-constraint="West"/>
+                                    <properties>
+                                      <background color="-16768062"/>
+                                    </properties>
+                                    <border type="none"/>
+                                    <children/>
+                                  </grid>
+                                  <grid id="ad737" binding="rightFiller" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                    <margin top="0" left="0" bottom="0" right="0"/>
+                                    <constraints border-constraint="East"/>
+                                    <properties>
+                                      <background color="-16768062"/>
+                                    </properties>
+                                    <border type="none"/>
+                                    <children/>
+                                  </grid>
+                                  <scrollpane id="c1396">
+                                    <constraints border-constraint="Center"/>
+                                    <properties>
+                                      <horizontalScrollBarPolicy value="31"/>
+                                    </properties>
+                                    <border type="none"/>
+                                    <children>
+                                      <grid id="96bc6" binding="SHSmainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                                        <constraints/>
+                                        <properties/>
+                                        <border type="none"/>
+                                        <children/>
+                                      </grid>
+                                    </children>
+                                  </scrollpane>
+                                </children>
+                              </grid>
+                            </children>
                           </grid>
                           <grid id="2eb37" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                             <margin top="0" left="0" bottom="0" right="0"/>
