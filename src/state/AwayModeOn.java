@@ -114,9 +114,18 @@ public class AwayModeOn implements State {
         for (Room room : rooms) {
             if (room.getMotionDetected()) {
                 // if motion detected in any room
-                String eventString = "Away Mode - Motion Detected";
-                System.out.println(eventString);
-                
+                System.out.println("Away Mode - Motion Detected");
+
+                // Delay contacting authorities
+                int delay = this.shp.getAlertResponseTime();
+                try {
+                    Thread.sleep(delay * 1000); // Convert seconds to milliseconds
+                    System.out.println("Authorities contacted " + delay + " seconds after motion detected.");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
 //                Event event = new DoorEvent("doorEvent", eventString);
 //
 //                try {
