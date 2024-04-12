@@ -92,15 +92,17 @@ public class SimulationParameterTest {
     @Test
     public void testStartSimulation() throws IOException {
         // Test if starting simulation starts the clock
-        simulationParameter.startSimulation();
+        ContextSimulation context = new ContextSimulation(simulationParameter);
+        context.startSimulation();
         assertTrue(simulationParameter.getClock().isRunning().get());
     }
 
     @Test
     public void testStopSimulation() throws IOException {
         // Test if stopping simulation pauses the clock
-        simulationParameter.startSimulation();
-        simulationParameter.stopSimulation();
+        ContextSimulation context = new ContextSimulation(simulationParameter);
+        context.startSimulation();
+        context.stopSimulation();
         assertFalse(simulationParameter.getClock().isRunning().get());
     }
     */

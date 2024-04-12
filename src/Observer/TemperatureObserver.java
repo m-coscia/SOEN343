@@ -16,10 +16,10 @@ public class TemperatureObserver implements Observer {
         String eventType = event.getType();
         switch(eventType){
             case "ShutdownAC":
-                shutdownAC_condition((TempEvent) event);
+                //shutdownAC_condition((Event) event);
                 break;
             case "OpenWindows":
-                openWindows_condition((TempEvent) event);
+                //openWindows_condition((TempEvent) event);
                 break;
         }
 

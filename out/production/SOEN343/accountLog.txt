@@ -1,0 +1,12 @@
+PARENT,Naika,naikiki,kiki2002,3
+CHILD,Yasmine,yaya,yaya2002,4
+GUEST,Asmae,asmama,asmou2002,3
+STRANGER,Jay,3
+PARENT,Naika,naikiki,kiki2002,3
+PARENT,Naika,naikiki,kiki2002,3
+CHILD,Yasmine,yaya,yaya2002,4
+CHILD,Yasmine,yaya,yaya2002,4
+GUEST,Asmae,asmama,asmou2002,3
+GUEST,Asmae,asmama,asmou2002,3
+STRANGER,Jay,3
+STRANGER,Jay,3

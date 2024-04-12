@@ -4,9 +4,7 @@ import src.Controller;
 import src.components.Room;
 import src.components.RoomType;
 import src.components.Zone;
-import src.logic.Parent;
-import src.logic.Permissions;
-import src.logic.Profile;
+import src.logic.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -62,25 +60,34 @@ public class Dashboard extends JFrame {
     private JPanel SHCmainPanel;
     private JScrollPane SHHScrollPanel;
     private JPanel panelForSHH;
+    private JPanel SHSmainPanel;
+    private JPanel leftFiller;
+    private JPanel rightFiller;
+    private JPanel SHSPanel;
+    private JPanel SHSpanel;
+    private JPanel accountPanel;
+    private JPanel test;
+    private JPanel test2;
+
     //private JLabel consoleText;
 
     private Profile currentProfile;
+    private JFrame thisFrame;
+    private ToggleButton toggle;
 
     public Dashboard(Profile profile) {
+        thisFrame = this;
+       // consoleOutput.setText(consoleOutput.getText() + "\n["+ controller.getTime() + "]: Logged in as " + profile.getName() + ".");
         setProfileInfo(profile);
         tempLabel.setVerticalAlignment(SwingConstants.TOP);
         tempLabel.setPreferredSize(new Dimension(300, 200));
 
-        //dateLabel.setText(controller.getDate());
         setUpClockUI();
         setUpSHHTab();
         setUpSHCTab();
+        setUpSHSTab();
         //setUpOutputUI();
         profileLocationLabel.setText(profile.getLocation().getType().toString());
-
-        //outputArea.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        //textArea1.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-        //list1.setListData(new String[]{"idk", "idk", "idk"});
         add(panel1);
 
         setSize(1000, 500);
@@ -93,6 +100,23 @@ public class Dashboard extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //todo: should be able to edit the simulation context --> maybe switch labels to JTextArea and then when button is clicked make them editable
+                //As the user edits --> stop the time + todo: stop simulation?
+                toggle.setSelected(false);
+                controller.stopSimulation();
+
+                JDialog popup = new JDialog(thisFrame, "Edit Context of Simulation", true);
+                popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                popup.setLayout(new BorderLayout());
+
+                ContextPopUp c = new ContextPopUp(profile,thisFrame,consoleOutput);
+                JPanel popupPanel = c.getPopupContent();
+                popup.add(popupPanel, BorderLayout.CENTER);
+
+                popup.setSize(650, 350);
+                popup.setLocationRelativeTo(thisFrame);
+                popup.setVisible(true); // Display the popup
+
+                popup.pack();
             }
         });
 
@@ -103,11 +127,312 @@ public class Dashboard extends JFrame {
         Room[] rooms = ar.toArray(new Room[ar.size()]);
         createHouseLayout(rooms);
 
+        setLocationRelativeTo(null);
         //fullMainPanel.add(new SimParameterGUI(), BorderLayout.CENTER);
     }
 
+    public Dashboard(Profile p, String outputMessage){
+        this(p);
+        consoleOutput.setText(consoleOutput.getText() + outputMessage);
+    }
+    private void setUpSHSTab() {
+        ArrayList<Profile> profiles = controller.getProfiles();
+        SHSmainPanel.setLayout(new GridLayout(profiles.size(), 1));
+
+        for (Profile p : profiles) {
+            JPanel panel = new JPanel(new FlowLayout());
+
+            TitledBorder titledBorder = BorderFactory.createTitledBorder(p.getName());
+
+            titledBorder.setTitleJustification(TitledBorder.CENTER); // Title alignment
+            titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 14)); // Title font
+            panel.setBorder(titledBorder);
+            panel.setLayout(new GridLayout(8, 2));
+
+            JLabel nameLabel = new JLabel("Name: ");
+            JTextField name = new JTextField(p.getName());
+            name.setEditable(false);
+            panel.add(nameLabel);
+            panel.add(name);
+
+            JTextField username = null, password = null;
+            if (p instanceof Parent) {
+                JLabel usernameLabel = new JLabel("Username");
+                username = new JTextField(((Parent) p).getUserName());
+                username.setEditable(false);
+                panel.add(usernameLabel);
+                panel.add(username);
+
+                JLabel passwordLabel = new JLabel("password");
+                password = new JTextField(((Parent) p).getPassword());
+                password.setEditable(false);
+                panel.add(passwordLabel);
+                panel.add(password);
+
+            } else if (p instanceof Child) {
+                JLabel usernameLabel = new JLabel("Username");
+                username = new JTextField(((Child) p).getUserName());
+                username.setEditable(false);
+                panel.add(usernameLabel);
+                panel.add(username);
+
+                JLabel passwordLabel = new JLabel("password");
+                password = new JTextField(((Child) p).getPassword());
+                password.setEditable(false);
+                panel.add(passwordLabel);
+                panel.add(password);
+
+            } else if (p instanceof Guest) {
+                JLabel usernameLabel = new JLabel("Username");
+                username = new JTextField(((Guest) p).getUserName());
+                username.setEditable(false);
+                panel.add(usernameLabel);
+                panel.add(username);
+
+                JLabel passwordLabel = new JLabel("password");
+                password = new JTextField(((Guest) p).getPassword());
+                password.setEditable(false);
+                panel.add(passwordLabel);
+                panel.add(password);
+            }
+
+            JLabel permissionsLabel = new JLabel("Permissions");
+            JButton windowButt = new JButton("windows");
+            if(p.getPermissions().getWindowsPermission()){
+                windowButt.setForeground(Color.GREEN);
+            }else{
+                windowButt.setForeground(Color.RED);
+            }
+            windowButt.setEnabled(false);
+            panel.add(permissionsLabel);
+            panel.add(windowButt);
+
+            JLabel emptyLabel = new JLabel("Label for format");
+            panel.add(emptyLabel);
+            emptyLabel.setVisible(false);
+
+            JButton lightsButt = new JButton("Lights");
+            if(p.getPermissions().getLightsPermission()){
+                lightsButt.setForeground(Color.GREEN);
+            }else{
+                lightsButt.setForeground(Color.RED);
+            }
+            lightsButt.setEnabled(false);
+            panel.add(lightsButt);
+
+            JLabel emptyLabel1 = new JLabel("Label for format");
+            panel.add(emptyLabel1);
+            emptyLabel1.setVisible(false);
+
+            JButton doorsButt = new JButton("Doors");
+            if(p.getPermissions().getDoorsPermission()){
+                doorsButt.setForeground(Color.GREEN);
+            }else{
+                doorsButt.setForeground(Color.RED);
+            }
+            doorsButt.setEnabled(false);
+            panel.add(doorsButt);
+
+            JLabel emptyLabel2 = new JLabel("Label for format");
+            panel.add(emptyLabel2);
+            emptyLabel2.setVisible(false);
+
+            JButton garageButt = new JButton("Garage");
+            if(p.getPermissions().getGarageDoorPermission()){
+                garageButt.setForeground(Color.GREEN);
+            }else{
+                garageButt.setForeground(Color.RED);
+            }
+            garageButt.setEnabled(false);
+            panel.add(garageButt);
+
+
+            JButton editButton = new JButton("Edit");
+            // JTextField finalUsername = username;
+            JTextField finalUsername = username;
+            JTextField finalPassword = password;
+            editButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    windowButt.setEnabled(true);
+                    lightsButt.setEnabled(true);
+                    doorsButt.setEnabled(true);
+                    garageButt.setEnabled(true);
+
+                    name.setEditable(true);
+                    if (finalUsername != null && finalPassword != null) {
+                        finalUsername.setEditable(true);
+                        finalPassword.setEditable(true);
+
+                        finalPassword.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                controller.changeUserPassword(p,finalPassword.getText());
+                                consoleOutput.setText(consoleOutput.getText() + "\n[ " +  controller.getTime() + "] : " +
+                                        "Passowrd changed for profile " + p.getName());
+
+                                finalPassword.setEditable(false);
+                                name.setEditable(false);
+                                finalUsername.setEditable(false);
+                            }
+                        });
+
+                        finalUsername.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                consoleOutput.setText(consoleOutput.getText() + "\n[ " +  controller.getTime() + "] : " +
+                                        "Username name of profile " + p.getName() + " changed to " + finalUsername.getText());
+                                finalPassword.setEditable(false);
+                                name.setEditable(false);
+                                finalUsername.setEditable(false);
+
+                            }
+                        });
+                    }
+
+                    name.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            consoleOutput.setText(consoleOutput.getText() + "\n[ " +  controller.getTime() + "] : " +
+                                    "Profile w/ name \' " + p.getName() + "\' changed to named to \'" + name.getText() + "\'");
+                            controller.changeProfileName(p, name.getText());
+                            titledBorder.setTitle(p.getName());
+
+                            panel.revalidate();
+                            panel.repaint();
+
+                            if(finalPassword !=null && finalUsername != null){
+                                finalPassword.setEditable(false);
+                                finalUsername.setEditable(false);
+                            }
+
+                            name.setEditable(false);
+                            windowButt.setEnabled(false);
+                            lightsButt.setEnabled(false);
+                            doorsButt.setEnabled(false);
+                            garageButt.setEnabled(false);
+                        }
+                    });
+
+                    changePermissions(windowButt,lightsButt,doorsButt,garageButt,p);
+                }
+            });
+
+            JButton deleteButton = new JButton("Delete");
+            deleteButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                    if (controller.getCurrentLoggedInUser() == p) {
+                        consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Cannot delete" + " profile that is currently logged in. " + "Try again after logging out.");
+                    } else {
+                        SHSmainPanel.remove(panel);
+                        SHSmainPanel.revalidate();
+                        SHSmainPanel.repaint();
+
+                        consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Profile" + " for " + p.getName() + " was successfully deleted.");
+                        controller.deleteProfile(p);
+                    }
+
+
+                }
+            });
+            panel.add(editButton);
+            panel.add(deleteButton);
+            SHSmainPanel.add(panel);
+        }
+
+        //accountPanel.add(deleteButton);
+
+    }
+
+    private void changePermissions(JButton windowButt, JButton lightsButt, JButton doorsButt, JButton garageButt, Profile p) {
+        windowButt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(windowButt.getForeground() == Color.GREEN){
+                    controller.changePermission("Window", p, false);
+                    windowButt.setForeground(Color.RED);
+                }else{
+                    controller.changePermission("Window", p, true);
+                    windowButt.setForeground(Color.RED);
+                }
+                windowButt.setEnabled(false);
+                lightsButt.setEnabled(false);
+                doorsButt.setEnabled(false);
+                garageButt.setEnabled(false);
+
+                consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Window permission changed " +
+                        "for profile " + p.getName());
+            }
+        });
+
+        lightsButt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(windowButt.getForeground() == Color.GREEN){
+                    controller.changePermission("Lights", p, false);
+                    windowButt.setForeground(Color.RED);
+                }else{
+                    controller.changePermission("Lights", p, true);
+                    windowButt.setForeground(Color.GREEN);
+                }
+
+                windowButt.setEnabled(false);
+                lightsButt.setEnabled(false);
+                doorsButt.setEnabled(false);
+                garageButt.setEnabled(false);
+
+                consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Light permission changed " +
+                        "for profile " + p.getName());
+            }
+        });
+
+        doorsButt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(doorsButt.getForeground() == Color.GREEN){
+                    controller.changePermission("Doors", p, false);
+                    doorsButt.setForeground(Color.RED);
+                }else{
+                    controller.changePermission("Doors", p, true);
+                    doorsButt.setForeground(Color.GREEN);
+                }
+
+                windowButt.setEnabled(false);
+                lightsButt.setEnabled(false);
+                doorsButt.setEnabled(false);
+                garageButt.setEnabled(false);
+
+                consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Doors permission changed " +
+                        "for profile " + p.getName());
+            }
+
+        });
+
+        garageButt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(garageButt.getForeground() == Color.GREEN){
+                    controller.changePermission("Garage", p, false);
+                    garageButt.setForeground(Color.RED);
+                }else{
+                    controller.changePermission("Garage", p, true);
+                    garageButt.setForeground(Color.GREEN);
+                }
+                windowButt.setEnabled(false);
+                lightsButt.setEnabled(false);
+                doorsButt.setEnabled(false);
+                garageButt.setEnabled(false);
+
+                consoleOutput.setText(consoleOutput.getText() + "\n[" + controller.getTime() + "]: Garage permission changed " +
+                        "for profile " + p.getName());
+            }
+        });
+    }
+
     private void setUpClockUI() {
-        ToggleButton toggle = new ToggleButton();
+        toggle = new ToggleButton();
         toggle.setSize(10, 10);
         try {
             toggleButtonPanel.add(toggle, BorderLayout.CENTER);
@@ -127,7 +452,7 @@ public class Dashboard extends JFrame {
 
             });
 
-            controller.attachObservers(clockDisplay, dateLabel,tempLabel,consoleOutput);
+            controller.attachObservers(clockDisplay, dateLabel, tempLabel, consoleOutput);
 
 
         } catch (Exception e) {
@@ -223,7 +548,7 @@ public class Dashboard extends JFrame {
             }
 
             // Add components to the room panel with GridBagConstraints
-              roomPanel.add(roomTypeLabel, gbc);
+            roomPanel.add(roomTypeLabel, gbc);
 //            roomPanel.add(lightsButton, gbc);
 //            roomPanel.add(doorsButton, gbc);
 //            roomPanel.add(windowsButton, gbc);
@@ -257,21 +582,21 @@ public class Dashboard extends JFrame {
         userTypeLabel.setText(controller.getType(profile) + ": " + profile.getName());
     }
 
-    private void setUpSHHTab(){
+    private void setUpSHHTab() {
         ArrayList<Zone> zones = controller.getZones();
 
         zoneTable = new JTable();
         // Create column names (array of strings)
-        String[] columnNames = {"Zone", "Zone Type","Temperature"};
+        String[] columnNames = {"Zone", "Zone Type", "Temperature"};
 
         // Create a table model using DefaultTableModel
-        DefaultTableModel model = new DefaultTableModel(columnNames,0);
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
         zoneTable.setModel(model);
 
         String[][] data = new String[zones.size()][3];
 
-        for(int i = 0; i < zones.size(); i++){
+        for (int i = 0; i < zones.size(); i++) {
             data[i][0] = "Zone " + i;
             data[i][1] = zones.get(i).getType();
             data[i][2] = String.valueOf(zones.get(i).getTemperature());
@@ -289,8 +614,8 @@ public class Dashboard extends JFrame {
         panelForSHH.add(zoneTable);
     }
 
-    private void handleTableChanges(DefaultTableModel model, ArrayList<Zone> zones){
-        model.addTableModelListener( e ->{
+    private void handleTableChanges(DefaultTableModel model, ArrayList<Zone> zones) {
+        model.addTableModelListener(e -> {
             int row = e.getFirstRow();
             int column = e.getColumn();
 
@@ -305,24 +630,24 @@ public class Dashboard extends JFrame {
                     String temperature = (String) model.getValueAt(row, column);
                     Double newTemperature = Double.parseDouble(temperature);
                     System.out.println(newTemperature);
-                    controller.setZoneTemperature(newTemperature,z);
-                   // obj.setTemperature(newTemperature);
+                    controller.setZoneTemperature(newTemperature, z);
+                    // obj.setTemperature(newTemperature);
                     break;
             }
         });
     }
 
-    private void setUpSHCTab(){
+    private void setUpSHCTab() {
         ArrayList<Room> rooms = controller.getRooms();
-        SHCmainPanel.setLayout(new GridLayout(rooms.size(),1));
-        for(Room r: rooms){
+        SHCmainPanel.setLayout(new GridLayout(rooms.size(), 1));
+        for (Room r : rooms) {
             JPanel roomPanel = new JPanel();
             TitledBorder titledBorder = BorderFactory.createTitledBorder(r.getType().toString() + " " + r.getId());
 
             titledBorder.setTitleJustification(TitledBorder.CENTER); // Title alignment
             titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 14)); // Title font
             roomPanel.setBorder(titledBorder);
-            roomPanel.setLayout(new GridLayout(3,1));
+            roomPanel.setLayout(new GridLayout(3, 1));
 
             JButton lightsButton = new JButton(r.getLightsStatus());
             JButton doorsButton = new JButton(r.getDoorsStatus());
@@ -383,6 +708,7 @@ public class Dashboard extends JFrame {
             SHCmainPanel.add(roomPanel);
         }
     }
+
     public static void main(String[] args) {
         Profile p = new Profile("Sara", null);
         ArrayList<Profile> pfs = new ArrayList<Profile>();

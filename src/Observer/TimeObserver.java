@@ -49,13 +49,13 @@ public class TimeObserver implements Observer{
         }
 
 
-        if (param.getWeatherData().get(timestamp) != null) {
-            double currentWeather = (double) param.getWeatherData().get(timestamp);
-            param.setWeatherOutside(currentWeather);
-
-        } else {
-           //System.out.println("No weather data available for the current time.");
-        }
+//        if (param.getWeatherData().get(timestamp) != null) {
+//            double currentWeather = (double) param.getWeatherData().get(timestamp);
+//            param.setWeatherOutside(currentWeather);
+//
+//        } else {
+//           //System.out.println("No weather data available for the current time.");
+//        }
     }
 
 }
