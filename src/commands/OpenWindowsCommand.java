@@ -28,7 +28,12 @@ public record OpenWindowsCommand(Windows windows, ArrayList<Profile> users, Prof
         if (!caller.getPermissions().getWindowsPermission()) {
             System.out.println("Windows cannot be controlled by you Stranger!!");
             return;
-        } else if (windows.getObstructed()) {
+        }
+        else if(!caller.getPermissions().getShpPermission() && caller.getLocation().getId()!=0){ // verify if they are able to access through the SHP
+            System.out.println("Windows cannot be controlled by you Stranger!!");
+            return;
+        }
+        else if (windows.getObstructed()) {
             // verify if windows are obstructed
             String event = "Windows are obstructed, can't open them";
             System.out.println(event);
