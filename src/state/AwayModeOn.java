@@ -1,5 +1,6 @@
 package src.state;
 
+import src.Observer.Events.ActionEvent;
 import src.Observer.Events.DoorEvent;
 import src.Observer.Events.WindowEvent;
 import src.Observer.Events.Event;
@@ -113,8 +114,9 @@ public class AwayModeOn implements State {
     public void checkForMotion(ArrayList<Room> rooms, Profile profile){
         for (Room room : rooms) {
             if (room.getMotionDetected()) {
-                // if motion detected in any room
-                System.out.println("Away Mode - Motion Detected");
+
+                // Send notification of motion detected
+                motionNotification();
 
                 // Delay contacting authorities
                 int delay = this.shp.getAlertResponseTime();
@@ -125,17 +127,23 @@ public class AwayModeOn implements State {
                     e.printStackTrace();
                 }
 
-
-//                Event event = new DoorEvent("doorEvent", eventString);
-//
-//                try {
-//                    shp.notifyConsoleOutputObserver(event);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
             }
 
         }
 
+    }
+
+    // Sending notification when motion is detected
+    private void motionNotification(){
+        // if motion detected in any room
+        String eventString = "Away Mode - Motion Detected";
+        System.out.println(eventString);
+        Event event = new ActionEvent("motionEvent", eventString);
+        try{
+            shp.notifyConsoleOutputObserver(event);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
