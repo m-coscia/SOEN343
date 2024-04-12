@@ -5,13 +5,14 @@ import src.logic.Profile;
 
 import java.util.ArrayList;
 
-public class AwayModeOff implements State{
+public class AwayModeOff implements State {
     SHP shp;
-    public AwayModeOff(SHP shp){
+
+    public AwayModeOff(SHP shp) {
         this.shp = shp;
     }
 
-    //TO BE IMPLEMENTED
+    // TO BE IMPLEMENTED
     @Override
     public void openDoors(ArrayList<Room> rooms, Profile profile) {
 
@@ -30,5 +31,9 @@ public class AwayModeOff implements State{
     @Override
     public void closeWindows(ArrayList<Room> rooms, Profile profile) {
 
+    }
+
+    @Override
+    public void checkIsOpen(ArrayList<Room> rooms, Profile profile) {
     }
 }
