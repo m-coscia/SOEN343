@@ -38,9 +38,11 @@ public class SimulationParameter {
     private ArrayList<Zone> zones = new ArrayList<>();
     private SHP shpContext;
 
-    //is not supposed to take any weather, the weather outside is the same as the weather inside when starting the simulation
-    public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside, double outside, Login loggedIn) throws FileNotFoundException {
-        //layout.setHouseLayout(layoutFile);
+    // is not supposed to take any weather, the weather outside is the same as the
+    // weather inside when starting the simulation
+    public SimulationParameter(String layoutFile, String tempFile, LocalDate d, LocalTime t, double inside,
+            double outside, Login loggedIn) throws FileNotFoundException {
+        // layout.setHouseLayout(layoutFile);
         clock = new Clock();
         clock.setTime(t);
         clock.setDate(d);
@@ -49,14 +51,14 @@ public class SimulationParameter {
         login = loggedIn;
         db.setRooms(layout.getRooms());
         uploadTempFile(tempFile);
-        this.shpContext = new SHP(new DoorEvent("door", "shp"), new WindowEvent("window", "shp"), new ConsoleOutputObserver(), 10);
+        this.shpContext = new SHP(new DoorEvent("door", "shp"), new WindowEvent("window", "shp"),
+                new ConsoleOutputObserver(), 10, layout, login.getCurrentUser());
     }
 
-
-    public Clock getClock(){
+    public Clock getClock() {
         return clock;
     }
-    
+
     public void notifyAccountObserver(Event e) throws IOException {
         accountObserver.update(e);
     }
@@ -69,125 +71,123 @@ public class SimulationParameter {
         temperatureObserver.update(e);
     }
 
-
     public void notifyActionObserver(Event e) throws IOException {
         actionObserver.update(e);
     }
 
-    public void attachAccountObserver(AccountObserver o){
-        accountObserver=o;
-    }
-  
-    public void attachTimeObserver(TimeObserver o){
-        timeObserver=o;
+    public void attachAccountObserver(AccountObserver o) {
+        accountObserver = o;
     }
 
-    public void attachTemperatureObserver(TemperatureObserver o){
-        temperatureObserver=o;
+    public void attachTimeObserver(TimeObserver o) {
+        timeObserver = o;
     }
 
-    public void attachActionObserver(ActionObserver o){
-        actionObserver=o;
+    public void attachTemperatureObserver(TemperatureObserver o) {
+        temperatureObserver = o;
     }
 
-    public HouseLayout getLayout(){
+    public void attachActionObserver(ActionObserver o) {
+        actionObserver = o;
+    }
+
+    public HouseLayout getLayout() {
         return layout;
     }
 
-    public LocalTime getTime(){
+    public LocalTime getTime() {
         return clock.getTime();
     }
 
-    public LocalDate getDate(){
+    public LocalDate getDate() {
         return clock.getDate();
     }
 
-    public void setTime(LocalTime t){
+    public void setTime(LocalTime t) {
         clock.setTime(t);
     }
 
-    public void setDate(LocalDate d){
+    public void setDate(LocalDate d) {
         date = d;
     }
 
-    public double getWeatherInside(){
+    public double getWeatherInside() {
         return weatherInside;
     }
 
-    public double getWeatherOutside(){
+    public double getWeatherOutside() {
         return weatherOutside;
     }
-    public void setWeatherInside(double temp){
+
+    public void setWeatherInside(double temp) {
         weatherInside = temp;
     }
-    public void setWeatherOutside(double temp){
+
+    public void setWeatherOutside(double temp) {
         weatherOutside = temp;
     }
 
-
-    public void login(Profile user){
+    public void login(Profile user) {
         login = new Login(user);
     }
 
-    public Profile getLoggedIn(){
+    public Profile getLoggedIn() {
         return login.getCurrentUser();
     }
 
-    //creates parent account
-    public void createParentAccount(String name, String id, String pw, Room loc) throws IOException{
-        if(!layout.getRooms().contains(loc)){
+    // creates parent account
+    public void createParentAccount(String name, String id, String pw, Room loc) throws IOException {
+        if (!layout.getRooms().contains(loc)) {
             System.out.println("ERROR: No such room in the house");
-        }else {
+        } else {
             Profile p = new Parent(name, id, pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            UserEvent e = new UserEvent("add",p);
+            UserEvent e = new UserEvent("add", p);
             notifyAccountObserver(e);
         }
     }
 
-    //creates a child account
-    public void createChildAccount(String name, String id, String pw, Room loc) throws IOException{
-        if(!layout.getRooms().contains(loc)){
+    // creates a child account
+    public void createChildAccount(String name, String id, String pw, Room loc) throws IOException {
+        if (!layout.getRooms().contains(loc)) {
             System.out.println("ERROR: No such room in the house");
-        }else {
+        } else {
             Profile p = new Child(name, id, pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            UserEvent e = new UserEvent("add",p);
+            UserEvent e = new UserEvent("add", p);
             notifyAccountObserver(e);
         }
     }
 
-    //creates a guest account
-    public void createGuestAccount(String name, String id, String pw, Room loc) throws IOException{
-        if(!layout.getRooms().contains(loc)){
+    // creates a guest account
+    public void createGuestAccount(String name, String id, String pw, Room loc) throws IOException {
+        if (!layout.getRooms().contains(loc)) {
             System.out.println("ERROR: No such room in the house");
-        }else{
-            Profile p = new Guest(name,id,pw, loc);
+        } else {
+            Profile p = new Guest(name, id, pw, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            UserEvent e = new UserEvent("add",p);
+            UserEvent e = new UserEvent("add", p);
             notifyAccountObserver(e);
         }
     }
 
-    //creates a guest account
+    // creates a guest account
     public void createStrangerAccount(String name, Room loc) throws IOException {
-        if(!layout.getRooms().contains(loc)){
+        if (!layout.getRooms().contains(loc)) {
             System.out.println("ERROR: No such room in the house");
-        }else{
+        } else {
             Profile p = new Stranger(name, loc);
             db.addAccount(p);
             login.setCurrentUser(p);
-            UserEvent e = new UserEvent("add",p);
+            UserEvent e = new UserEvent("add", p);
             notifyAccountObserver(e);
         }
     }
 
-
-
-    //delete an account
+    // delete an account
     public void deleteAccount(Profile user) {
         if (db.profileExists(user)) {
             db.deleteAccount(user);
@@ -195,27 +195,26 @@ public class SimulationParameter {
             System.out.println("ERROR: The user does not exist");
         }
     }
-    
 
-    public void editName(String name){
+    public void editName(String name) {
         login.getCurrentUser().setName(name);
     }
 
-    public void editUserName(String userName){
-        if(login.getCurrentUser() instanceof Parent){
-            Parent user = (Parent)login.getCurrentUser();
+    public void editUserName(String userName) {
+        if (login.getCurrentUser() instanceof Parent) {
+            Parent user = (Parent) login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setUserName(userName);
             db.addAccount(user);
 
-        }else if(login.getCurrentUser() instanceof Child){
-            Child user = (Child)login.getCurrentUser();
+        } else if (login.getCurrentUser() instanceof Child) {
+            Child user = (Child) login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setUserName(userName);
             db.addAccount(user);
 
-        }else{
-            Guest user = (Guest)login.getCurrentUser();
+        } else {
+            Guest user = (Guest) login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setUserName(userName);
             db.addAccount(user);
@@ -223,21 +222,21 @@ public class SimulationParameter {
         }
     }
 
-    public void editPassword(String password){
-        if(login.getCurrentUser() instanceof Parent){
-            Parent user = (Parent)login.getCurrentUser();
+    public void editPassword(String password) {
+        if (login.getCurrentUser() instanceof Parent) {
+            Parent user = (Parent) login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setPassword(password);
             db.addAccount(user);
 
-        }else if(login.getCurrentUser() instanceof Child){
-            Child user = (Child)login.getCurrentUser();
+        } else if (login.getCurrentUser() instanceof Child) {
+            Child user = (Child) login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setPassword(password);
             db.addAccount(user);
 
-        }else{
-            Guest user = (Guest)login.getCurrentUser();
+        } else {
+            Guest user = (Guest) login.getCurrentUser();
             db.deleteAccount(login.getCurrentUser());
             user.setPassword(password);
             db.addAccount(user);
@@ -246,16 +245,15 @@ public class SimulationParameter {
 
     }
 
-    public ArrayList<Profile> getProfiles(){
+    public ArrayList<Profile> getProfiles() {
         return db.getProfiles();
     }
 
-    public ArrayList<Room> getRooms(){
+    public ArrayList<Room> getRooms() {
         return db.getRooms();
     }
 
-
-    public void uploadTempFile(String csvFilePath){
+    public void uploadTempFile(String csvFilePath) {
         try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
             String[] nextLine;
             reader.readNext();
@@ -278,7 +276,7 @@ public class SimulationParameter {
         this.heater = heater;
     }
 
-    public ArrayList<Zone> getZones(){
+    public ArrayList<Zone> getZones() {
         return zones;
     }
 
@@ -288,13 +286,13 @@ public class SimulationParameter {
                 "Event type: Set Zones for SHH \n" +
                 "Event description: " + zones.size() + " zones have been created \n" +
                 "Details: \n";
-                for(Zone z: zones){
-                    action += "Zone " + zones.indexOf(z) + ": ";
-                    for(Room r:z.getRooms()){
-                        action += r.toString() + "\n";
-                    }
-                    action += "Temperature of the zone: " + z.getTemperature() +"\n";
-                }
+        for (Zone z : zones) {
+            action += "Zone " + zones.indexOf(z) + ": ";
+            for (Room r : z.getRooms()) {
+                action += r.toString() + "\n";
+            }
+            action += "Temperature of the zone: " + z.getTemperature() + "\n";
+        }
         ActionEvent actionEvent = new ActionEvent("SHH", action);
         notifyActionObserver(actionEvent);
         this.zones = zones;
@@ -307,11 +305,11 @@ public class SimulationParameter {
                 "Module: SHH \n" +
                 "Event description: A zone has been added \n" +
                 "Details: \n";
-            action += "Zone " + zones.indexOf(z) + ": ";
-            for(Room r:z.getRooms()){
-                action += r.toString() + "\n";
-            }
-            action += "Temperature of the zone: " + z.getTemperature() +"\n";
+        action += "Zone " + zones.indexOf(z) + ": ";
+        for (Room r : z.getRooms()) {
+            action += r.toString() + "\n";
+        }
+        action += "Temperature of the zone: " + z.getTemperature() + "\n";
         ActionEvent actionEvent = new ActionEvent("SHH", action);
         notifyActionObserver(actionEvent);
     }
@@ -319,29 +317,29 @@ public class SimulationParameter {
     public void setZoneTemperature(double temp, Zone z) throws IOException {
         int index = zones.indexOf(z);
         String action = "Timestamp: " + getDate() + " " + getTime() + "\n" +
-                "Event type: Change Zone Temperature \n"+
-                "Module: SHH \n" ;
+                "Event type: Change Zone Temperature \n" +
+                "Module: SHH \n";
 
-        if(temp > z.getTemperature()){
+        if (temp > z.getTemperature()) {
             action += "Event description: The temperature of the Zone has increased \n";
-        }else{
+        } else {
             action += "Event description: The temperature of the Zone has decreased \n";
         }
 
         action += "Details: \n";
 
         action += "Zone " + zones.indexOf(z) + "\n";
-        action += "Previous temperature: " + z.getTemperature()+"\n";
+        action += "Previous temperature: " + z.getTemperature() + "\n";
         zones.get(index).setTemperature(temp);
-        action += "New temperature: " + z.getTemperature()+"\n";
+        action += "New temperature: " + z.getTemperature() + "\n";
         ActionEvent actionEvent = new ActionEvent("SHH", action);
         notifyActionObserver(actionEvent);
     }
 
-    public double getRoomTemp(Room r){
+    public double getRoomTemp(Room r) {
         double temp = 0;
-        for(Zone z: zones){
-            if(z.getRooms().contains(r)){
+        for (Zone z : zones) {
+            if (z.getRooms().contains(r)) {
                 temp = z.getTemperature();
             }
         }
@@ -356,19 +354,19 @@ public class SimulationParameter {
         this.cooler = cooler;
     }
 
-    public void changeInWeather(){
-//        if(this.getWeatherOutside() < this.getWeatherInside()){
-//            Event temp1 = new TempEvent("ShutdownAC", this);
-//            Event temp2 = new TempEvent("OpenWindows", this);
-//
-//            try{
-//                notifyTemperatureObserver(temp1);
-//                notifyTemperatureObserver(temp2);
-//            }
-//            catch ( IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+    public void changeInWeather() {
+        // if(this.getWeatherOutside() < this.getWeatherInside()){
+        // Event temp1 = new TempEvent("ShutdownAC", this);
+        // Event temp2 = new TempEvent("OpenWindows", this);
+        //
+        // try{
+        // notifyTemperatureObserver(temp1);
+        // notifyTemperatureObserver(temp2);
+        // }
+        // catch ( IOException e) {
+        // e.printStackTrace();
+        // }
+        // }
     }
 
     public void setZoneType(Zone zone, String type) {
