@@ -7,10 +7,10 @@
 2. [Key Features](#key-features)
 
 ## Contributors  
-- Hilout, Yasmine 40214158
-- Loulidi, Asmae 40210936
-- Jean-Baptiste Naika 40227367
-- Coscia, Megan 40214186
-- Oh, Denis 40208580
+- Hilout, Yasmine 40214158  (@yasminehilout)
+- Loulidi, Asmae 40210936 (@aloulidi)
+- Jean-Baptiste Naika 40227367 (@naikajb)
+- Coscia, Megan 40214186 (@m-coscia)
+- Oh, Denis 40208580 (@Denis-Oh)
 
 ## Key Features
