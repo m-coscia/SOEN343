@@ -1,6 +1,5 @@
 package src.components;
 
-
 import src.commands.*;
 
 import src.logic.Profile;
@@ -9,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Room extends Component {
+    private double temperature = 100;
     private RoomType type;
     private Lights lights;
     private Windows windows;
@@ -55,7 +55,6 @@ public class Room extends Component {
             this.doors = null;
         }
 
-  
         this.numDoors = doors;
         if (windows > 0)
             this.windows = new Windows();
@@ -63,15 +62,19 @@ public class Room extends Component {
             this.windows = null;
     }
 
-    public Room(){
+    public Room() {
         this.identifier = generateUniqueId();
+    }
+
+    public double getTemperature() {
+        return temperature;
     }
 
     public boolean isInZone() {
         return isInZone;
     }
 
-    public void setIsInZone(boolean isInZone){
+    public void setIsInZone(boolean isInZone) {
         this.isInZone = isInZone;
     }
 
@@ -79,40 +82,40 @@ public class Room extends Component {
         return ++idCounter;
     }
 
-    public int getId(){
+    public int getId() {
         return identifier;
     }
 
-    //default constructor
-    public void setType(RoomType t){
+    // default constructor
+    public void setType(RoomType t) {
         type = t;
     }
 
-    public void setNumWindows(int windows){
+    public void setNumWindows(int windows) {
         numWindows = windows;
     }
 
-    public void setNumLights(int lights){
+    public void setNumLights(int lights) {
         numLights = lights;
     }
 
-    public void setNumDoors(int doors){
+    public void setNumDoors(int doors) {
         numDoors = doors;
     }
 
-    public RoomType getType(){
+    public RoomType getType() {
         return type;
     }
 
-    public int getNumWindows(){
+    public int getNumWindows() {
         return numWindows;
     }
 
-    public int getNumLights(){
+    public int getNumLights() {
         return numLights;
     }
 
-    public int getNumDoors(){
+    public int getNumDoors() {
         return numDoors;
     }
 
@@ -128,28 +131,31 @@ public class Room extends Component {
         return doors;
     }
 
-    public ArrayList<Profile> getUsers(){
+    public ArrayList<Profile> getUsers() {
         return this.users;
     }
-    public void addUserToRoom(Profile p){
-        if (users == null){
+
+    public void addUserToRoom(Profile p) {
+        if (users == null) {
             users = new ArrayList<>();
         }
         users.add(p);
         this.isMotionDetected();
     }
-    public void setUsers(ArrayList<Profile> p){
+
+    public void setUsers(ArrayList<Profile> p) {
         this.users = p;
         this.isMotionDetected();
     }
 
-    public boolean isOccupied(){
-        if(users.size()==0 || users == null){
+    public boolean isOccupied() {
+        if (users.size() == 0 || users == null) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
+
 
     public boolean getMotionDetected() {
         return this.motionDetected;
@@ -159,37 +165,39 @@ public class Room extends Component {
     @Override
     public String toString() {
         return "Room{" +
-                 "type=" + type +
-                 ", numWindows=" + numWindows +
-                 ", numLights=" + numLights +
-                 ", numDoors=" + numDoors +
-                 //", occupiedBy=" + (users != null && users.length > 0 ? users[0].getName() : "none") +
-                 ", identifier=" + identifier +
-                 '}';
+                "type=" + type +
+                ", numWindows=" + numWindows +
+                ", numLights=" + numLights +
+                ", numDoors=" + numDoors +
+                // ", occupiedBy=" + (users != null && users.length > 0 ? users[0].getName() :
+                // "none") +
+                ", identifier=" + identifier +
+                '}';
     }
 
-  
     // Method to check and adjust lighting based on autoMode and user presence
     // If user clicks automode on layout, you constantly call this method
     // If user clicks automode off, you don't call this method
     public static void checkAndSetLighting(Room room, Profile caller) throws IOException {
         if (room.getLights() != null && room.getLights().getIsAutoMode()) {
             if (room.getUsers() != null) {
-                // Assuming switchLightsOn is a command that takes a Lights object and turns it on
+                // Assuming switchLightsOn is a command that takes a Lights object and turns it
+                // on
                 room.setCommand(new TurnOnLightsCommand(room.getLights(), room.getUsers(), caller));
             } else {
-                // Assuming switchLightsOff is a command that takes a Lights object and turns it off
+                // Assuming switchLightsOff is a command that takes a Lights object and turns it
+                // off
                 room.setCommand(new TurnOffLightsCommand(room.getLights(), room.getUsers(), caller));
             }
             room.executeCommand();
         }
     }
 
-    public boolean isAwayMode(){
+    public boolean isAwayMode() {
         return awayMode;
     }
 
-    public void setAwayMode(boolean awayMode){
+    public void setAwayMode(boolean awayMode) {
         this.awayMode = awayMode;
     }
 
@@ -213,7 +221,6 @@ public class Room extends Component {
         }
         return "Windows (" + numWindows + "): " + (windows.isOpen() ? "OPEN" : "CLOSED");
     }
-
 
     // Toggles the state of lights, doors, and windows
     public void toggleLights(Profile caller) throws IOException {
@@ -245,8 +252,7 @@ public class Room extends Component {
             if (windows.isOpen()) {
                 this.setCommand(new CloseWindowsCommand(windows, users, caller));
                 this.executeCommand();
-            }
-            else {
+            } else {
                 this.setCommand(new OpenWindowsCommand(windows, users, caller));
                 this.executeCommand();
             }

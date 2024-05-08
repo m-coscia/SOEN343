@@ -17,9 +17,11 @@ public class TempEvent extends Event {
         this.simulationParameter = sp;
 
         String date = sp.getDate().toString();
-        int month = Integer.parseInt(date.substring(5,7));
-        if(month >= 6 && month <=9) isSummer = true;
-        else isSummer = false;
+        int month = Integer.parseInt(date.substring(5, 7));
+        if (month >= 6 && month <= 9)
+            isSummer = true;
+        else
+            isSummer = false;
     }
 
     public double getIndoorTemp() {
@@ -33,7 +35,6 @@ public class TempEvent extends Event {
     public boolean getIsSummer() {
         return isSummer;
     }
-
 
     public SimulationParameter getSimulationParameter() {
         return simulationParameter;
